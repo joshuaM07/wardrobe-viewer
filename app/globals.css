@@ -8,7 +8,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--ink);outline-offset:6px}
 button:disabled{cursor:wait}
 .world{height:100svh;min-height:420px;width:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(130deg,#c7e3f9 0%,#deeffd 56%,#fff 100%);position:relative;overflow:hidden}
-.wardrobe{width:min(84.45vw,calc(75vh * 1.79753));aspect-ratio:2912/1620;position:relative;border-radius:5px;container-type:inline-size;background:var(--wall);box-shadow:0 32px 68px #233c5545,0 12px 36px #54647325;overflow:hidden}
+.wardrobe{width:min(84.45vw,calc(75vh * 1.79753));aspect-ratio:2912/1620;position:relative;border-radius:5px;container-type:inline-size;background:var(--wall);box-shadow:0 32px 68px #233c5545,0 12px 36px #54647325;overflow:clip}
 .wall{position:absolute;inset:9.5679% 0 0;background-position:1.614cqw 0;background:var(--wall) url('/wall-tile.webp') repeat;background-position:1.614cqw 0;background-size:6.73077cqw 5.35714cqw;transition:opacity .5s}
 .header{position:absolute;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:1.75cqw 2.16cqw;z-index:3;transition:opacity .32s;pointer-events:none}
 .header>*{pointer-events:auto}

@@ -45,12 +45,21 @@ The runtime assets live in `public/garments/`, and `lib/garments.json` controls 
 
 ## GitHub destination
 
-Prepared for `https://github.com/joshuaM07/wardrobe-viewer`. Nothing has been pushed to GitHub. The `github` remote is reserved for that destination; the managed source remote stores the Sites preview independently.
+Prepared for `https://github.com/joshuaM07/wardrobe-viewer`. Nothing has been pushed to GitHub. The `github` remote points to that destination. Sites retains a separate copy of the source for this preview.
 
 When you choose to push later:
 
 ```sh
 git push github HEAD:main
+```
+
+If you start from the downloaded ZIP, initialize its Git metadata first:
+
+```sh
+git init -b main
+git add .
+git commit -m "Recreate the interactive wardrobe"
+git remote add github https://github.com/joshuaM07/wardrobe-viewer.git
 ```
 
 The target repository was empty when inspected. Use your own GitHub authentication; credentials are not bundled with the project.
