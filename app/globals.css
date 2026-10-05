@@ -78,6 +78,7 @@ to{opacity:1}
 .wardrobe{width:94vw;height:min(86svh,700px);min-height:480px;aspect-ratio:auto}
 .header{padding:6cqw 4cqw}
 .brand{width:13cqw;height:8cqw;left:43.5%;top:4cqw}
+.text-button,.brand{min-width:44px;min-height:44px}
 .wall{background-size:10cqw 8cqw}
 .rack-canvas,.poster-window{height:60%;top:14%}
 .rack-canvas,.rack-canvas.has-hover{cursor:grab}
@@ -85,14 +86,14 @@ to{opacity:1}
 .is-product .rack-canvas,.is-product .poster-window{height:68%;top:11%}
 .renderer-note{top:13%;font-size:10px}
 .garment-accessibility button{top:22%;height:48%;width:60%;left:50%!important}
-.availability{bottom:10cqw;padding:1.6cqw 3.6cqw;font-size:14px}
+.availability{bottom:10.5cqw;padding:1.6cqw 3.6cqw;min-height:44px;font-size:14px}
 .ticker{height:5.5cqw}
 .ticker-track{font-size:12px}
-.hover-label{top:75%;left:50%!important;max-width:calc(100% - 8cqw);font-size:14px;white-space:normal;text-align:center;line-height:1.4}
-.rack-navigation .round-button{top:83%;width:44px;height:44px;font-size:22px}
+.hover-label{top:72%;left:50%!important;max-width:calc(100% - 8cqw);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:1.4}
+.rack-navigation .round-button{top:79%;width:44px;height:44px;font-size:22px}
 .rack-previous{left:4cqw}
 .rack-next{right:4cqw}
-.rack-slider{pointer-events:auto;position:absolute;top:83%;left:calc(4cqw + 60px);width:calc(100% - 8cqw - 120px);height:44px;transform:translateY(-50%);margin:0;appearance:none;background:transparent;accent-color:var(--ink);cursor:ew-resize;touch-action:pan-y}
+.rack-slider{pointer-events:auto;position:absolute;top:79%;left:calc(4cqw + 60px);width:calc(100% - 8cqw - 120px);height:44px;transform:translateY(-50%);margin:0;appearance:none;background:transparent;accent-color:var(--ink);cursor:ew-resize;touch-action:pan-y}
 .rack-slider::-webkit-slider-runnable-track{height:3px;background:#4b4e6d44;border-radius:5px}
 .rack-slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;margin-top:-8.5px;border:1px solid var(--ink);border-radius:50%;background:var(--wall);box-shadow:0 1px 4px #4b4e6d26}
 .rack-slider::-moz-range-track{height:3px;background:#4b4e6d44;border-radius:5px}
@@ -106,6 +107,7 @@ to{opacity:1}
 .product-caption{bottom:19cqw;padding:0 4cqw}
 .product-caption h1{font-size:22px;margin-top:1.5cqw}
 .drawer-handle{bottom:2cqw;width:7cqw;height:1cqw}
+.drawer-handle::after{inset:-20px}
 .collection-tools{bottom:10px;max-width:96vw;white-space:normal}
 .collection-tools button{font-size:12px;padding:8px 10px}
 .panel-brand{width:28%;margin-bottom:7cqw}
@@ -119,16 +121,16 @@ to{opacity:1}
 .brand{width:9cqw;height:5.4cqw;left:78%;top:5cqw}
 .rack-canvas,.poster-window,.is-product .rack-canvas,.is-product .poster-window{top:6%;height:88%;width:65%}
 .renderer-note{top:14%;right:35%;font-size:9px}
-.hover-label{top:34%;left:82.5%!important;max-width:28%;font-size:13px}
+.hover-label{top:34%;left:82.5%!important;max-width:28%;font-size:13px;white-space:normal;overflow:visible}
 .rack-navigation .round-button{top:69%}
 .rack-previous{left:69%}
 .rack-next{right:4%}
-.rack-slider{top:55%;left:69%;width:27%}
-.availability{left:82.5%;bottom:15%;padding:.8cqw 1.2cqw;font-size:11px}
+.rack-slider{top:54%;left:69%;width:27%}
+.availability{left:82.5%;bottom:7%;padding:.8cqw 1.2cqw;font-size:11px}
 .garment-accessibility button{left:32.5%!important;top:16%;width:40%;height:70%}
 .ticker{height:2.5cqw}
 .ticker-track{font-size:10px}
-.is-product .availability{bottom:15%}
+.is-product .availability{bottom:7%}
 .product-controls .previous{left:69%;top:69%}
 .product-controls .next{right:4%;top:69%}
 .product-caption{left:68%;right:3%;top:30%;bottom:auto;padding:0}

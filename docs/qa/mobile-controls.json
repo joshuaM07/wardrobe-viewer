@@ -1,0 +1,173 @@
+{
+  "scope": "Browser UI in static WebGL fallback; not physical-device FPS",
+  "layouts": [
+    {
+      "label": "portrait390",
+      "active": "7 of 10: Made This Flowers Tee",
+      "boxes": [
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Previous garment on rack",
+          "width": 44,
+          "x": 26.359375,
+          "y": 547.53125
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Rack position",
+          "width": 217.265625,
+          "x": 86.359375,
+          "y": 547.53125
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Next garment on rack",
+          "width": 44,
+          "x": 319.640625,
+          "y": 547.53125
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "SEE AVAILABILITY",
+          "width": 149.25,
+          "x": 120.375,
+          "y": 624.3125
+        }
+      ],
+      "canvas": {
+        "bottom": 536.859375,
+        "height": 392.15625,
+        "left": 11.703125,
+        "right": 378.296875,
+        "top": 144.703125,
+        "width": 366.59375,
+        "x": 11.703125,
+        "y": 144.703125
+      },
+      "card": [
+        366.59375,
+        653.59375
+      ],
+      "overlap": []
+    },
+    {
+      "label": "compact320",
+      "active": "1 of 10: Camo Graphic Long Sleeve",
+      "boxes": [
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Previous garment on rack",
+          "width": 44,
+          "x": 21.625,
+          "y": 403.640625
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Rack position",
+          "width": 156.71875,
+          "x": 81.625,
+          "y": 403.640625
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Next garment on rack",
+          "width": 44,
+          "x": 254.359375,
+          "y": 403.640625
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "SEE AVAILABILITY",
+          "width": 144.53125,
+          "x": 87.71875,
+          "y": 452.65625
+        }
+      ],
+      "canvas": {
+        "bottom": 401.21875,
+        "height": 293.078125,
+        "left": 9.59375,
+        "right": 310.390625,
+        "top": 108.140625,
+        "width": 300.796875,
+        "x": 9.59375,
+        "y": 108.140625
+      },
+      "card": [
+        300.796875,
+        488.46875
+      ],
+      "overlap": []
+    },
+    {
+      "label": "landscape844",
+      "active": "10 of 10: Washed Grey Tee",
+      "boxes": [
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Previous garment on rack",
+          "width": 44,
+          "x": 555,
+          "y": 241.15625
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Rack position",
+          "width": 189,
+          "x": 555,
+          "y": 187.34375
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "Next garment on rack",
+          "width": 44,
+          "x": 700,
+          "y": 241.15625
+        },
+        {
+          "height": 44,
+          "inside": true,
+          "name": "SEE AVAILABILITY",
+          "width": 113.765625,
+          "x": 592.6171875,
+          "y": 305.28125
+        }
+      ],
+      "canvas": {
+        "bottom": 352.84375,
+        "height": 315.734375,
+        "left": 72,
+        "right": 527,
+        "top": 37.109375,
+        "width": 455,
+        "x": 72,
+        "y": 37.109375
+      },
+      "card": [
+        700,
+        358.796875
+      ],
+      "overlap": []
+    }
+  ],
+  "checked": [
+    "bounded slider endpoints",
+    "arrow/slider synchronization",
+    "pointer swipe without opening product",
+    "slider drag snaps to integer",
+    "hoodie extends maximum to 10",
+    "highlighted garment opens in viewer",
+    "viewer return restores rack position"
+  ]
+}
