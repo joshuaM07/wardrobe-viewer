@@ -7,7 +7,7 @@ import path from 'node:path';
 
 const out=process.argv[2]||'/workspace/scratch/wardrobe-shaders.json';
 const root=path.resolve(import.meta.dirname,'..');
-const material=garmentMaterial(new THREE.Texture(),new THREE.Texture(),new THREE.Texture(),{value:0},1.4,'#e2dce5');
+const material=garmentMaterial(new THREE.Texture(),new THREE.Texture(),'#e2dce5');
 const shader={uniforms:{},vertexShader:THREE.ShaderLib.basic.vertexShader,fragmentShader:THREE.ShaderLib.basic.fragmentShader};
 material.onBeforeCompile(shader,null);
 const expand=s=>s.replace(/#include <([\w\d_]+)>/g,(_,name)=>{
