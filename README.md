@@ -27,6 +27,7 @@ pnpm start
 ## Interaction
 
 - Hover to turn a garment forward; click or press Enter to inspect it.
+- Rack arrows turn the previous or next garment forward without opening the viewer. They wrap through the collection, including the added hoodie, and support touch and keyboard input.
 - Previous/next buttons and arrow keys navigate the viewer. Escape closes it.
 - Drag the selected garment to rotate it. Touch opens garments directly.
 - The bottom handle opens **Add hoodie** and **Replay reference motion**.
