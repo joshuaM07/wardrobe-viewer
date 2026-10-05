@@ -41,6 +41,12 @@ button:disabled{cursor:wait}
 .round-button:hover{background:#666862;color:#f4f4f0;border-color:#666862}
 .previous{left:30.34%}
 .next{right:30.34%}
+.rack-navigation{position:absolute;inset:0;z-index:5;pointer-events:none}
+.rack-navigation .round-button{pointer-events:auto;top:48%;transform:translateY(-50%);width:clamp(44px,3cqw,56px);height:clamp(44px,3cqw,56px);color:var(--ink);border-color:#4b4e6d66;background:#e5e5e2d9;touch-action:manipulation}
+.rack-navigation .round-button:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rack-navigation .round-button:disabled{opacity:.35}
+.rack-previous{left:2.16cqw}
+.rack-next{right:2.16cqw}
 .product-caption{position:absolute;left:0;right:0;bottom:5.03cqw;text-align:center;animation:appear .35s .15s both}
 .product-count{color:#7b7c77;display:block;font-size:clamp(10px,.84cqw,16px);line-height:1.5}
 .product-caption h1{font-size:clamp(18px,1.76cqw,34px);font-weight:400;font-style:italic;margin:.54cqw 0 0;line-height:1.2}
@@ -80,7 +86,10 @@ to{opacity:1}
 .availability{bottom:10cqw;padding:1.6cqw 3.6cqw;font-size:14px}
 .ticker{height:5.5cqw}
 .ticker-track{font-size:12px}
-.hover-label{top:68%;font-size:12px}
+.hover-label{top:68%;left:50%!important;max-width:calc(100% - 128px);font-size:12px;white-space:normal;text-align:center;line-height:1.4}
+.rack-navigation .round-button{top:75%;width:44px;height:44px;font-size:22px}
+.rack-previous{left:4cqw}
+.rack-next{right:4cqw}
 .is-product .availability{bottom:8cqw}
 .round-button{top:46%;width:8cqw;height:8cqw}
 .previous{left:17%}
