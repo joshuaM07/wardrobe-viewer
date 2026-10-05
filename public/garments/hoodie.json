@@ -1,0 +1,33 @@
+{
+  "id": "hoodie",
+  "name": "Heavyweight Charcoal Hoodie",
+  "type": "hoodie",
+  "pivot": 0.852,
+  "asset": "/garments/hoodie-views.webp",
+  "rest": "/garments/hoodie-rest.webp",
+  "front": "/garments/hoodie-front.webp",
+  "columns": 4,
+  "frames": 12,
+  "cellWidth": 640,
+  "cellHeight": 810,
+  "widths": [
+    236,
+    238,
+    264,
+    303,
+    329,
+    377,
+    426,
+    458,
+    476,
+    527,
+    563,
+    583
+  ],
+  "reference": false,
+  "mesh": "/models/hoodie.glb",
+  "sideTexture": "/models/hoodie-side.jpg",
+  "restYaw": 1.2915436464758039,
+  "meshTriangles": 34320,
+  "meshVertices": 18702
+}
