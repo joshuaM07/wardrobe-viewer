@@ -52,12 +52,12 @@ def glb(g):
   tex=ctx.texture(im.size,3,im.tobytes(),internal_format=0x8c41);tex.build_mipmaps();textures.append(tex)
  vertices=[];indices=[];offset=0
  for p in doc['meshes'][0]['primitives']:
-  pos=arr(p['attributes']['POSITION']);uv=arr(p['attributes']['TEXCOORD_0']);idx=arr(p['indices'])
+  pos=arr(p['attributes']['POSITION']);normal=arr(p['attributes']['NORMAL']);uv=arr(p['attributes']['TEXCOORD_0']);idx=arr(p['indices'])
   surface=np.full((len(pos),1),p['material'],dtype='f4')
-  vertices.append(np.concatenate([pos,uv,surface],1));indices.append(idx+offset);offset+=len(pos)
+  vertices.append(np.concatenate([pos,normal,uv,surface],1));indices.append(idx+offset);offset+=len(pos)
  vertex=ctx.buffer(np.concatenate(vertices).astype('f4').tobytes())
  index=ctx.buffer(np.concatenate(indices).astype('u4').tobytes())
- vao=ctx.vertex_array(program,[(vertex,'3f 2f 1f','position','uv','garmentSurface')],index,index_element_size=4)
+ vao=ctx.vertex_array(program,[(vertex,'3f 3f 2f 1f','position','normal','uv','garmentSurface')],index,index_element_size=4)
  return vao,textures
 
 
@@ -68,18 +68,20 @@ for g in gs+[hoodie]:
  curve=CubicSpline(np.arange(len(points)),points)
  samples=curve(np.linspace(0,len(points)-1,37));tangents=curve(np.linspace(0,len(points)-1,37),1)
  tangents/=np.linalg.norm(tangents,axis=1)[:,None]
- positions=[]
+ positions=[];normals=[]
  for p,t in zip(samples,tangents):
   n=np.array([-t[1],t[0],0]);b=np.array([0,0,1])
-  for angle in np.linspace(0,2*np.pi,8,endpoint=False):positions.append(p+1.45*(np.cos(angle)*n+np.sin(angle)*b))
+  for angle in np.linspace(0,2*np.pi,8,endpoint=False):
+   normal=np.cos(angle)*n+np.sin(angle)*b
+   positions.append(p+1.45*normal);normals.append(normal)
  positions=np.array(positions,dtype='f4');uv=np.zeros((len(positions),2),'f4')
  indices=[]
  for i in range(36):
   for j in range(8):
    a=i*8+j;b=i*8+(j+1)%8;c=(i+1)*8+j;d=(i+1)*8+(j+1)%8
    indices.extend([a,c,b,b,c,d])
- v=ctx.buffer(np.concatenate([positions,uv,np.full((len(positions),1),5,dtype='f4')],1).tobytes());ib=ctx.buffer(np.array(indices,'u4').tobytes())
- hooks[g['id']]=ctx.vertex_array(program,[(v,'3f 2f 1f','position','uv','garmentSurface')],ib,index_element_size=4)
+ v=ctx.buffer(np.concatenate([positions,np.asarray(normals,dtype='f4'),uv,np.full((len(positions),1),5,dtype='f4')],1).tobytes());ib=ctx.buffer(np.array(indices,'u4').tobytes())
+ hooks[g['id']]=ctx.vertex_array(program,[(v,'3f 3f 2f 1f','position','normal','uv','garmentSurface')],ib,index_element_size=4)
 def garment(g,x=1456,y=418,scale=1,angle=0,camera_yaw=0):
  c,s=np.cos(angle),np.sin(angle)
  transform=np.array([[c*scale,0,s*scale,x-W/2],[0,scale,0,H/2-y],[-s*scale,0,c*scale,100], [0,0,0,1]],dtype='f4')

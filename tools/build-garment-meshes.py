@@ -68,7 +68,18 @@ def shell(mask, depth_front, depth_back, material):
     side_tri = np.concatenate([np.stack([np.arange(e), np.arange(e)+2*e, np.arange(e)+e], 1),
                                np.stack([np.arange(e)+e, np.arange(e)+2*e, np.arange(e)+3*e], 1)])
     suv = np.concatenate([uv[edge[:, 0]], uv[edge[:, 1]], uv[edge[:, 0]], uv[edge[:, 1]]])
-    return [(front, uv, front_tri, material), (back, uv, back_tri, material+1), (sides, suv, side_tri, material+2)]
+    if material == 3:
+        # The front/wood photograph occupies the left half of the albedo atlas.
+        return [(front, uv*np.array([.5, 1]), front_tri, 3),
+                (back, uv*np.array([.5, 1]), back_tri, 4), (sides, suv, side_tri, 5)]
+
+    def side_uv(positions):
+        # Object-space UVs baked once. The right atlas half is the registered
+        # side photograph; it is never projected or blended by the camera.
+        return np.stack([(960+positions[:, 2])/1280, -positions[:, 1]/810], 1)
+
+    return [(front, uv*np.array([.5, 1]), front_tri, 0), (back, uv, back_tri, 1),
+            (sides, side_uv(sides), side_tri, 2)]
 
 
 def write_glb(path, primitives, slug):
@@ -152,38 +163,44 @@ for g in garments:
     labels, n = ndi.label(cloth)
     counts = np.bincount(labels.ravel()); counts[0] = 0
     cloth = ndi.binary_fill_holes(labels == counts.argmax())
-    # Preserve a rounded, inflated fabric cross-section rather than extruding a
-    # flat card. The registered side silhouette bounds its actual thickness.
+    # The side photograph measures the hanging envelope, not the depth of each
+    # horizontal mesh slice. Fitting slices independently buckles the surface and
+    # stretches the print into corrugated bands as it rotates away from the front.
+    # Reconstruct a smooth envelope and a rounded fabric edge instead.
     distance = ndi.distance_transform_edt(cloth)
-    depth = 3 + (42 if g['type'] == 'hoodie' else 27 if g['type'] != 'tee' else 24) * np.sqrt(np.clip(distance/38, 0, 1))
-    gray = rgb.mean(2)/255
-    fold = (ndi.gaussian_filter(gray, 3)-ndi.gaussian_filter(gray, 18))*24
     yy, xx = np.mgrid[:810, :640]
-    art_region = (abs(xx-320) < 120) & (yy > 170) & (yy < 485)
-    fold[art_region] = 0
-    fold *= np.clip(distance/14, 0, 1)
-    front = depth + fold
-    back = -depth + fold*.35
-    rest_yaw = np.deg2rad(77 if slug == 'world' else 74 if slug == 'hoodie' else 80)
-    # A side silhouette is a second geometric constraint, not an animation frame.
     sm = side[:, :, 3] > 90
-    sm[:110] = False
+    rows, centres, radii = [], [], []
     for y in range(110, 810):
-        row = np.where(sm[y])[0]
-        xs = np.where(cloth[y])[0]
-        if len(row) == 0 or len(xs) == 0: continue
-        # Fit both edges of the measured side silhouette. Merely clamping the
-        # initial depth inside these bounds leaves the resting pose too thin.
-        c, s = np.cos(rest_yaw), np.sin(rest_yaw)
-        xf = (np.arange(640)-320)*c + front[y]*s
-        xb = (np.arange(640)-320)*c + back[y]*s
-        low = min(xf[xs].min(), xb[xs].min())
-        high = max(xf[xs].max(), xb[xs].max())
-        ratio = (row.max()-row.min()) / max(1, high-low)
-        for depth, projected in [(front, xf), (back, xb)]:
-            fitted = row.min()-320 + (projected-low)*ratio
-            depth[y] += (fitted-projected)/s
-    front = ndi.gaussian_filter(front, 1.4); back = ndi.gaussian_filter(back, 1.4)
+        xs = np.where(sm[y])[0]
+        if len(xs) < 8 or not cloth[y].any(): continue
+        rows.append(y)
+        centres.append((xs[0]+xs[-1])/2-320)
+        radii.append((xs[-1]-xs[0])/2)
+    row_y = np.arange(810)
+    centre = ndi.gaussian_filter1d(np.interp(row_y, rows, centres), 32)
+    radius = ndi.gaussian_filter1d(np.interp(row_y, rows, radii), 24)
+    radius = np.clip(radius, 14, 110 if g['type'] == 'hoodie' else 90)
+    # Flat chest/print area, broad rounded edges. The same physical surface and
+    # fixed UVs remain visible throughout the turn; there is no angle texture swap.
+    rim_width = 28 if g['type'] == 'hoodie' else 22
+    # A hem is a short stitched edge, not a rounded pillow end. Anisotropic
+    # distance retains broad side curvature without rolling up the hem/cuffs.
+    side_distance = ndi.distance_transform_edt(cloth, sampling=(7, 1))
+    rim = np.sqrt(1-(1-np.clip(side_distance/rim_width, 0, 1))**2)
+    depth = 1.2 + (radius[:, None]-1.2)*rim
+    gray = rgb.mean(2)/255
+    fold = np.clip((ndi.gaussian_filter(gray, 5)-ndi.gaussian_filter(gray, 24))*10, -2.5, 2.5)
+    # Bright lettering is albedo, not a raised fold. Fade relief across the print
+    # area smoothly so its border cannot become a new crease in the geometry.
+    print_guard = np.clip((abs(xx-320)-140)/35, 0, 1)
+    print_guard = np.maximum(print_guard, np.clip((180-yy)/35, 0, 1))
+    fold *= print_guard*np.clip(distance/18, 0, 1)
+    front = ndi.gaussian_filter(centre[:, None] + depth + fold, 1.2)
+    back = ndi.gaussian_filter(centre[:, None] - depth + fold*.35, 1.2)
+    # The reference rack is edge-on. At 80 degrees the whole front print was
+    # squeezed into the side, magnifying the faulty depth fit on mobile.
+    rest_yaw = np.pi/2
     if slug == 'hoodie':
         cavity = np.exp(-((xx-320)/55)**2-((yy-152)/37)**2)
         front -= cavity*40
@@ -200,7 +217,6 @@ for g in garments:
     _, nearest = ndi.distance_transform_edt(~safe_mask, return_indices=True)
     filled = a[:, :, :3].copy()
     filled[~safe_mask] = filled[nearest[0][~safe_mask], nearest[1][~safe_mask]]
-    Image.fromarray(filled).save(OUT/f'{slug}-albedo.jpg', quality=96, subsampling=0)
     # Unseen backs use the same fabric, with print regions removed offline.
     inpaint = np.zeros((810, 640), 'uint8')
     inpaint[140:600, 195:447] = 255
@@ -211,6 +227,10 @@ for g in garments:
     srgb = side[:, :, :3].copy()
     srgb[~sm] = srgb[ni[0][~sm], ni[1][~sm]]
     Image.fromarray(srgb).save(OUT/f'{slug}-side.jpg', quality=96, subsampling=0)
+    # One immutable atlas keeps the body/side/wood in one draw call. Front art
+    # and side fabric occupy separate UV islands on the same actual 3D mesh.
+    atlas = np.concatenate([filled, srgb], axis=1)
+    Image.fromarray(atlas).save(OUT/f'{slug}-albedo.jpg', quality=96, subsampling=0)
     write_glb(OUT/f'{slug}.glb', primitives, slug)
     g.update(mesh=f'/models/{slug}.glb', sideTexture=f'/models/{slug}-side.jpg', restYaw=float(rest_yaw),
              meshTriangles=sum(len(p[2]) for p in primitives), meshVertices=sum(len(p[0]) for p in primitives))
