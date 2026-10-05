@@ -1,0 +1,83 @@
+{
+  "scope": "Production garment GLSL on actual GLBs; orbiting inspection camera keeps the same front surface visible. Full outward and return rotations; not browser FPS.",
+  "poses": 891,
+  "checks": [
+    {
+      "id": "camo",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "essential",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "dollar",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "underclass",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "republic",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "world",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "flowers",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "studio",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "portrait",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "washed",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    },
+    {
+      "id": "hoodie",
+      "poses": 81,
+      "maxMeanRgbDifference": 0.0,
+      "maxChangedFractionAbove12": 0.0,
+      "passed": true
+    }
+  ]
+}
