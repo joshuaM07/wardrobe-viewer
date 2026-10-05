@@ -1,41 +1,41 @@
 {
-  "scope": "Orthographic triangle silhouette against registered reference photo",
+  "scope": "Orthographic triangle silhouette against registered reference photo; garment rows from 110 onward",
   "checks": [
     {
       "id": "camo",
-      "restSilhouetteIoU": 0.946,
+      "restSilhouetteIoU": 0.9741,
       "sourceWidth": 171,
-      "meshWidth": 171,
+      "meshWidth": 170,
       "sourceHem": 754,
       "meshHem": 754
     },
     {
       "id": "essential",
-      "restSilhouetteIoU": 0.9622,
+      "restSilhouetteIoU": 0.9825,
       "sourceWidth": 160,
-      "meshWidth": 158,
+      "meshWidth": 159,
       "sourceHem": 691,
       "meshHem": 698
     },
     {
       "id": "dollar",
-      "restSilhouetteIoU": 0.9703,
+      "restSilhouetteIoU": 0.9819,
       "sourceWidth": 147,
-      "meshWidth": 151,
+      "meshWidth": 150,
       "sourceHem": 689,
       "meshHem": 685
     },
     {
       "id": "underclass",
-      "restSilhouetteIoU": 0.9622,
+      "restSilhouetteIoU": 0.9821,
       "sourceWidth": 160,
-      "meshWidth": 160,
+      "meshWidth": 159,
       "sourceHem": 691,
       "meshHem": 685
     },
     {
       "id": "republic",
-      "restSilhouetteIoU": 0.9707,
+      "restSilhouetteIoU": 0.9776,
       "sourceWidth": 147,
       "meshWidth": 146,
       "sourceHem": 757,
@@ -43,41 +43,41 @@
     },
     {
       "id": "world",
-      "restSilhouetteIoU": 0.968,
+      "restSilhouetteIoU": 0.9848,
       "sourceWidth": 184,
-      "meshWidth": 184,
+      "meshWidth": 183,
       "sourceHem": 728,
       "meshHem": 723
     },
     {
       "id": "flowers",
-      "restSilhouetteIoU": 0.9665,
+      "restSilhouetteIoU": 0.9798,
       "sourceWidth": 146,
-      "meshWidth": 145,
+      "meshWidth": 144,
       "sourceHem": 686,
       "meshHem": 681
     },
     {
       "id": "studio",
-      "restSilhouetteIoU": 0.9792,
+      "restSilhouetteIoU": 0.9848,
       "sourceWidth": 146,
-      "meshWidth": 146,
+      "meshWidth": 145,
       "sourceHem": 686,
       "meshHem": 686
     },
     {
       "id": "portrait",
-      "restSilhouetteIoU": 0.9619,
+      "restSilhouetteIoU": 0.9773,
       "sourceWidth": 152,
-      "meshWidth": 150,
+      "meshWidth": 149,
       "sourceHem": 686,
-      "meshHem": 692
+      "meshHem": 691
     },
     {
       "id": "washed",
-      "restSilhouetteIoU": 0.9698,
+      "restSilhouetteIoU": 0.9846,
       "sourceWidth": 145,
-      "meshWidth": 144,
+      "meshWidth": 143,
       "sourceHem": 756,
       "meshHem": 756
     }

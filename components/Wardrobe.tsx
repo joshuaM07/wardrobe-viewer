@@ -164,7 +164,7 @@ export default function Wardrobe() {
         <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={e=>{scene.current.dragX=e.clientX;scene.current.dragStartSpin=scene.current.spin;scene.current.dragging=false;if(mode==='product')e.currentTarget.setPointerCapture(e.pointerId);}}
           onClick={(e) => { if(scene.current.dragging){scene.current.dragging=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
           aria-label="Interactive clothing rack. Tab to choose a garment; use arrow keys in the viewer." />
-        {loadError && <NextImage className="static-poster" src={`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):'rack'}.webp`} alt="Static garment preview" width={1456} height={810} unoptimized priority />}
+        {loadError && <NextImage className="static-poster" src={`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`} alt="Static garment preview" width={1456} height={810} unoptimized priority />}
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
         {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">

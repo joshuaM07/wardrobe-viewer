@@ -48,7 +48,7 @@ All **1,136 reference frames at 60 fps** were decoded and reviewed in order. `do
 
 Seven fronts use the supplied video pixels. The camo, studio, and washed-grey fronts are inferred because the clip never reveals them. Their original side views are retained. The added hoodie uses generated source photography. Unseen backs are inferred fabric surfaces; they are not claimed to reproduce unknown original artwork.
 
-`docs/qa/three/` includes production-shader renders, front and side silhouette comparisons, motion measurements, and BVH picking checks. Front silhouette overlap is approximately 99.2–99.5%; resting side overlap is approximately 94.6–97.9%. These measure garment outlines, not whole-screen pixel equality.
+`docs/qa/three/` includes production-shader renders, a side-by-side comparison of every captured turn frame, front and side silhouette comparisons, motion measurements, and BVH picking checks. Front silhouette overlap is approximately 99%; resting cloth silhouette overlap is approximately 97.4–98.5%, excluding the hanger and hook (rows before 110). These measure garment outlines, not whole-screen pixel equality.
 
 The managed QA browser has WebGL disabled, so hardware browser FPS cannot be verified there. The actual garment and blur GLSL compiled under Mesa/EGL, and production GLBs were rendered offscreen. Those software-driver timings are asset QA, not browser performance claims. The real renderer exposes measured browser intervals and draw counts in the canvas `data-performance` attribute on a WebGL-capable browser.
 

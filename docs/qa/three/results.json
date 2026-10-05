@@ -10,24 +10,24 @@
         1151,
         640
       ],
-      "renderMsP50": 24.69,
-      "renderMsP95": 28.93
+      "renderMsP50": 28.72,
+      "renderMsP95": 43.75
     },
     {
       "viewport": [
         1584,
         881
       ],
-      "renderMsP50": 29.44,
-      "renderMsP95": 43.49
+      "renderMsP50": 30.6,
+      "renderMsP95": 43.35
     },
     {
       "viewport": [
         948,
         528
       ],
-      "renderMsP50": 24.74,
-      "renderMsP95": 54.03
+      "renderMsP50": 24.85,
+      "renderMsP95": 34.57
     }
   ],
   "checks": [
@@ -57,7 +57,7 @@
     },
     {
       "id": "portrait",
-      "frontSilhouetteIoU": 0.9924
+      "frontSilhouetteIoU": 0.9926
     },
     {
       "id": "hoodie",
