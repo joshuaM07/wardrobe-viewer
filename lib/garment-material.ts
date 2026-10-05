@@ -27,13 +27,18 @@ export function garmentMaterial(
           if(sideBlend>.999)garmentColor=texture2D(sideMap,vSideUv);
           else if(sideBlend<.001)garmentColor=texture2D(map,vMapUv);
           else garmentColor=mix(texture2D(map,vMapUv),texture2D(sideMap,vSideUv),sideBlend);
-        }else if(vSurface<1.5)garmentColor=texture2D(backMap,vMapUv);
-        else if(vSurface<2.5)garmentColor=vec4(fabricColor,1.);
+        }else if(vSurface<2.5){
+          if(sideBlend>.999)garmentColor=texture2D(sideMap,vSideUv);
+          else {
+            garmentColor=vSurface<1.5?texture2D(backMap,vMapUv):vec4(fabricColor,1.);
+            if(sideBlend>.001)garmentColor=mix(garmentColor,texture2D(sideMap,vSideUv),sideBlend);
+          }
+        }
         else if(vSurface<4.5)garmentColor=texture2D(map,vMapUv);
         else garmentColor=vec4(woodColor,1.);
         diffuseColor*=garmentColor;
         #endif`);
   };
-  material.customProgramCacheKey=()=> 'wardrobe-static-surfaces-v3';
+  material.customProgramCacheKey=()=> 'wardrobe-static-surfaces-v4';
   return material;
 }

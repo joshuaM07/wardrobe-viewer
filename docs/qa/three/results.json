@@ -1,65 +1,67 @@
 {
   "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
   "scope": "Offscreen GLB/projection asset QA, NOT browser FPS",
-  "drawCalls": 70,
+  "drawCalls": 20,
+  "productionGarmentShader": true,
+  "productionBlurShaderCompiled": true,
   "benchmarks": [
     {
       "viewport": [
         1151,
         640
       ],
-      "renderMsP50": 25.49,
-      "renderMsP95": 31.57
+      "renderMsP50": 24.69,
+      "renderMsP95": 28.93
     },
     {
       "viewport": [
         1584,
         881
       ],
-      "renderMsP50": 29.18,
-      "renderMsP95": 33.15
+      "renderMsP50": 29.44,
+      "renderMsP95": 43.49
     },
     {
       "viewport": [
         948,
         528
       ],
-      "renderMsP50": 23.23,
-      "renderMsP95": 25.53
+      "renderMsP50": 24.74,
+      "renderMsP95": 54.03
     }
   ],
   "checks": [
     {
       "id": "essential",
-      "frontSilhouetteIoU": 0.9892
+      "frontSilhouetteIoU": 0.9931
     },
     {
       "id": "dollar",
-      "frontSilhouetteIoU": 0.9865
+      "frontSilhouetteIoU": 0.9935
     },
     {
       "id": "underclass",
-      "frontSilhouetteIoU": 0.9875
+      "frontSilhouetteIoU": 0.9941
     },
     {
       "id": "republic",
-      "frontSilhouetteIoU": 0.9892
+      "frontSilhouetteIoU": 0.9946
     },
     {
       "id": "world",
-      "frontSilhouetteIoU": 0.988
+      "frontSilhouetteIoU": 0.9941
     },
     {
       "id": "flowers",
-      "frontSilhouetteIoU": 0.9865
+      "frontSilhouetteIoU": 0.9933
     },
     {
       "id": "portrait",
-      "frontSilhouetteIoU": 0.9858
+      "frontSilhouetteIoU": 0.9924
     },
     {
       "id": "hoodie",
-      "frontSilhouetteIoU": 0.9898
+      "frontSilhouetteIoU": 0.9943
     }
   ]
 }

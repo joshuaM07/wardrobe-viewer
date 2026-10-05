@@ -6,6 +6,7 @@ front and side pose, and the continuous rigid rotation against reference pixels.
 """
 from pathlib import Path
 import struct, json, sys, time
+from io import BytesIO
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import moderngl
@@ -100,6 +101,15 @@ def capture():
  return Image.frombytes('RGBA',(W,H),target.read(components=4)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 
 
+def save_render(render,name):
+ # Encode in memory before creating the final file, avoiding incomplete PNGs
+ # when execution workspaces synchronize a newly opened output handle.
+ encoded=BytesIO();render.save(encoded,format='PNG')
+ (OUT/(name+'-transparent.png')).write_bytes(encoded.getvalue())
+ poster=BytesIO();render.resize((1456,810),Image.Resampling.LANCZOS).save(poster,format='WEBP',quality=95,method=5)
+ (ROOT/'public/posters'/(name+'.webp')).write_bytes(poster.getvalue())
+
+
 def begin():
  target.use();target.clear(0,0,0,0,depth=1)
 
@@ -121,12 +131,12 @@ for g in gs:garment(g,g['pivot']*W,418,angle=g['restYaw'])
 rack=capture()
 rail=Image.open(ROOT/'public/rail.webp')
 below=Image.new('RGBA',(W,H));below.paste(rail,(352,382),rail);below.alpha_composite(rack)
-below.save(OUT/'rack-transparent.png')
+save_render(below,'rack')
 card(below).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/'rack.jpg',quality=94)
 
 for g in gs+[hoodie]:
  begin();garment(g,1456+(g.get('detailX')or 0),g.get('detailY',276),g.get('detailScale',1.36))
- render=capture();render.save(OUT/(g['id']+'-transparent.png'))
+ render=capture();save_render(render,g['id'])
  card(render,True).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/(g['id']+'-front.jpg'),quality=94)
 
 # Inspect intermediate angles, not merely end poses.

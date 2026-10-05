@@ -8,6 +8,7 @@ import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three'
 
 const W = 2912;
 const PRODUCTS = rawGarments as Garment[];
+const TIMELINE:[number,number,Mode][]=[[0,-1,'rack'],[1.05,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rack'],[5.016667,4,'rack'],[6.366667,5,'rack'],[7.2,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,6,'rack'],[14.333333,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
 
 export default function Wardrobe() {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -52,8 +53,7 @@ export default function Wardrobe() {
       const s=scene.current;
       if(!s.demo)return;
       const t=(now-s.demoStart)/1000;
-      const timeline:[number,number,Mode][]=[[0,-1,'rack'],[.95,1,'rack'],[2.42,2,'rack'],[3.48,3,'rack'],[4.95,4,'rack'],[6.27,5,'rack'],[7.18,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,6,'rack'],[14.25,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
-      let entry=timeline[0];for(const e of timeline)if(t>=e[0])entry=e;
+      let entry=TIMELINE[0];for(const e of TIMELINE)if(t>=e[0])entry=e;
       if(s.mode!==entry[2]){s.mode=entry[2];setMode(entry[2]);}
       if(entry[2]==='product'){
         if(s.selected!==entry[1]){s.selected=entry[1];setSelected(entry[1]);}
