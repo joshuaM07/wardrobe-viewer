@@ -6,6 +6,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { garmentMaterial } from './garment-material';
 import { clamp, spring, stepSpring, type Spring } from './motion';
+import { mobileRackView, mobileProductView } from './rack-view';
 
 export type Garment = {
   id: string; name: string; type: string; pivot: number; mesh: string;
@@ -19,6 +20,7 @@ export type Mode = 'rack' | 'product' | 'about' | 'contact';
 export type WardrobeState = {
   active: number; selected: number; mode: Mode; demo: boolean; demoStart: number;
   reduced: boolean; spin: number;
+  mobile: boolean; rackPosition: number;
 };
 type Item = {
   garment: Garment; root: THREE.Group; body: THREE.Mesh; focus: Spring;
@@ -65,6 +67,9 @@ export class WardrobeRenderer {
   });
   private postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.blur);
   private expand = spring();
+  private viewX = spring();
+  private viewY = spring();
+  private viewZoom = spring(1);
   private raf = 0;
   private disposed = false;
   private previous = 0;
@@ -77,6 +82,7 @@ export class WardrobeRenderer {
   private cssHeight = 0;
   private resolution = 1.5;
   private pixelBudget = 1_400_000;
+  private mobileProfile = false;
   private slowFrames = 0;
   private dirty = true;
   private lastStamp = '';
@@ -228,9 +234,9 @@ export class WardrobeRenderer {
       const i = this.items.findIndex(item => item.garment.id === h.object.userData.garmentId);
       if (i >= 0) return i;
     }
-    if (touch && this.pointer.y < .4 && this.pointer.y > -.6) {
-      const x = (this.pointer.x+1)/2*W;
-      let index = -1, distance = 140;
+    if (touch && this.raycaster.ray.origin.y < 420 && this.raycaster.ray.origin.y > -420) {
+      const x = this.raycaster.ray.origin.x+W/2;
+      let index = -1, distance = this.state().mobile?24*W/(Math.max(1,this.cssWidth)*this.camera.zoom):140;
       this.items.forEach((item, i) => {
         if (Math.abs(x-item.x.value) < distance) { index=i; distance=Math.abs(x-item.x.value); }
       });
@@ -252,6 +258,8 @@ export class WardrobeRenderer {
     const worldHeight=W*bounds.height/Math.max(1,bounds.width);
     this.camera.top=worldHeight/2;this.camera.bottom=-worldHeight/2;
     this.camera.updateProjectionMatrix();
+    const mobile=this.state().mobile;
+    if(mobile!==this.mobileProfile){this.mobileProfile=mobile;this.resolution=mobile?2:1.5;this.pixelBudget=mobile?750_000:1_400_000;}
     const dpr = Math.min(devicePixelRatio || 1, this.resolution);
     const pixels = bounds.width*bounds.height*dpr*dpr;
     const cap = Math.min(1, Math.sqrt(this.pixelBudget/Math.max(1, pixels)));
@@ -259,8 +267,6 @@ export class WardrobeRenderer {
     const height = Math.max(1, Math.round(bounds.height*dpr*cap));
     if (this.canvas.width !== width || this.canvas.height !== height) {
       this.renderer.setSize(width, height, false);
-      this.backBuffer.setSize(Math.ceil(width/2), Math.ceil(height/2));
-      this.blurBuffer.setSize(Math.ceil(width/2), Math.ceil(height/2));
     }
   }
 
@@ -270,8 +276,7 @@ export class WardrobeRenderer {
     if (s.reduced) this.expand.value = modal;
     else stepSpring(this.expand, modal, dt, 110, 22);
     const p = clamp(this.expand.value);
-    const zoom=this.cssWidth<700?1+p*.4:1;
-    if(this.camera.zoom!==zoom){this.camera.zoom=zoom;this.camera.updateProjectionMatrix();}
+    if(s.mobile!==this.mobileProfile)this.resize();
     const active = s.mode === 'product' ? s.selected : s.active;
     let moving = Math.abs(this.expand.value-modal) > .0001 || Math.abs(this.expand.velocity) > .001;
     this.items.forEach((item, i) => {
@@ -302,6 +307,19 @@ export class WardrobeRenderer {
       item.root.scale.setScalar(item.scale.value);
       if (Math.abs(item.focus.value-(i===active?1:0)) > .0001 || Math.abs(item.focus.velocity) > .001) moving=true;
     });
+    const view=s.mobile&&!s.demo?mobileRackView(this.items.map(item=>item.garment.pivot),s.rackPosition,this.cssWidth,this.cssHeight):{x:0,y:0,zoom:1};
+    const selectedItem=this.items[s.selected];
+    const height=-(selectedItem?.body.geometry.boundingBox?.min.y??-756);
+    const detail=s.mobile&&!s.demo&&selectedItem?mobileProductView(selectedItem.garment,this.cssWidth,this.cssHeight,height):{x:0,y:0,zoom:s.mobile?1.4:1};
+    const targets:[[Spring,number],[Spring,number],[Spring,number]]=[[this.viewX,view.x*(1-p)],[this.viewY,view.y+(detail.y-view.y)*p],[this.viewZoom,view.zoom+(detail.zoom-view.zoom)*p]];
+    for(const [sp,target] of targets){
+      if(s.reduced||dt===0){sp.value=target;sp.velocity=0;}
+      else stepSpring(sp,target,dt,180,27);
+      if(Math.abs(sp.value-target)>.0001||Math.abs(sp.velocity)>.001)moving=true;
+    }
+    if(this.camera.zoom!==this.viewZoom.value){this.camera.zoom=this.viewZoom.value;this.camera.updateProjectionMatrix();}
+    this.camera.position.x=this.viewX.value;this.camera.position.y=this.viewY.value;
+    this.camera.updateMatrixWorld();
     this.scene.updateMatrixWorld(true);
     return moving;
   }
@@ -313,6 +331,8 @@ export class WardrobeRenderer {
     r.setRenderTarget(null); r.autoClear=true;
     if (p < .003 || !this.items[s.selected]) { r.render(this.scene, this.camera); return; }
     // Blur only the small background framebuffer. The selected mesh stays crisp.
+    const width=Math.ceil(this.canvas.width/2),height=Math.ceil(this.canvas.height/2);
+    if(this.backBuffer.width!==width||this.backBuffer.height!==height){this.backBuffer.setSize(width,height);this.blurBuffer.setSize(width,height);}
     this.items[s.selected].root.visible=false;
     r.setRenderTarget(this.backBuffer); r.render(this.scene,this.camera);
     this.blur.uniforms.image.value=this.backBuffer.texture;
@@ -337,7 +357,7 @@ export class WardrobeRenderer {
     this.onFrame(now);
     const moving=this.update(Math.min(delta/1000,.05));
     const state=this.state();
-    const stamp=[state.mode,state.active,state.selected,state.spin,this.items.length,this.canvas.width,this.canvas.height].join(':');
+    const stamp=[state.mode,state.active,state.selected,state.spin,state.rackPosition,state.mobile,this.items.length,this.canvas.width,this.canvas.height].join(':');
     if(moving||this.dirty||stamp!==this.lastStamp){
       const start=performance.now(); this.draw(); const cost=performance.now()-start;
       this.drawn++;
@@ -367,7 +387,7 @@ export class WardrobeRenderer {
       drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,
       textures:this.renderer.info.memory.textures,buffer:[this.canvas.width,this.canvas.height],
       display:[Math.round(this.cssWidth),Math.round(this.cssHeight)],
-      garmentMeshes:this.items.length,mode:this.state().mode });
+      garmentMeshes:this.items.length,mode:this.state().mode,mobile:this.mobileProfile,cameraZoom:Math.round(this.camera.zoom*100)/100 });
   }
 
   private releaseItem(item: Item) {
