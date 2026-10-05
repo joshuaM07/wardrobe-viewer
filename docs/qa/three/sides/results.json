@@ -1,0 +1,94 @@
+{
+  "scope": "Software OpenGL production mesh/GLSL visual QA, not browser GPU FPS",
+  "renderedPoses": 2981,
+  "checks": [
+    {
+      "id": "camo",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "essential",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "dollar",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "underclass",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "republic",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "world",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "flowers",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "studio",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "portrait",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "washed",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    },
+    {
+      "id": "hoodie",
+      "renderedPoses": 271,
+      "restDegrees": 90,
+      "frontUvIsland": "front photograph",
+      "sideUvIsland": "registered side photograph",
+      "cameraDependentTextureBlend": false
+    }
+  ]
+}

@@ -8,7 +8,7 @@
   "reference": false,
   "mesh": "/models/hoodie.glb",
   "sideTexture": "/models/hoodie-side.jpg",
-  "restYaw": 1.2915436464758039,
+  "restYaw": 1.5707963267948966,
   "meshTriangles": 20828,
   "meshVertices": 11956,
   "fabricColor": "#414042",

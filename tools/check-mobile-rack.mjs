@@ -74,7 +74,7 @@ for(const viewport of viewports){
       if(mode==='rack'&&index===0)assert(center<0&&center>-.25,'first garment must remain visible near the bounded left edge');
       if(mode==='rack'&&index===garments.length-1)assert(center>0&&center<.25,'last garment must remain visible near the bounded right edge');
       checks.push({screen:viewport.screen,canvas:[+canvasWidth.toFixed(2),+canvasHeight.toFixed(2)],mode,id:item.garment.id,zoom:+renderer.camera.zoom.toFixed(3),bounds:Object.fromEntries(Object.entries(bounds).map(([k,v])=>[k,+v.toFixed(2)])),centerNdc:+center.toFixed(4)});
-      if(viewport.screen[0]===390&&((mode==='rack'&&[0,6,10].includes(index))||(mode==='product'&&index===6))){
+      if(viewport.screen[0]===390&&((mode==='rack'&&[0,3,6,10].includes(index))||(mode==='product'&&index===6))){
         poses.push({name:`${mode}-${item.garment.id}`,width:canvasWidth,height:canvasHeight,projection:renderer.camera.projectionMatrix.toArray(),view:renderer.camera.matrixWorldInverse.toArray(),items:renderer.items.map(i=>({id:i.garment.id,matrix:i.root.matrixWorld.toArray()})),selected:item.garment.id});
       }
     }

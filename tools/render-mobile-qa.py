@@ -14,7 +14,7 @@ ctx,program,models,hooks=map(qa.get,['ctx','program','models','hooks'])
 garments={g['id']:g for g in qa['gs']+[qa['hoodie']]}
 data=json.loads((ROOT/'docs/qa/three/mobile-framing.json').read_text())
 out=ROOT/'docs/qa/three/mobile-garments.jpg'
-sheet=Image.new('RGB',(1536,520),'#e5e5e2')
+sheet=Image.new('RGB',(384*len(data['poses']),520),'#e5e5e2')
 draw=ImageDraw.Draw(sheet)
 draw.text((20,14),'Production GLB / GLSL mobile framing - actual camera matrices - software-driver asset QA',fill='#4b4e6d')
 for index,pose in enumerate(data['poses']):
@@ -50,7 +50,7 @@ for index,pose in enumerate(data['poses']):
     background.alpha_composite(shot)
     picture=background.convert('RGB').resize((366,420),Image.Resampling.LANCZOS)
     sheet.paste(picture,(index*384+9,72))
-    label=pose['name'].replace('rack-camo','First garment / bounded end').replace('rack-flowers','Middle garment / centered').replace('rack-hoodie','Hoodie / bounded end').replace('product-flowers','Product mesh / fitted camera')
+    label=pose['name'].replace('rack-camo','First garment / bounded end').replace('rack-underclass','Reported view / corrected sides').replace('rack-flowers','Middle garment / centered').replace('rack-hoodie','Hoodie / bounded end').replace('product-flowers','Product mesh / fitted camera')
     draw.text((index*384+12,44),label,fill='#4b4e6d')
     target.release()
 sheet.save(out,quality=95)
