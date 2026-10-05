@@ -22,7 +22,7 @@ shader_path=Path(sys.argv[2] if __name__=='__main__' and len(sys.argv)>2 else '/
 shaders=json.loads(shader_path.read_text())
 program=ctx.program(vertex_shader=shaders['garment']['vertex'],fragment_shader=shaders['garment']['fragment'])
 blur_program=ctx.program(vertex_shader=shaders['blur']['vertex'],fragment_shader=shaders['blur']['fragment'])
-program['map'].value=0;program['sideMap'].value=1;program['backMap'].value=2
+program['map'].value=0;program['backMap'].value=1
 program['diffuse'].value=(1,1,1);program['opacity'].value=1
 program['mapTransform'].write(np.eye(3,dtype='f4').tobytes())
 projection=np.eye(4,dtype='f4');projection[0,0]=2/W;projection[1,1]=2/H
@@ -50,8 +50,6 @@ def glb(g):
  for image in doc['images']:
   im=Image.open(ROOT/'public/models'/image['uri']).convert('RGB')
   tex=ctx.texture(im.size,3,im.tobytes(),internal_format=0x8c41);tex.build_mipmaps();textures.append(tex)
- im=Image.open(ROOT/'public'/g['sideTexture'].lstrip('/')).convert('RGB')
- side=ctx.texture(im.size,3,im.tobytes(),internal_format=0x8c41);side.build_mipmaps()
  vertices=[];indices=[];offset=0
  for p in doc['meshes'][0]['primitives']:
   pos=arr(p['attributes']['POSITION']);uv=arr(p['attributes']['TEXCOORD_0']);idx=arr(p['indices'])
@@ -60,7 +58,7 @@ def glb(g):
  vertex=ctx.buffer(np.concatenate(vertices).astype('f4').tobytes())
  index=ctx.buffer(np.concatenate(indices).astype('u4').tobytes())
  vao=ctx.vertex_array(program,[(vertex,'3f 2f 1f','position','uv','garmentSurface')],index,index_element_size=4)
- return vao,textures,side
+ return vao,textures
 
 
 models={g['id']:glb(g) for g in gs+[hoodie]}
@@ -82,15 +80,20 @@ for g in gs+[hoodie]:
    indices.extend([a,c,b,b,c,d])
  v=ctx.buffer(np.concatenate([positions,uv,np.full((len(positions),1),5,dtype='f4')],1).tobytes());ib=ctx.buffer(np.array(indices,'u4').tobytes())
  hooks[g['id']]=ctx.vertex_array(program,[(v,'3f 2f 1f','position','uv','garmentSurface')],ib,index_element_size=4)
-def garment(g,x=1456,y=418,scale=1,angle=0):
+def garment(g,x=1456,y=418,scale=1,angle=0,camera_yaw=0):
  c,s=np.cos(angle),np.sin(angle)
  transform=np.array([[c*scale,0,s*scale,x-W/2],[0,scale,0,H/2-y],[-s*scale,0,c*scale,100], [0,0,0,1]],dtype='f4')
  transform[2,3]-=3000
+ # Optional orbiting inspection camera: keep the same surface in view while the
+ # garment turns, so a texture crossfade cannot be mistaken for foreshortening.
+ if camera_yaw:
+  cx,cy,cz=transform[:3,3];cc,ss=np.cos(camera_yaw),np.sin(camera_yaw)
+  translate=np.eye(4,dtype='f4');translate[:3,3]=[cx,cy,cz]
+  inverse=np.eye(4,dtype='f4');inverse[:3,3]=[-cx,-cy,-cz]
+  rotate=np.array([[cc,0,-ss,0],[0,1,0,0],[ss,0,cc,0],[0,0,0,1]],dtype='f4')
+  transform=translate@rotate@inverse@transform
  program['modelViewMatrix'].write(transform.T.tobytes())
- program['restProjection'].value=(np.cos(g['restYaw']),np.sin(g['restYaw']))
- vao,textures,side=models[g['id']];side.use(1);textures[0].use(0);textures[1].use(2)
- weight=float(np.clip((abs(angle)-1.18)/(g['restYaw']-1.18),0,1))
- program['sideBlend'].value=weight*weight*(3-2*weight)
+ vao,textures=models[g['id']];textures[0].use(0);textures[1].use(1)
  program['fabricColor'].value=linear_color(g.get('fabricColor','#dcd6df'))
  program['woodColor'].value=linear_color('#563a2f');vao.render()
  program['woodColor'].value=linear_color('#9c9991');hooks[g['id']].render()

@@ -9,7 +9,7 @@ import { clamp, spring, stepSpring, type Spring } from './motion';
 
 export type Garment = {
   id: string; name: string; type: string; pivot: number; mesh: string;
-  sideTexture: string; restYaw: number; reference: boolean;
+  restYaw: number; reference: boolean;
   fabricColor?: string;
   hangerTop?: number;
   turnStiffness?: number; turnDamping?: number;
@@ -23,7 +23,7 @@ export type WardrobeState = {
 type Item = {
   garment: Garment; root: THREE.Group; body: THREE.Mesh; focus: Spring;
   x: Spring; y: Spring; scale: Spring;
-  sideBlend: THREE.IUniform<number>; sideMap: THREE.Texture; backMap: THREE.Texture;
+  backMap: THREE.Texture;
 };
 
 const W = 2912, H = 1620, GARMENT_Y = 418;
@@ -53,7 +53,6 @@ export class WardrobeRenderer {
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
   private loader = new GLTFLoader();
-  private textures = new THREE.TextureLoader();
   private environment: THREE.WebGLRenderTarget;
   private backBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
   private blurBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
@@ -150,7 +149,6 @@ export class WardrobeRenderer {
     await this.renderer.compileAsync(this.scene, this.camera);
     await this.renderer.compileAsync(this.postScene, this.postCamera);
     this.items.forEach(item => {
-      this.renderer.initTexture(item.sideMap);
       this.renderer.initTexture(item.backMap);
       item.root.traverse(o => {
         if (o instanceof THREE.Mesh) {
@@ -163,12 +161,7 @@ export class WardrobeRenderer {
   }
 
   private async loadItem(garment: Garment): Promise<Item> {
-    const [gltf, sideMap] = await Promise.all([
-      this.loader.loadAsync(garment.mesh), this.textures.loadAsync(garment.sideTexture),
-    ]);
-    sideMap.colorSpace = THREE.SRGBColorSpace; sideMap.flipY = false;
-    sideMap.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
-    const sideBlend = { value: 1 };
+    const gltf = await this.loader.loadAsync(garment.mesh);
     const root = new THREE.Group();
     const geometries: THREE.BufferGeometry[]=[];
     let frontMap: THREE.Texture | null=null, backMap: THREE.Texture | null=null;
@@ -185,14 +178,15 @@ export class WardrobeRenderer {
     });
     if(!frontMap||!backMap)throw new Error(`Missing garment materials: ${garment.id}`);
     const frontTexture=frontMap as THREE.Texture, backTexture=backMap as THREE.Texture;
-    frontTexture.anisotropy=sideMap.anisotropy;backTexture.anisotropy=sideMap.anisotropy;
+    const anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
+    frontTexture.anisotropy=anisotropy;backTexture.anisotropy=anisotropy;
     const geometry=mergeGeometries(geometries,false);
     geometries.forEach(g=>g.dispose());
     if(!geometry)throw new Error(`Incompatible garment surfaces: ${garment.id}`);
     geometry.computeBoundingBox(); geometry.computeBoundingSphere();
     // Build once while loading. Hover only traverses this static spatial index.
     computeBoundsTree.call(geometry, { indirect: true });
-    const material=garmentMaterial(frontTexture,backTexture,sideMap,sideBlend,garment.restYaw,garment.fabricColor??'#dcd6df');
+    const material=garmentMaterial(frontTexture,backTexture,garment.fabricColor??'#dcd6df');
     const body=new THREE.Mesh(geometry,material);
     body.raycast=acceleratedRaycast;body.userData.garmentId=garment.id;root.add(body);
     const path = new THREE.CatmullRomCurve3([
@@ -206,7 +200,7 @@ export class WardrobeRenderer {
     const x = garment.pivot*W;
     root.position.set(x-W/2, H/2-GARMENT_Y, restingZ);
     return { garment, root, body, focus: spring(), x: spring(x), y: spring(GARMENT_Y),
-      scale: spring(1), sideBlend, sideMap, backMap:backTexture };
+      scale: spring(1), backMap:backTexture };
   }
 
   async add(garment: Garment) {
@@ -306,11 +300,6 @@ export class WardrobeRenderer {
       item.root.rotation.z = s.reduced ? 0 : clamp(item.focus.velocity,-.8,.8)*-.012*(1-p);
       item.root.position.set(item.x.value-W/2,H/2-item.y.value,selected ? p*120 : restingZ);
       item.root.scale.setScalar(item.scale.value);
-      const angle = Math.abs(item.root.rotation.y);
-      // Two photographic projections are smoothly baked onto a real closed
-      // volume; there is no array of angles or time-indexed image playback.
-      const sideWeight=clamp((angle-1.18)/(g.restYaw-1.18));
-      item.sideBlend.value=sideWeight*sideWeight*(3-2*sideWeight);
       if (Math.abs(item.focus.value-(i===active?1:0)) > .0001 || Math.abs(item.focus.velocity) > .001) moving=true;
     });
     this.scene.updateMatrixWorld(true);
@@ -391,7 +380,7 @@ export class WardrobeRenderer {
       if (mat.map && !disposedTextures.has(mat.map)) { mat.map.dispose(); disposedTextures.add(mat.map); }
       mat.dispose();
     });
-    item.sideMap.dispose();item.backMap.dispose();
+    item.backMap.dispose();
   }
 
   dispose() {

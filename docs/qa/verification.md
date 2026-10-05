@@ -10,6 +10,12 @@ The latest comparison corrected resting meshes that were too thin. The reproduci
 
 The turn response now uses per-garment stiffness and damping inferred from those measurements. Replay trigger times were corrected to the measured onset; interactive hover has no artificial input delay. Fits reduce average width error to approximately 5–14 source pixels per turn. Neighbor spacing, individual product framing, the ticker, and the product/rack transitions retain the reference measurements.
 
+## Artwork continuity correction
+
+The earlier material switched between captured front and side photographs according to yaw. That produced a visible change in the print as garments returned to the rack. The rotation-controlled switch and its side texture loading are now removed. Front and back use their fixed mesh UVs at every angle; seams use fabric color. The production shader has no angle, side-blend, or projected side-photo input. Resting silhouettes still use the same offline geometry constraints.
+
+`tools/check-uv-continuity.py` renders all 11 actual GLBs through outward and return rotations with an orbiting inspection camera. Keeping the same front surface in view separates texture changes from foreshortening. `uv-continuity.json` records all 891 poses. This is a production-GLSL asset regression check, not a browser FPS measurement.
+
 ## Actual geometry and shader checks
 
 The production material factory and Three.js shader chunks are expanded by `tools/check-garment-shader.mjs`, then compiled under Mesa/EGL by `tools/render-mesh-qa.py`. Both the actual garment shader and the production Gaussian blur shader compile. All 11 GLBs load as closed garment shells and wooden hanger surfaces. Their six surfaces merge without groups into one body draw call; a separately modelled metal hook uses one additional draw call.
@@ -18,7 +24,7 @@ The production material factory and Three.js shader chunks are expanded by `tool
 
 ## Selection and rendering cost
 
-Static BVHs are built once while loading. A CPU test casts 384 rays through the actual rack meshes in each of two poses and compares all selections with Three.js's standard raycast. Every selection agrees. The measured BVH 95th percentile is about 0.01–0.02 ms per pick, versus 1.7–2.0 ms for the unaccelerated scan. Results are in `picking.json` and are explicitly Node CPU timings, not browser FPS.
+Static BVHs are built once while loading. A CPU test casts 384 rays through the actual rack meshes in each of two poses and compares all selections with Three.js's standard raycast. Every selection agrees. The latest measured BVH 95th percentile is about 0.02–0.03 ms per pick, versus 2.4–2.9 ms for the unaccelerated scan. Results are in `picking.json` and are explicitly Node CPU timings, not browser FPS.
 
 The renderer compiles programs and uploads textures before enabling interaction. It caps the drawing buffer at 1.4 million pixels and DPR 1.5, reduces resolution after sustained slow frame intervals, renders the product background blur at half resolution, and stops rendering after the springs settle. It does not decode images or rebuild geometry per frame. A WebGL-capable browser exposes live frame intervals, draw calls, triangle counts, texture counts, and buffer dimensions through the canvas `data-performance` attribute.
 
