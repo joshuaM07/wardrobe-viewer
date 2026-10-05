@@ -27,7 +27,8 @@ pnpm start
 ## Interaction
 
 - Hover to turn a garment forward; click or press Enter to inspect it.
-- Rack arrows turn the previous or next garment forward without opening the viewer. They wrap through the collection, including the added hoodie, and support touch and keyboard input.
+- On mobile, the enlarged rack pans with a slider, swipes, or arrows. The nearest garment turns forward automatically. Camera movement stops at the rack ends, and the entire garment fits the available height. Arrows stay in sync with the slider and added hoodie.
+- Desktop rack arrows turn the previous or next garment forward without opening the viewer and wrap through the collection.
 - Previous/next buttons and arrow keys navigate the viewer. Escape closes it.
 - Drag the selected garment to rotate it. Touch opens garments directly.
 - The bottom handle opens **Add hoodie** and **Replay reference motion**.

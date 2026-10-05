@@ -18,6 +18,7 @@ button:disabled{cursor:wait}
 .rack-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:pan-y;cursor:default}
 .rack-canvas.has-hover{cursor:pointer}
 .static-poster{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;object-fit:contain}
+.poster-window{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
 .renderer-note{position:absolute;left:0;right:0;top:13%;text-align:center;color:#777a80;font-size:12px;z-index:4;pointer-events:none}
 .renderer-note button{pointer-events:auto;border:0;background:transparent;padding:0 0 0 10px;font-size:11px;text-decoration:underline}
 .availability{position:absolute;z-index:6;left:50%;bottom:4.38cqw;transform:translateX(-50%);font-size:clamp(10px,.955cqw,18px);padding:.43cqw 1.46cqw;line-height:1.15;border:1px solid var(--ink);border-radius:100px;background:transparent;white-space:nowrap;transition:background .2s,color .2s,transform .25s}
@@ -73,27 +74,34 @@ button:disabled{cursor:wait}
 to{opacity:1}
 }
 
-@media(max-width:700px){.world{min-height:600px}
-.wardrobe{width:94vw;aspect-ratio:1/1.12}
+@media(max-width:700px),(max-width:950px) and (max-height:500px){.world{min-height:560px}
+.wardrobe{width:94vw;height:min(86svh,700px);min-height:480px;aspect-ratio:auto}
 .header{padding:6cqw 4cqw}
 .brand{width:13cqw;height:8cqw;left:43.5%;top:4cqw}
 .wall{background-size:10cqw 8cqw}
-.rack-canvas{height:76%;top:10%}
-.static-poster{height:76%;top:10%}
-.is-product .static-poster{transform:scale(1.4)}
-.renderer-note{top:22%;font-size:11px}
-.garment-accessibility button{top:37%;height:33%}
+.rack-canvas,.poster-window{height:60%;top:14%}
+.rack-canvas,.rack-canvas.has-hover{cursor:grab}
+.rack-canvas:active{cursor:grabbing}
+.is-product .rack-canvas,.is-product .poster-window{height:68%;top:11%}
+.renderer-note{top:13%;font-size:10px}
+.garment-accessibility button{top:22%;height:48%;width:60%;left:50%!important}
 .availability{bottom:10cqw;padding:1.6cqw 3.6cqw;font-size:14px}
 .ticker{height:5.5cqw}
 .ticker-track{font-size:12px}
-.hover-label{top:68%;left:50%!important;max-width:calc(100% - 128px);font-size:12px;white-space:normal;text-align:center;line-height:1.4}
-.rack-navigation .round-button{top:75%;width:44px;height:44px;font-size:22px}
+.hover-label{top:75%;left:50%!important;max-width:calc(100% - 8cqw);font-size:14px;white-space:normal;text-align:center;line-height:1.4}
+.rack-navigation .round-button{top:83%;width:44px;height:44px;font-size:22px}
 .rack-previous{left:4cqw}
 .rack-next{right:4cqw}
+.rack-slider{pointer-events:auto;position:absolute;top:83%;left:calc(4cqw + 60px);width:calc(100% - 8cqw - 120px);height:44px;transform:translateY(-50%);margin:0;appearance:none;background:transparent;accent-color:var(--ink);cursor:ew-resize;touch-action:pan-y}
+.rack-slider::-webkit-slider-runnable-track{height:3px;background:#4b4e6d44;border-radius:5px}
+.rack-slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;margin-top:-8.5px;border:1px solid var(--ink);border-radius:50%;background:var(--wall);box-shadow:0 1px 4px #4b4e6d26}
+.rack-slider::-moz-range-track{height:3px;background:#4b4e6d44;border-radius:5px}
+.rack-slider::-moz-range-thumb{width:18px;height:18px;border:1px solid var(--ink);border-radius:50%;background:var(--wall)}
+.rack-slider:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:24px}
 .is-product .availability{bottom:8cqw}
-.round-button{top:46%;width:8cqw;height:8cqw}
-.previous{left:17%}
-.next{right:17%}
+.round-button{top:46%;width:44px;height:44px}
+.previous{left:4cqw}
+.next{right:4cqw}
 .close-button{right:4cqw;top:6cqw;font-size:14px}
 .product-caption{bottom:19cqw;padding:0 4cqw}
 .product-caption h1{font-size:22px;margin-top:1.5cqw}
@@ -103,6 +111,30 @@ to{opacity:1}
 .panel-brand{width:28%;margin-bottom:7cqw}
 .text-panel p{margin-bottom:5cqw}
 .outline-button{font-size:13px;padding:3cqw 5cqw}
+}
+
+@media(max-width:950px) and (max-height:500px) and (orientation:landscape){.world{min-height:320px}
+.wardrobe{height:92svh;min-height:300px;width:min(94vw,700px)}
+.header{padding:2cqw 3cqw}
+.brand{width:9cqw;height:5.4cqw;left:78%;top:5cqw}
+.rack-canvas,.poster-window,.is-product .rack-canvas,.is-product .poster-window{top:6%;height:88%;width:65%}
+.renderer-note{top:14%;right:35%;font-size:9px}
+.hover-label{top:34%;left:82.5%!important;max-width:28%;font-size:13px}
+.rack-navigation .round-button{top:69%}
+.rack-previous{left:69%}
+.rack-next{right:4%}
+.rack-slider{top:55%;left:69%;width:27%}
+.availability{left:82.5%;bottom:15%;padding:.8cqw 1.2cqw;font-size:11px}
+.garment-accessibility button{left:32.5%!important;top:16%;width:40%;height:70%}
+.ticker{height:2.5cqw}
+.ticker-track{font-size:10px}
+.is-product .availability{bottom:15%}
+.product-controls .previous{left:69%;top:69%}
+.product-controls .next{right:4%;top:69%}
+.product-caption{left:68%;right:3%;top:30%;bottom:auto;padding:0}
+.product-caption h1{font-size:18px;margin-top:.5cqw}
+.close-button{top:2cqw;right:3cqw}
+.drawer-handle{bottom:.7cqw;height:.4cqw}
 }
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
