@@ -34,4 +34,12 @@ The managed Chrome preview cannot create WebGL contexts: its observed error repo
 
 The settled product layout has the expected header/ticker fade, wall opacity 0.05, per-garment framing, controls, and zero internal scrolling. Previous/next, keyboard navigation, closing, availability, adding/removing the hoodie, and local information panels are checked in the preview. `overflow: clip` prevents the earlier focus-induced internal card scroll. Browser captures clearly display the fallback status.
 
+## Rack navigation on mobile
+
+The rack now has separate previous/next controls. They update the same active-garment state used by hover, leaving the renderer, UV material, calibrated turn springs, and neighbor spacing unchanged. They do not switch to product mode. The last hovered or keyboard-focused garment remains the navigation starting point even after leaving the canvas or tabbing to an arrow.
+
+Browser checks at real iframe viewport widths of 390px and 360px confirm both controls measure 44 × 44 CSS pixels and remain inside the card below the garments. The garment name is centered on mobile. `rack-navigation-mobile.jpg` captures both layouts, explicitly using the managed browser's static fallback; it is not evidence of GPU motion or physical-device touch performance.
+
+Verified previous/next activation, wrapping from garment 10 to 1 and back, Enter activation, arrow-key navigation, remembering the last focused garment, opening the highlighted garment through availability, hiding rack controls in the product viewer, existing viewer navigation, and returning to the rack. With the hoodie added, next wraps from 11 to 1 and previous wraps from 1 to 11. ESLint, the Next.js production export, and TypeScript pass. The temporary responsive QA page is removed before publishing.
+
 Next.js production static export, TypeScript checking, and ESLint pass. The final Site publishing workflow builds the committed source and keeps the existing private audience. GitHub source-tree hashes are checked against each corresponding local commit before updating main.
