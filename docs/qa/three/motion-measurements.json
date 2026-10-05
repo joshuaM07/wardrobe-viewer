@@ -116,11 +116,11 @@
         1032.89
       ],
       "baselineWidthMae": 67.46,
-      "fitWidthMae": 16.56,
+      "fitWidthMae": 8.73,
       "fit": {
-        "stiffness": 30.51,
-        "damping": 8.0,
-        "delay": 0.0
+        "stiffness": 92.087,
+        "damping": 18.834,
+        "delay": 0.1
       },
       "calibrated": {
         "widthMae": 8.73,
@@ -238,11 +238,11 @@
         1215.84
       ],
       "baselineWidthMae": 66.1,
-      "fitWidthMae": 16.18,
+      "fitWidthMae": 7.26,
       "fit": {
-        "stiffness": 30.359,
-        "damping": 8.0,
-        "delay": 0.0
+        "stiffness": 65.725,
+        "damping": 14.0,
+        "delay": 0.083
       },
       "calibrated": {
         "widthMae": 7.26,
@@ -362,11 +362,11 @@
         1414.74
       ],
       "baselineWidthMae": 71.26,
-      "fitWidthMae": 19.08,
+      "fitWidthMae": 7.54,
       "fit": {
-        "stiffness": 30.0,
-        "damping": 8.151,
-        "delay": 0.0
+        "stiffness": 78.077,
+        "damping": 14.909,
+        "delay": 0.117
       },
       "calibrated": {
         "widthMae": 7.54,
@@ -488,11 +488,11 @@
         1597.49
       ],
       "baselineWidthMae": 74.49,
-      "fitWidthMae": 12.62,
+      "fitWidthMae": 9.59,
       "fit": {
-        "stiffness": 30.0,
-        "damping": 9.595,
-        "delay": 0.0
+        "stiffness": 75.001,
+        "damping": 20.602,
+        "delay": 0.083
       },
       "calibrated": {
         "widthMae": 9.59,
@@ -608,11 +608,11 @@
         1797.4
       ],
       "baselineWidthMae": 76.25,
-      "fitWidthMae": 21.41,
+      "fitWidthMae": 8.75,
       "fit": {
-        "stiffness": 30.0,
-        "damping": 10.724,
-        "delay": 0.0
+        "stiffness": 93.755,
+        "damping": 24.306,
+        "delay": 0.117
       },
       "calibrated": {
         "widthMae": 8.75,
@@ -734,10 +734,10 @@
         1995.65
       ],
       "baselineWidthMae": 20.19,
-      "fitWidthMae": 5.86,
+      "fitWidthMae": 4.64,
       "fit": {
-        "stiffness": 117.93,
-        "damping": 24.286,
+        "stiffness": 74.477,
+        "damping": 15.671,
         "delay": 0.0
       },
       "calibrated": {
@@ -837,18 +837,18 @@
         2403.02,
         2403.7
       ],
-      "baselineWidthMae": 42.97,
-      "fitWidthMae": 13.69,
+      "baselineWidthMae": 42.98,
+      "fitWidthMae": 13.41,
       "fit": {
-        "stiffness": 62.488,
-        "damping": 14.093,
-        "delay": 0.0
+        "stiffness": 63.309,
+        "damping": 14.0,
+        "delay": 0.017
       },
       "calibrated": {
-        "widthMae": 13.44,
+        "widthMae": 13.41,
         "startTime": 14.333333,
         "delayFrames": 1,
-        "stiffness": 63.323,
+        "stiffness": 63.309,
         "damping": 14.0
       }
     }

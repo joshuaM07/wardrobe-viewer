@@ -8,17 +8,17 @@ from pathlib import Path
 import struct, json, sys, time
 from io import BytesIO
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter
 import moderngl
 from scipy.interpolate import CubicSpline
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=Path(sys.argv[1] if len(sys.argv)>1 else '/workspace/scratch/wardrobe-3d-qa')
+OUT=Path(sys.argv[1] if __name__=='__main__' and len(sys.argv)>1 else '/workspace/scratch/wardrobe-3d-qa')
 OUT.mkdir(parents=True,exist_ok=True)
 W,H=2912,1620
 ctx=moderngl.create_standalone_context(backend='egl',require=330)
 ctx.enable(moderngl.DEPTH_TEST|moderngl.CULL_FACE)
-shader_path=Path(sys.argv[2] if len(sys.argv)>2 else '/workspace/scratch/wardrobe-shaders.json')
+shader_path=Path(sys.argv[2] if __name__=='__main__' and len(sys.argv)>2 else '/workspace/scratch/wardrobe-shaders.json')
 shaders=json.loads(shader_path.read_text())
 program=ctx.program(vertex_shader=shaders['garment']['vertex'],fragment_shader=shaders['garment']['fragment'])
 blur_program=ctx.program(vertex_shader=shaders['blur']['vertex'],fragment_shader=shaders['blur']['fragment'])
@@ -101,13 +101,17 @@ def capture():
  return Image.frombytes('RGBA',(W,H),target.read(components=4)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 
 
-def save_render(render,name):
- # Encode in memory before creating the final file, avoiding incomplete PNGs
- # when execution workspaces synchronize a newly opened output handle.
+def save_render(render,name,background=None):
+ # Encode before writing, then replace the final file atomically.
  encoded=BytesIO();render.save(encoded,format='PNG')
- (OUT/(name+'-transparent.png')).write_bytes(encoded.getvalue())
- poster=BytesIO();render.resize((1456,810),Image.Resampling.LANCZOS).save(poster,format='WEBP',quality=95,method=5)
- (ROOT/'public/posters'/(name+'.webp')).write_bytes(poster.getvalue())
+ png=OUT/(name+'-transparent.png');tmp=png.with_suffix('.tmp');tmp.write_bytes(encoded.getvalue());tmp.replace(png)
+ composite=render
+ if background is not None:
+  composite=background.filter(ImageFilter.GaussianBlur(13))
+  composite.putalpha(composite.getchannel('A').point(lambda a:round(a*.06)))
+  composite.alpha_composite(render)
+ poster=BytesIO();composite.resize((1456,810),Image.Resampling.LANCZOS).save(poster,format='WEBP',quality=95,method=5)
+ webp=ROOT/'public/posters'/(name+'.webp');tmp=webp.with_suffix('.tmp');tmp.write_bytes(poster.getvalue());tmp.replace(webp)
 
 
 def begin():
@@ -124,54 +128,70 @@ def card(render,product=False):
  return base
 
 
-# Production meshes in reference layout. Rail is separately modelled in Three.js;
-# its supplied photograph is used here only to align a transparent fallback poster.
-begin()
-for g in gs:garment(g,g['pivot']*W,418,angle=g['restYaw'])
-rack=capture()
-rail=Image.open(ROOT/'public/rail.webp')
-below=Image.new('RGBA',(W,H));below.paste(rail,(352,382),rail);below.alpha_composite(rack)
-save_render(below,'rack')
-card(below).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/'rack.jpg',quality=94)
+def run_checks():
+ # Production meshes in reference layout. Rail is separately modelled in Three.js;
+ # its supplied photograph is used here only to align a transparent fallback poster.
+ begin()
+ for g in gs:garment(g,g['pivot']*W,418,angle=g['restYaw'])
+ rack=capture()
+ rail=Image.open(ROOT/'public/rail.webp')
+ below=Image.new('RGBA',(W,H));below.paste(rail,(352,382),rail);below.alpha_composite(rack)
+ save_render(below,'rack')
+ begin()
+ for g in gs+[hoodie]:garment(g,g['pivot']*W,418,angle=g['restYaw'])
+ extended=Image.new('RGBA',(W,H));extended.paste(rail,(352,382),rail);extended.alpha_composite(capture())
+ save_render(extended,'rack-hoodie')
+ card(below).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/'rack.jpg',quality=94)
 
-for g in gs+[hoodie]:
- begin();garment(g,1456+(g.get('detailX')or 0),g.get('detailY',276),g.get('detailScale',1.36))
- render=capture();save_render(render,g['id'])
- card(render,True).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/(g['id']+'-front.jpg'),quality=94)
+ for selected,g in enumerate(gs+[hoodie]):
+  begin();garment(g,1456+(g.get('detailX')or 0),g.get('detailY',276),g.get('detailScale',1.36))
+  render=capture()
+  begin()
+  for i,other in enumerate(gs):
+   if other['id']==g['id']:continue
+   shift=np.sign(i-selected)*182*.6**(abs(i-selected)-1)
+   garment(other,other['pivot']*W+shift,418,angle=other['restYaw'])
+  background=Image.new('RGBA',(W,H));background.paste(rail,(352,382),rail);background.alpha_composite(capture())
+  save_render(render,g['id'],background)
+  card(render,True).resize((1456,810),Image.Resampling.LANCZOS).save(OUT/(g['id']+'-front.jpg'),quality=94)
 
-# Inspect intermediate angles, not merely end poses.
-g=next(g for g in gs if g['id']=='flowers')
-angles=np.linspace(g['restYaw'],0,12)
-sheet=Image.new('RGB',(1440,820),'#e5e5e2')
-for i,angle in enumerate(angles):
- begin();garment(g,1456,418,angle=angle)
- shot=capture().crop((1080,390,1810,1220)).resize((240,273),Image.Resampling.LANCZOS)
- sheet.paste(shot,((i%6)*240,(i//6)*410+45),shot)
- d=ImageDraw.Draw(sheet);d.text(((i%6)*240+10,(i//6)*410+10),f'{np.rad2deg(angle):.1f} degrees',fill='#4b4e6d')
-sheet.save(OUT/'flowers-turn.jpg',quality=95)
+ # Inspect intermediate angles, not merely end poses.
+ g=next(g for g in gs if g['id']=='flowers')
+ angles=np.linspace(g['restYaw'],0,12)
+ sheet=Image.new('RGB',(1440,820),'#e5e5e2')
+ for i,angle in enumerate(angles):
+  begin();garment(g,1456,418,angle=angle)
+  shot=capture().crop((1080,390,1810,1220)).resize((240,273),Image.Resampling.LANCZOS)
+  sheet.paste(shot,((i%6)*240,(i//6)*410+45),shot)
+  d=ImageDraw.Draw(sheet);d.text(((i%6)*240+10,(i//6)*410+10),f'{np.rad2deg(angle):.1f} degrees',fill='#4b4e6d')
+ sheet.save(OUT/'flowers-turn.jpg',quality=95)
 
-# Closed volume / front silhouette validation is independent of any shader.
-checks=[]
-for g in gs+[hoodie]:
- begin();garment(g,320,0)
- rendered=capture().crop((0,0,640,810))
- alpha=np.array(rendered.getchannel('A'))>100
- source=np.array(Image.open(ROOT/'public'/g['front'].lstrip('/')).getchannel('A'))>100
- if g['id'] in ('camo','studio','washed'):continue # normalised inferred silhouettes
- source[:76 if g['id']!='hoodie' else 95]=False
- alpha[:76 if g['id']!='hoodie' else 95]=False
- overlap=(alpha&source).sum()/max(1,(alpha|source).sum())
- checks.append({'id':g['id'],'frontSilhouetteIoU':round(float(overlap),4)})
+ # Closed volume / front silhouette validation is independent of any shader.
+ checks=[]
+ for g in gs+[hoodie]:
+  begin();garment(g,320,0)
+  rendered=capture().crop((0,0,640,810))
+  alpha=np.array(rendered.getchannel('A'))>100
+  source=np.array(Image.open(ROOT/'public'/g['front'].lstrip('/')).getchannel('A'))>100
+  if g['id'] in ('camo','studio','washed'):continue # normalised inferred silhouettes
+  source[:76 if g['id']!='hoodie' else 95]=False
+  alpha[:76 if g['id']!='hoodie' else 95]=False
+  overlap=(alpha&source).sum()/max(1,(alpha|source).sum())
+  checks.append({'id':g['id'],'frontSilhouetteIoU':round(float(overlap),4)})
 
-benchmarks=[]
-for size in [(1151,640),(1584,881),(948,528)]:
- bench=ctx.simple_framebuffer(size,components=4);bench.use();times=[]
- for i in range(90):
-  bench.clear(0,0,0,0,depth=1);start=time.perf_counter()
-  for g in gs:garment(g,g['pivot']*W,418,angle=g['restYaw']*(.5+.5*np.cos(i/89*np.pi)))
-  ctx.finish();times.append((time.perf_counter()-start)*1000)
- benchmarks.append({'viewport':size,'renderMsP50':round(float(np.percentile(times[5:],50)),2),'renderMsP95':round(float(np.percentile(times[5:],95)),2)})
-result={'renderer':ctx.info['GL_RENDERER'],'scope':'Offscreen GLB/projection asset QA, NOT browser FPS',
-        'drawCalls':2*len(gs),'productionGarmentShader':True,'productionBlurShaderCompiled':True,'benchmarks':benchmarks,'checks':checks}
-(OUT/'results.json').write_text(json.dumps(result,indent=2))
-print(json.dumps(result,indent=2))
+ benchmarks=[]
+ for size in [(1151,640),(1584,881),(948,528)]:
+  bench=ctx.simple_framebuffer(size,components=4);bench.use();times=[]
+  for i in range(90):
+   bench.clear(0,0,0,0,depth=1);start=time.perf_counter()
+   for g in gs:garment(g,g['pivot']*W,418,angle=g['restYaw']*(.5+.5*np.cos(i/89*np.pi)))
+   ctx.finish();times.append((time.perf_counter()-start)*1000)
+  benchmarks.append({'viewport':size,'renderMsP50':round(float(np.percentile(times[5:],50)),2),'renderMsP95':round(float(np.percentile(times[5:],95)),2)})
+ result={'renderer':ctx.info['GL_RENDERER'],'scope':'Offscreen GLB/projection asset QA, NOT browser FPS',
+         'drawCalls':2*len(gs),'productionGarmentShader':True,'productionBlurShaderCompiled':True,'benchmarks':benchmarks,'checks':checks}
+ (OUT/'results.json').write_text(json.dumps(result,indent=2))
+ print(json.dumps(result,indent=2))
+
+
+if __name__ == "__main__":
+ run_checks()

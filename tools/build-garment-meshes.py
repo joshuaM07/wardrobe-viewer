@@ -5,7 +5,7 @@ and the measured side silhouette constrain the volume. Fold relief is baked once
 there is no runtime cloth solver. Unseen backs remain explicitly inferred.
 """
 from pathlib import Path
-import json, struct, sys
+import json, struct, os
 import numpy as np
 from PIL import Image
 from scipy import ndimage as ndi
@@ -114,6 +114,7 @@ def write_glb(path, primitives, slug):
 
 for g in garments:
     slug = g['id']
+    if os.environ.get('BUILD_GARMENTS') and slug not in os.environ['BUILD_GARMENTS'].split(','):continue
     im = Image.open(ROOT/'public'/g['front'].lstrip('/')).convert('RGBA')
     rest = Image.open(ROOT/'public'/g['rest'].lstrip('/')).convert('RGBA')
     a, side = np.array(im), np.array(rest)
