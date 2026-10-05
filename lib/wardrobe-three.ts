@@ -5,6 +5,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { garmentMaterial } from './garment-material';
+import { garmentAssetUrl } from './garment-assets';
 import { clamp, spring, stepSpring, type Spring } from './motion';
 import { mobileRackView, mobileProductView } from './rack-view';
 
@@ -54,7 +55,7 @@ export class WardrobeRenderer {
   private items: Item[] = [];
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
-  private loader = new GLTFLoader();
+  private loader = new GLTFLoader(new THREE.LoadingManager().setURLModifier(garmentAssetUrl));
   private environment: THREE.WebGLRenderTarget;
   private backBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
   private blurBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });

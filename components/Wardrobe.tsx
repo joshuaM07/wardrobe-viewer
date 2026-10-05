@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import NextImage from 'next/image';
 import rawGarments from '@/lib/garments.json';
 import { clamp } from '@/lib/motion';
+import { garmentAssetUrl } from '@/lib/garment-assets';
 import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three';
 import { MOBILE_RACK_QUERY, RACK_WIDTH, mobileRackView, mobileProductView } from '@/lib/rack-view';
 
@@ -209,7 +210,7 @@ export default function Wardrobe() {
           onPointerCancel={()=>{if(scene.current.mobile&&mode==='rack')focusRack(Math.round(scene.current.rackPosition));scene.current.dragging=false;}}
           onClick={(e) => { if(scene.current.dragging){scene.current.dragging=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
           aria-label={mobile?'Interactive clothing rack. Swipe or use the slider to browse; tap a garment to inspect it.':'Interactive clothing rack. Hover or use the rack arrows to browse; click a garment to inspect it.'} />
-        {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
+        {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={garmentAssetUrl(`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`)} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
         {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">
