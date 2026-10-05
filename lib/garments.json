@@ -44,8 +44,13 @@
     "mesh": "/models/camo.glb",
     "sideTexture": "/models/camo-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 35736,
-    "meshVertices": 19684
+    "meshTriangles": 21740,
+    "meshVertices": 12714,
+    "fabricColor": "#624f4c",
+    "hangerTop": 59,
+    "detailY": 280,
+    "detailScale": 1.153846,
+    "detailX": 0
   },
   {
     "id": "essential",
@@ -139,8 +144,13 @@
     "mesh": "/models/essential.glb",
     "sideTexture": "/models/essential-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 27292,
-    "meshVertices": 15120
+    "meshTriangles": 16620,
+    "meshVertices": 9640,
+    "fabricColor": "#19151a",
+    "hangerTop": 70,
+    "detailY": 280,
+    "detailScale": 1.246418,
+    "detailX": 0
   },
   {
     "id": "dollar",
@@ -237,8 +247,10 @@
     "mesh": "/models/dollar.glb",
     "sideTexture": "/models/dollar-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 26984,
-    "meshVertices": 14720
+    "meshTriangles": 16392,
+    "meshVertices": 9382,
+    "fabricColor": "#e2dde4",
+    "hangerTop": 59
   },
   {
     "id": "underclass",
@@ -337,8 +349,10 @@
     "mesh": "/models/underclass.glb",
     "sideTexture": "/models/underclass-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 26656,
-    "meshVertices": 14896
+    "meshTriangles": 16180,
+    "meshVertices": 9482,
+    "fabricColor": "#161017",
+    "hangerTop": 60
   },
   {
     "id": "republic",
@@ -445,8 +459,10 @@
     "mesh": "/models/republic.glb",
     "sideTexture": "/models/republic-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 35644,
-    "meshVertices": 18982
+    "meshTriangles": 21648,
+    "meshVertices": 11976,
+    "fabricColor": "#283935",
+    "hangerTop": 60
   },
   {
     "id": "world",
@@ -546,8 +562,10 @@
     "mesh": "/models/world.glb",
     "sideTexture": "/models/world-side.jpg",
     "restYaw": 1.3439035240356338,
-    "meshTriangles": 33856,
-    "meshVertices": 18492
+    "meshTriangles": 20648,
+    "meshVertices": 11800,
+    "fabricColor": "#171418",
+    "hangerTop": 59
   },
   {
     "id": "flowers",
@@ -645,8 +663,10 @@
     "mesh": "/models/flowers.glb",
     "sideTexture": "/models/flowers-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 26068,
-    "meshVertices": 14326
+    "meshTriangles": 15916,
+    "meshVertices": 9226,
+    "fabricColor": "#e3dce4",
+    "hangerTop": 60
   },
   {
     "id": "studio",
@@ -693,8 +713,13 @@
     "mesh": "/models/studio.glb",
     "sideTexture": "/models/studio-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 27900,
-    "meshVertices": 15186
+    "meshTriangles": 16952,
+    "meshVertices": 9656,
+    "fabricColor": "#d7d0e0",
+    "hangerTop": 59,
+    "detailY": 280,
+    "detailScale": 1.268222,
+    "detailX": 0
   },
   {
     "id": "portrait",
@@ -774,8 +799,13 @@
     "mesh": "/models/portrait.glb",
     "sideTexture": "/models/portrait-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 26612,
-    "meshVertices": 14560
+    "meshTriangles": 16224,
+    "meshVertices": 9362,
+    "fabricColor": "#313031",
+    "hangerTop": 62,
+    "detailY": 280,
+    "detailScale": 1.257225,
+    "detailX": 0
   },
   {
     "id": "washed",
@@ -822,7 +852,12 @@
     "mesh": "/models/washed.glb",
     "sideTexture": "/models/washed-side.jpg",
     "restYaw": 1.3962634015954636,
-    "meshTriangles": 31500,
-    "meshVertices": 16978
+    "meshTriangles": 19032,
+    "meshVertices": 10672,
+    "fabricColor": "#555259",
+    "hangerTop": 59,
+    "detailY": 280,
+    "detailScale": 1.150794,
+    "detailX": 0
   }
 ]
