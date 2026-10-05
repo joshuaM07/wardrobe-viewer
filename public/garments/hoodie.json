@@ -28,6 +28,11 @@
   "mesh": "/models/hoodie.glb",
   "sideTexture": "/models/hoodie-side.jpg",
   "restYaw": 1.2915436464758039,
-  "meshTriangles": 34320,
-  "meshVertices": 18702
+  "meshTriangles": 20828,
+  "meshVertices": 11956,
+  "fabricColor": "#3f3e3f",
+  "hangerTop": 81,
+  "detailY": 280,
+  "detailScale": 1.22191,
+  "detailX": 0
 }

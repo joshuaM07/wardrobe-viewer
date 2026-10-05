@@ -12,7 +12,7 @@ const PRODUCTS = rawGarments as Garment[];
 export default function Wardrobe() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const loaded = useRef<Garment[]>([]);
+  const loaded = useRef<Garment[]>(PRODUCTS);
   const engine = useRef<WardrobeRenderer | null>(null);
   const [loadError,setLoadError]=useState(false);
   const [availability,setAvailability]=useState(false);
@@ -61,12 +61,13 @@ export default function Wardrobe() {
       if(t>18.9333){s.demo=false;setDemo(false);}
     };
     try {
-      const renderer=new WardrobeRenderer(canvas.current!,()=>scene.current,tick,()=>setLoadError(true));
+      const fail=()=>{setLoadError(true);engine.current?.dispose();engine.current=null;};
+      const renderer=new WardrobeRenderer(canvas.current!,()=>scene.current,tick,fail);
       engine.current=renderer;
       void renderer.load(PRODUCTS).then(()=>{
-        if(stopped)return;
+        if(stopped||engine.current!==renderer)return;
         loaded.current=PRODUCTS;setReady(true);setLoadError(false);
-      }).catch(()=>{if(!stopped)setLoadError(true);});
+      }).catch(()=>{if(!stopped)fail();});
     }catch{queueMicrotask(()=>{if(!stopped)setLoadError(true);});}
     const visible=()=>{if(!document.hidden)engine.current?.invalidate();};
     document.addEventListener('visibilitychange',visible);
@@ -115,12 +116,22 @@ export default function Wardrobe() {
     });resize.observe(container);return()=>resize.disconnect();
   },[]);
 
-  const targetAt = (e: React.PointerEvent) => engine.current?.hit(e.clientX,e.clientY,e.pointerType==='touch') ?? -1;
+  const targetAt = (e: React.PointerEvent) => {
+    if(engine.current)return engine.current.hit(e.clientX,e.clientY,e.pointerType==='touch');
+    if(!loadError)return -1;
+    const r=canvas.current!.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*W;
+    const y=(e.clientY-r.top-r.height/2)/r.width*W+810;
+    if(y<490||y>1200)return -1;
+    let hit=-1,distance=e.pointerType==='touch'?140:95;
+    collection.forEach((g,i)=>{const d=Math.abs(g.pivot*W-x);if(d<distance){distance=d;hit=i;}});
+    return hit;
+  };
   const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const s=scene.current;
     if(e.buttons===1&&Math.abs(e.clientX-s.dragX)>5)s.dragging=true;
     if(mode==='product'&&e.buttons===1){
-      s.spin=s.dragStartSpin+(e.clientX-s.dragX)*.008;
+      s.spin=clamp(s.dragStartSpin+(e.clientX-s.dragX)*.008,-1.1,1.1);
       engine.current?.invalidate();return;
     }
     if(s.demo||e.pointerType==='touch'||mode!=='rack')return;
@@ -153,12 +164,14 @@ export default function Wardrobe() {
         <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={e=>{scene.current.dragX=e.clientX;scene.current.dragStartSpin=scene.current.spin;scene.current.dragging=false;if(mode==='product')e.currentTarget.setPointerCapture(e.pointerId);}}
           onClick={(e) => { if(scene.current.dragging){scene.current.dragging=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
           aria-label="Interactive clothing rack. Tab to choose a garment; use arrow keys in the viewer." />
-        {!ready && <div className="loading-garments" aria-live="polite"><span />{loadError?'Could not start the 3D viewer. Please refresh.':'Preparing the collection'}</div>}
+        {loadError && <NextImage className="static-poster" src={`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):'rack'}.webp`} alt="Static garment preview" width={1456} height={810} unoptimized priority />}
+        {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
+        {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">
-          {collection.map((g,i) => <button key={g.id} disabled={!ready} aria-label={`View ${g.name}`} onFocus={() => { scene.current.active=i;setHover(i); }} onBlur={leave} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
+          {collection.map((g,i) => <button key={g.id} disabled={!ready&&!loadError} aria-label={`View ${g.name}`} onFocus={() => { scene.current.active=i;setHover(i); }} onBlur={leave} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
         </div>
         {mode==='rack' && hover>=0 && <div className="hover-label" style={{left:`${(collection[hover]?.pivot || .5)*100}%`}}>{collection[hover]?.name}</div>}
-        <button className="availability" disabled={!ready} onClick={() => mode==='product'?setAvailability(true):openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>
+        <button className="availability" disabled={!ready&&!loadError} onClick={() => mode==='product'?setAvailability(true):openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>
         <div className="ticker" aria-label="New designs daily, subscribe to our newsletter" aria-hidden={mode!=='rack'}>
           <div className="ticker-track">{Array.from({length:8},(_,i)=><span key={i}>NEW DESIGNS DAILY <b>•</b> SUBSCRIBE TO OUR NEWSLETTER <b>•</b></span>)}</div>
         </div>
@@ -174,9 +187,9 @@ export default function Wardrobe() {
           <NextImage className="panel-brand" src="/brand.webp" alt="Batch Merch" width={200} height={119} unoptimized />
           {mode==='about'?<><h1>Made to be seen.</h1><p>A collection of independent graphics, everyday tees, and heavyweight essentials.</p><button className="outline-button" onClick={close}>EXPLORE THE COLLECTION</button></>:<><h1>Let’s make something.</h1><p>Explore the collection and find your next favorite piece.</p><button className="outline-button" onClick={() => openProduct(selected)}>VIEW THE COLLECTION</button></>}
         </section>}
-        <button className="drawer-handle" disabled={!ready} aria-label="Garment options" aria-expanded={showTools} onClick={()=>setShowTools(v=>!v)} />
+        <button className="drawer-handle" disabled={!ready&&!loadError} aria-label="Garment options" aria-expanded={showTools} onClick={()=>setShowTools(v=>!v)} />
       </div>
-      {showTools && <div className="collection-tools"><button className={hoodie?'active':''} onClick={addHoodie} disabled={adding}>{adding?'Loading hoodie':hoodie?'Remove hoodie':'Add hoodie'}</button><button onClick={()=>{scene.current.demo=!demo;scene.current.demoStart=performance.now();setDemo(!demo);}}>{demo?'Stop replay':'Replay reference motion'}</button><button aria-label="Close garment options" onClick={()=>setShowTools(false)}>×</button></div>}
+      {showTools && <div className="collection-tools"><button className={hoodie?'active':''} onClick={addHoodie} disabled={adding}>{adding?'Loading hoodie':hoodie?'Remove hoodie':'Add hoodie'}</button><button disabled={loadError||!ready} onClick={()=>{scene.current.demo=!demo;scene.current.demoStart=performance.now();setDemo(!demo);}}>{demo?'Stop replay':'Replay reference motion'}</button><button aria-label="Close garment options" onClick={()=>setShowTools(false)}>×</button></div>}
     </main>
   );
 }

@@ -1,0 +1,65 @@
+{
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "scope": "Offscreen GLB/projection asset QA, NOT browser FPS",
+  "drawCalls": 70,
+  "benchmarks": [
+    {
+      "viewport": [
+        1151,
+        640
+      ],
+      "renderMsP50": 25.49,
+      "renderMsP95": 31.57
+    },
+    {
+      "viewport": [
+        1584,
+        881
+      ],
+      "renderMsP50": 29.18,
+      "renderMsP95": 33.15
+    },
+    {
+      "viewport": [
+        948,
+        528
+      ],
+      "renderMsP50": 23.23,
+      "renderMsP95": 25.53
+    }
+  ],
+  "checks": [
+    {
+      "id": "essential",
+      "frontSilhouetteIoU": 0.9892
+    },
+    {
+      "id": "dollar",
+      "frontSilhouetteIoU": 0.9865
+    },
+    {
+      "id": "underclass",
+      "frontSilhouetteIoU": 0.9875
+    },
+    {
+      "id": "republic",
+      "frontSilhouetteIoU": 0.9892
+    },
+    {
+      "id": "world",
+      "frontSilhouetteIoU": 0.988
+    },
+    {
+      "id": "flowers",
+      "frontSilhouetteIoU": 0.9865
+    },
+    {
+      "id": "portrait",
+      "frontSilhouetteIoU": 0.9858
+    },
+    {
+      "id": "hoodie",
+      "frontSilhouetteIoU": 0.9898
+    }
+  ]
+}

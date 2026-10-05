@@ -17,6 +17,9 @@ button:disabled{cursor:wait}
 .brand img{width:100%;height:100%;object-fit:contain}
 .rack-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:pan-y;cursor:default}
 .rack-canvas.has-hover{cursor:pointer}
+.static-poster{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;object-fit:contain}
+.renderer-note{position:absolute;left:0;right:0;top:13%;text-align:center;color:#777a80;font-size:12px;z-index:4;pointer-events:none}
+.renderer-note button{pointer-events:auto;border:0;background:transparent;padding:0 0 0 10px;font-size:11px;text-decoration:underline}
 .availability{position:absolute;z-index:6;left:50%;bottom:4.38cqw;transform:translateX(-50%);font-size:clamp(10px,.955cqw,18px);padding:.43cqw 1.46cqw;line-height:1.15;border:1px solid var(--ink);border-radius:100px;background:transparent;white-space:nowrap;transition:background .2s,color .2s,transform .25s}
 .availability:hover,.outline-button:hover{background:var(--ink);color:white}
 .ticker{height:2.47cqw;position:absolute;bottom:0;left:0;width:100%;background:#505573;z-index:5;overflow:hidden;color:#f6f6fa;transition:opacity .28s}
@@ -70,6 +73,9 @@ to{opacity:1}
 .brand{width:13cqw;height:8cqw;left:43.5%;top:4cqw}
 .wall{background-size:10cqw 8cqw}
 .rack-canvas{height:76%;top:10%}
+.static-poster{height:76%;top:10%}
+.is-product .static-poster{transform:scale(1.4)}
+.renderer-note{top:22%;font-size:11px}
 .garment-accessibility button{top:37%;height:33%}
 .availability{bottom:10cqw;padding:1.6cqw 3.6cqw;font-size:14px}
 .ticker{height:5.5cqw}
@@ -102,4 +108,3 @@ to{opacity:1}
 @media(max-width:700px){.text-button{font-size:12px}
 .product-count{font-size:12px}
 }
-

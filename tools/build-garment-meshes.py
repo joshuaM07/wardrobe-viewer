@@ -32,7 +32,7 @@ def shell(mask, depth_front, depth_back, material):
     contours, _ = cv2.findContours(mask.astype('uint8'), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     contour = max(contours, key=cv2.contourArea).reshape(-1, 2)
     boundary = contour[::3]
-    yy, xx = np.mgrid[0:810:6, 0:640:6]
+    yy, xx = np.mgrid[0:810:8, 0:640:8]
     interior = np.stack([xx[mask[yy, xx]], yy[mask[yy, xx]]], 1)
     points = np.unique(np.concatenate([boundary, interior]), axis=0)
     dt = Delaunay(points)
@@ -169,7 +169,7 @@ for g in garments:
     sm[:110] = False
     for y in range(110, 810):
         row = np.where(sm[y])[0]
-        if len(row) < 10: continue
+        if len(row) == 0: continue
         lo = (row.min()-320-(np.arange(640)-320)*np.cos(rest_yaw))/np.sin(rest_yaw)
         hi = (row.max()-320-(np.arange(640)-320)*np.cos(rest_yaw))/np.sin(rest_yaw)
         front[y] = np.minimum(np.maximum(front[y], lo+1.5), hi-1.5)
@@ -189,12 +189,13 @@ for g in garments:
         front += ndi.gaussian_filter(pocket.astype(float), 6)*6
     primitives = shell(cloth, front, back, 0)
     if wood.sum() > 50:
-        primitives += shell(wood, np.full((810, 640), 9), np.full((810, 640), -9), 3)
+        primitives += shell(wood, np.full((810, 640), 5), np.full((810, 640), -5), 3)
     # Fill outside the matte with the nearest cloth/wood texel. This prevents
     # compressed texture mipmaps from importing a grey background at the seam.
-    _, nearest = ndi.distance_transform_edt(~mask, return_indices=True)
+    safe_mask=ndi.binary_erosion(mask,iterations=3)
+    _, nearest = ndi.distance_transform_edt(~safe_mask, return_indices=True)
     filled = a[:, :, :3].copy()
-    filled[~mask] = filled[nearest[0][~mask], nearest[1][~mask]]
+    filled[~safe_mask] = filled[nearest[0][~safe_mask], nearest[1][~safe_mask]]
     Image.fromarray(filled).save(OUT/f'{slug}-albedo.jpg', quality=96, subsampling=0)
     # Unseen backs use the same fabric, with print regions removed offline.
     inpaint = np.zeros((810, 640), 'uint8')
@@ -209,6 +210,13 @@ for g in garments:
     write_glb(OUT/f'{slug}.glb', primitives, slug)
     g.update(mesh=f'/models/{slug}.glb', sideTexture=f'/models/{slug}-side.jpg', restYaw=float(rest_yaw),
              meshTriangles=sum(len(p[2]) for p in primitives), meshVertices=sum(len(p[0]) for p in primitives))
+    fabric=rgb[cloth & (distance>15) & (yy>500) & (yy<650)]
+    if len(fabric):g['fabricColor']='#'+''.join(f'{int(x):02x}' for x in np.median(fabric,axis=0))
+    wood_rows=np.where(wood.sum(1)>3)[0]
+    g['hangerTop']=int(wood_rows.min()+4) if len(wood_rows) else 60
+    if 'detailScale' not in g:
+        hem=int(np.where(cloth)[0].max())
+        g.update(detailY=280,detailScale=round(870/hem,6),detailX=0)
     print(slug, g['meshVertices'], 'vertices', g['meshTriangles'], 'triangles')
 
 (ROOT/'lib/garments.json').write_text(json.dumps(garments[:-1], indent=2)+'\n')
