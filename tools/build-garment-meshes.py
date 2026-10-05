@@ -169,16 +169,19 @@ for g in garments:
     sm[:110] = False
     for y in range(110, 810):
         row = np.where(sm[y])[0]
-        if len(row) == 0: continue
-        lo = (row.min()-320-(np.arange(640)-320)*np.cos(rest_yaw))/np.sin(rest_yaw)
-        hi = (row.max()-320-(np.arange(640)-320)*np.cos(rest_yaw))/np.sin(rest_yaw)
-        front[y] = np.minimum(np.maximum(front[y], lo+1.5), hi-1.5)
-        back[y] = np.minimum(np.maximum(back[y], lo+1.5), hi-1.5)
-        # Maintain a physical shell even where neighboring hanger occlusion in
-        # the capture makes a narrow local constraint.
-        mid = (front[y]+back[y])/2
-        gap = np.maximum(front[y]-back[y], 4)
-        front[y] = mid+gap/2; back[y] = mid-gap/2
+        xs = np.where(cloth[y])[0]
+        if len(row) == 0 or len(xs) == 0: continue
+        # Fit both edges of the measured side silhouette. Merely clamping the
+        # initial depth inside these bounds leaves the resting pose too thin.
+        c, s = np.cos(rest_yaw), np.sin(rest_yaw)
+        xf = (np.arange(640)-320)*c + front[y]*s
+        xb = (np.arange(640)-320)*c + back[y]*s
+        low = min(xf[xs].min(), xb[xs].min())
+        high = max(xf[xs].max(), xb[xs].max())
+        ratio = (row.max()-row.min()) / max(1, high-low)
+        for depth, projected in [(front, xf), (back, xb)]:
+            fitted = row.min()-320 + (projected-low)*ratio
+            depth[y] += (fitted-projected)/s
     front = ndi.gaussian_filter(front, 1.4); back = ndi.gaussian_filter(back, 1.4)
     if slug == 'hoodie':
         cavity = np.exp(-((xx-320)/55)**2-((yy-152)/37)**2)
@@ -210,7 +213,9 @@ for g in garments:
     write_glb(OUT/f'{slug}.glb', primitives, slug)
     g.update(mesh=f'/models/{slug}.glb', sideTexture=f'/models/{slug}-side.jpg', restYaw=float(rest_yaw),
              meshTriangles=sum(len(p[2]) for p in primitives), meshVertices=sum(len(p[0]) for p in primitives))
-    fabric=rgb[cloth & (distance>15) & (yy>500) & (yy<650)]
+    # Sample unprinted sleeve/body edges, not the large centre graphics.
+    fabric=rgb[cloth & (distance>8) & (abs(xx-320)>145) & (yy>180) & (yy<650)]
+    if len(fabric)<50: fabric=rgb[cloth & (distance>15) & (yy>500) & (yy<650)]
     if len(fabric):g['fabricColor']='#'+''.join(f'{int(x):02x}' for x in np.median(fabric,axis=0))
     wood_rows=np.where(wood.sum(1)>3)[0]
     g['hangerTop']=int(wood_rows.min()+4) if len(wood_rows) else 60

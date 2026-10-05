@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { garmentMaterial } from './garment-material';
 import { clamp, spring, stepSpring, type Spring } from './motion';
 
@@ -11,6 +12,7 @@ export type Garment = {
   sideTexture: string; restYaw: number; reference: boolean;
   fabricColor?: string;
   hangerTop?: number;
+  turnStiffness?: number; turnDamping?: number;
   detailScale?: number; detailY?: number; detailX?: number;
 };
 export type Mode = 'rack' | 'product' | 'about' | 'contact';
@@ -19,7 +21,7 @@ export type WardrobeState = {
   reduced: boolean; spin: number;
 };
 type Item = {
-  garment: Garment; root: THREE.Group; focus: Spring;
+  garment: Garment; root: THREE.Group; body: THREE.Mesh; focus: Spring;
   x: Spring; y: Spring; scale: Spring;
   sideBlend: THREE.IUniform<number>; sideMap: THREE.Texture; backMap: THREE.Texture;
 };
@@ -93,6 +95,7 @@ export class WardrobeRenderer {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset = false;
     this.camera.position.set(0, 0, 3000);
+    this.raycaster.firstHitOnly = true;
     this.camera.lookAt(0, 0, 0);
     const pmrem = new THREE.PMREMGenerator(this.renderer);
     const room = new RoomEnvironment();
@@ -186,8 +189,12 @@ export class WardrobeRenderer {
     const geometry=mergeGeometries(geometries,false);
     geometries.forEach(g=>g.dispose());
     if(!geometry)throw new Error(`Incompatible garment surfaces: ${garment.id}`);
+    geometry.computeBoundingBox(); geometry.computeBoundingSphere();
+    // Build once while loading. Hover only traverses this static spatial index.
+    computeBoundsTree.call(geometry, { indirect: true });
     const material=garmentMaterial(frontTexture,backTexture,sideMap,sideBlend,garment.restYaw,garment.fabricColor??'#dcd6df');
-    const body=new THREE.Mesh(geometry,material);body.userData.garmentId=garment.id;root.add(body);
+    const body=new THREE.Mesh(geometry,material);
+    body.raycast=acceleratedRaycast;body.userData.garmentId=garment.id;root.add(body);
     const path = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0,-(garment.hangerTop??60),0),new THREE.Vector3(0,-34,0),new THREE.Vector3(0,-24,0),
       new THREE.Vector3(10,-21,0),new THREE.Vector3(14,-12,0),new THREE.Vector3(10,-3,0),
@@ -198,7 +205,7 @@ export class WardrobeRenderer {
     root.add(hook);
     const x = garment.pivot*W;
     root.position.set(x-W/2, H/2-GARMENT_Y, restingZ);
-    return { garment, root, focus: spring(), x: spring(x), y: spring(GARMENT_Y),
+    return { garment, root, body, focus: spring(), x: spring(x), y: spring(GARMENT_Y),
       scale: spring(1), sideBlend, sideMap, backMap:backTexture };
   }
 
@@ -221,7 +228,7 @@ export class WardrobeRenderer {
     const r = this.canvas.getBoundingClientRect();
     this.pointer.set((clientX-r.left)/r.width*2-1, -(clientY-r.top)/r.height*2+1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    const result = this.raycaster.intersectObjects(this.items.map(i => i.root), true);
+    const result = this.raycaster.intersectObjects(this.items.map(i => i.body), false);
     for (const h of result) {
       if (!h.object.userData.garmentId) continue;
       const i = this.items.findIndex(item => item.garment.id === h.object.userData.garmentId);
@@ -276,7 +283,7 @@ export class WardrobeRenderer {
     this.items.forEach((item, i) => {
       const target = i === active ? 1 : 0;
       if (s.reduced) item.focus.value = target;
-      else stepSpring(item.focus, target, dt);
+      else stepSpring(item.focus, target, dt, item.garment.turnStiffness??85, item.garment.turnDamping??18);
     });
     this.items.forEach((item, i) => {
       const g = item.garment;
@@ -378,6 +385,7 @@ export class WardrobeRenderer {
     const disposedTextures = new Set<THREE.Texture>();
     item.root.traverse(o => {
       if (!(o instanceof THREE.Mesh)) return;
+      if (o.geometry.boundsTree) disposeBoundsTree.call(o.geometry);
       o.geometry.dispose();
       const mat=o.material as THREE.MeshBasicMaterial;
       if (mat.map && !disposedTextures.has(mat.map)) { mat.map.dispose(); disposedTextures.add(mat.map); }

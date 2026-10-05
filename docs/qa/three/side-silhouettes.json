@@ -1,0 +1,85 @@
+{
+  "scope": "Orthographic triangle silhouette against registered reference photo",
+  "checks": [
+    {
+      "id": "camo",
+      "restSilhouetteIoU": 0.946,
+      "sourceWidth": 171,
+      "meshWidth": 171,
+      "sourceHem": 754,
+      "meshHem": 754
+    },
+    {
+      "id": "essential",
+      "restSilhouetteIoU": 0.9622,
+      "sourceWidth": 160,
+      "meshWidth": 158,
+      "sourceHem": 691,
+      "meshHem": 698
+    },
+    {
+      "id": "dollar",
+      "restSilhouetteIoU": 0.9703,
+      "sourceWidth": 147,
+      "meshWidth": 151,
+      "sourceHem": 689,
+      "meshHem": 685
+    },
+    {
+      "id": "underclass",
+      "restSilhouetteIoU": 0.9622,
+      "sourceWidth": 160,
+      "meshWidth": 160,
+      "sourceHem": 691,
+      "meshHem": 685
+    },
+    {
+      "id": "republic",
+      "restSilhouetteIoU": 0.9707,
+      "sourceWidth": 147,
+      "meshWidth": 146,
+      "sourceHem": 757,
+      "meshHem": 756
+    },
+    {
+      "id": "world",
+      "restSilhouetteIoU": 0.968,
+      "sourceWidth": 184,
+      "meshWidth": 184,
+      "sourceHem": 728,
+      "meshHem": 723
+    },
+    {
+      "id": "flowers",
+      "restSilhouetteIoU": 0.9665,
+      "sourceWidth": 146,
+      "meshWidth": 145,
+      "sourceHem": 686,
+      "meshHem": 681
+    },
+    {
+      "id": "studio",
+      "restSilhouetteIoU": 0.9792,
+      "sourceWidth": 146,
+      "meshWidth": 146,
+      "sourceHem": 686,
+      "meshHem": 686
+    },
+    {
+      "id": "portrait",
+      "restSilhouetteIoU": 0.9619,
+      "sourceWidth": 152,
+      "meshWidth": 150,
+      "sourceHem": 686,
+      "meshHem": 692
+    },
+    {
+      "id": "washed",
+      "restSilhouetteIoU": 0.9698,
+      "sourceWidth": 145,
+      "meshWidth": 144,
+      "sourceHem": 756,
+      "meshHem": 756
+    }
+  ]
+}

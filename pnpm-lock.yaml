@@ -80,6 +80,9 @@ importers:
       three:
         specifier: ^0.186.1
         version: 0.186.1
+      three-mesh-bvh:
+        specifier: ^0.9.15
+        version: 0.9.15(three@0.186.1)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -4506,6 +4509,11 @@ packages:
     resolution: {integrity: sha512-tPbLXTI6ohPASb/1YViL428oEHu6/qv1OxqYnfaonVCFHqx4+wCd95pHrQWsL5X4pl90CTyW9piSAsS2L0VoMw==}
     engines: {node: '>=10'}
     hasBin: true
+
+  three-mesh-bvh@0.9.15:
+    resolution: {integrity: sha512-9xdEDkCzFoT8VPFH9DznwFSdbaIEjMvM106Iqq7TJurrIheUKDcdW4prfJTCxryih4XS/UxWs0H3K4MLMRFyOQ==}
+    peerDependencies:
+      three: '>= 0.159.0'
 
   three@0.186.1:
     resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
@@ -8945,6 +8953,10 @@ snapshots:
       acorn: 8.16.0
       commander: 2.20.3
       source-map-support: 0.5.21
+
+  three-mesh-bvh@0.9.15(three@0.186.1):
+    dependencies:
+      three: 0.186.1
 
   three@0.186.1: {}
 

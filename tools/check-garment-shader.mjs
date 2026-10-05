@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { garmentMaterial } from '../lib/garment-material.ts';
+import { acceleratedRaycast, computeBoundsTree } from 'three-mesh-bvh';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -27,6 +28,10 @@ const source=fs.readFileSync(path.join(root,'lib/wardrobe-three.ts'),'utf8');
 const blurVertex=source.match(/const blurVertex = `([\s\S]*?)`;/)[1];
 const blurFragment=source.match(/const blurFragment = `([\s\S]*?)`;/)[1];
 const meshes=[];
+const bodies=[];
+const garments=JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'),'utf8'));
+const camera=new THREE.OrthographicCamera(-1456,1456,810,-810,.1,8000);
+camera.position.z=3000;camera.updateMatrixWorld();
 for(const file of fs.readdirSync(path.join(root,'public/models')).filter(f=>f.endsWith('.glb'))){
   const raw=fs.readFileSync(path.join(root,'public/models',file));
   const length=raw.readUInt32LE(12),json=JSON.parse(raw.subarray(20,20+length));
@@ -49,6 +54,10 @@ for(const file of fs.readdirSync(path.join(root,'public/models')).filter(f=>f.en
   }
   const merged=mergeGeometries(geometries,false);
   if(!merged||merged.groups.length||merged.attributes.position.count!==geometries.reduce((a,g)=>a+g.attributes.position.count,0))throw new Error(`Bad merged model ${file}`);
+  merged.computeBoundingBox();merged.computeBoundingSphere();
+  computeBoundsTree.call(merged,{indirect:true});
+  const g=garments.find(g=>file===`${g.id}.glb`);
+  if(g){const body=new THREE.Mesh(merged,new THREE.MeshBasicMaterial());body.userData.g=g;bodies.push(body);}
   meshes.push({file,vertices:merged.attributes.position.count,triangles:merged.index.count/3,bodyDrawCalls:1});
 }
 fs.writeFileSync(out,JSON.stringify({
@@ -56,3 +65,35 @@ fs.writeFileSync(out,JSON.stringify({
   blur:{vertex:vertexPrefix+blurVertex,fragment:fragmentPrefix+expand(blurFragment).replace(/precision\s+\w+\s+\w+\s*;/g,'')},meshes,
 },null,2));
 console.log(JSON.stringify({output:out,meshes:meshes.length,bodyDrawCalls:meshes.length}));
+
+// Exercise the actual static meshes and transform matrices; compare every pick
+// with Three's unaccelerated implementation before reporting CPU timings.
+const raycaster=new THREE.Raycaster();raycaster.firstHitOnly=true;
+const rays=Array.from({length:384},(_,i)=>new THREE.Vector2(-.88+(i%24)/23*1.76,.4-Math.floor(i/24)/15*1.05));
+const picking=[];
+for(const active of [-1,6]){
+  for(const body of bodies){
+    const g=body.userData.g,i=garments.indexOf(g);
+    const shift=active<0||active===i?0:Math.sign(i-active)*182*Math.pow(.6,Math.abs(i-active)-1);
+    body.position.set(g.pivot*2912-1456+shift,810-418,0);
+    body.rotation.y=i===active?0:g.restYaw;body.updateMatrixWorld();
+  }
+  const run=accelerated=>{
+    bodies.forEach(body=>{body.raycast=accelerated?acceleratedRaycast:THREE.Mesh.prototype.raycast;});
+    const timings=[],hits=[];
+    for(const pointer of rays){
+      raycaster.setFromCamera(pointer,camera);const start=performance.now();
+      const result=raycaster.intersectObjects(bodies,false);
+      timings.push(performance.now()-start);hits.push(result[0]?.object.userData.g.id||null);
+    }
+    timings.sort((a,b)=>a-b);
+    return {hits,p50:timings[192],p95:timings[364]};
+  };
+  run(true);const plain=run(false),bvh=run(true);
+  if(JSON.stringify(plain.hits)!==JSON.stringify(bvh.hits))throw new Error('BVH changed garment picking');
+  picking.push({pose:active<0?'resting rack':'flowers focused',rays:rays.length,identicalPicks:true,
+    plainMsP95:+plain.p95.toFixed(3),bvhMsP95:+bvh.p95.toFixed(3),bvhMsP50:+bvh.p50.toFixed(3)});
+}
+const pickingResult={scope:'Node CPU raycast QA on production GLBs, NOT browser FPS',picking};
+fs.writeFileSync(path.join(root,'docs/qa/three/picking.json'),JSON.stringify(pickingResult,null,2)+'\n');
+console.log(JSON.stringify(pickingResult));
