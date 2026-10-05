@@ -40,7 +40,12 @@
     ],
     "sourceFrames": [],
     "reference": true,
-    "frontInferred": true
+    "frontInferred": true,
+    "mesh": "/models/camo.glb",
+    "sideTexture": "/models/camo-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 35736,
+    "meshVertices": 19684
   },
   {
     "id": "essential",
@@ -130,7 +135,12 @@
       107,
       108
     ],
-    "reference": true
+    "reference": true,
+    "mesh": "/models/essential.glb",
+    "sideTexture": "/models/essential-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 27292,
+    "meshVertices": 15120
   },
   {
     "id": "dollar",
@@ -223,7 +233,12 @@
     "detailScale": 1.202226,
     "detailY": 301.271,
     "detailX": -2.0,
-    "detailHookHeight": 75
+    "detailHookHeight": 75,
+    "mesh": "/models/dollar.glb",
+    "sideTexture": "/models/dollar-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 26984,
+    "meshVertices": 14720
   },
   {
     "id": "underclass",
@@ -318,7 +333,12 @@
     "detailScale": 1.244403,
     "detailY": 300.825,
     "detailX": 1.0,
-    "detailHookHeight": 78
+    "detailHookHeight": 78,
+    "mesh": "/models/underclass.glb",
+    "sideTexture": "/models/underclass-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 26656,
+    "meshVertices": 14896
   },
   {
     "id": "republic",
@@ -421,7 +441,12 @@
     "detailScale": 1.090239,
     "detailY": 329.766,
     "detailX": -2.0,
-    "detailHookHeight": 71
+    "detailHookHeight": 71,
+    "mesh": "/models/republic.glb",
+    "sideTexture": "/models/republic-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 35644,
+    "meshVertices": 18982
   },
   {
     "id": "world",
@@ -517,7 +542,12 @@
     "detailScale": 1.122371,
     "detailY": 323.902,
     "detailX": 3.0,
-    "detailHookHeight": 77
+    "detailHookHeight": 77,
+    "mesh": "/models/world.glb",
+    "sideTexture": "/models/world-side.jpg",
+    "restYaw": 1.3439035240356338,
+    "meshTriangles": 33856,
+    "meshVertices": 18492
   },
   {
     "id": "flowers",
@@ -611,7 +641,12 @@
     "detailScale": 1.301708,
     "detailY": 264.501,
     "detailX": -7.0,
-    "detailHookHeight": 80
+    "detailHookHeight": 80,
+    "mesh": "/models/flowers.glb",
+    "sideTexture": "/models/flowers-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 26068,
+    "meshVertices": 14326
   },
   {
     "id": "studio",
@@ -654,7 +689,12 @@
     ],
     "sourceFrames": [],
     "reference": true,
-    "frontInferred": true
+    "frontInferred": true,
+    "mesh": "/models/studio.glb",
+    "sideTexture": "/models/studio-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 27900,
+    "meshVertices": 15186
   },
   {
     "id": "portrait",
@@ -730,7 +770,12 @@
       897,
       898
     ],
-    "reference": true
+    "reference": true,
+    "mesh": "/models/portrait.glb",
+    "sideTexture": "/models/portrait-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 26612,
+    "meshVertices": 14560
   },
   {
     "id": "washed",
@@ -773,6 +818,11 @@
     ],
     "sourceFrames": [],
     "reference": true,
-    "frontInferred": true
+    "frontInferred": true,
+    "mesh": "/models/washed.glb",
+    "sideTexture": "/models/washed-side.jpg",
+    "restYaw": 1.3962634015954636,
+    "meshTriangles": 31500,
+    "meshVertices": 16978
   }
 ]

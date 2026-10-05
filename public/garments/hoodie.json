@@ -24,5 +24,10 @@
     563,
     583
   ],
-  "reference": false
+  "reference": false,
+  "mesh": "/models/hoodie.glb",
+  "sideTexture": "/models/hoodie-side.jpg",
+  "restYaw": 1.2915436464758039,
+  "meshTriangles": 34320,
+  "meshVertices": 18702
 }
