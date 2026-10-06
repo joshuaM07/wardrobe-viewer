@@ -28,6 +28,35 @@ def normals(positions, triangles):
     return n / np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-9)
 
 
+def hanging_envelope(side_mask, cloth):
+    """Use smooth silhouette boundaries, with no fold-sized row oscillations."""
+    rows, left, right = [], [], []
+    for y in range(110, 810):
+        xs = np.flatnonzero(side_mask[y])
+        if len(xs) < 8 or not cloth[y].any():
+            continue
+        rows.append(y)
+        left.append(xs[0]-320)
+        right.append(xs[-1]-320)
+    if not rows:
+        raise ValueError('A registered side silhouette is required')
+    row_y = np.arange(810)
+    # Smooth the two boundaries together. A small filter removes matte noise
+    # while retaining the sleeve/torso step and the hanging hem in the source.
+    boundaries = np.stack([np.interp(row_y, rows, left),
+                           np.interp(row_y, rows, right)])
+    boundaries = ndi.gaussian_filter1d(boundaries, 12, axis=1, mode='nearest')
+    return boundaries.mean(axis=0), np.maximum((boundaries[1]-boundaries[0])/2, 3)
+
+
+def horizontal_edge_distance(mask):
+    """Round vertical fabric edges without curling the hem/cuffs into a pillow."""
+    x = np.broadcast_to(np.arange(mask.shape[1]), mask.shape)
+    left = np.maximum.accumulate(np.where(~mask, x, -1), axis=1)
+    right = np.minimum.accumulate(np.where(~mask, x, mask.shape[1])[:, ::-1], axis=1)[:, ::-1]
+    return np.minimum(x-left, right-x)*mask
+
+
 def shell(mask, depth_front, depth_back, material, bake_surfaces=None):
     contours, _ = cv2.findContours(mask.astype('uint8'), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     contour = max(contours, key=cv2.contourArea).reshape(-1, 2)
@@ -221,24 +250,14 @@ for g in garments:
     # Reconstruct a smooth envelope and a rounded fabric edge instead.
     distance = ndi.distance_transform_edt(cloth)
     yy, xx = np.mgrid[:810, :640]
-    sm = side[:, :, 3] > 90
-    rows, centres, radii = [], [], []
-    for y in range(110, 810):
-        xs = np.where(sm[y])[0]
-        if len(xs) < 8 or not cloth[y].any(): continue
-        rows.append(y)
-        centres.append((xs[0]+xs[-1])/2-320)
-        radii.append((xs[-1]-xs[0])/2)
-    row_y = np.arange(810)
-    centre = ndi.gaussian_filter1d(np.interp(row_y, rows, centres), 32)
-    radius = ndi.gaussian_filter1d(np.interp(row_y, rows, radii), 24)
-    radius = np.clip(radius, 14, 110 if g['type'] == 'hoodie' else 90)
+    centre, radius = hanging_envelope(side[:, :, 3] > 90, cloth)
     # Flat chest/print area, broad rounded edges. The same physical surface and
     # fixed UVs remain visible throughout the turn; there is no angle texture swap.
     rim_width = 28 if g['type'] == 'hoodie' else 22
-    # A hem is a short stitched edge, not a rounded pillow end. Anisotropic
-    # distance retains broad side curvature without rolling up the hem/cuffs.
-    side_distance = ndi.distance_transform_edt(cloth, sampling=(7, 1))
+    # Vertical edges can roll over, but distance from a horizontal hem must not
+    # squeeze both panels back to their centre line. That caused the bulbous
+    # outline and pointed, curled-up hems visible in the enlarged mobile rack.
+    side_distance = horizontal_edge_distance(cloth)
     rim = np.sqrt(1-(1-np.clip(side_distance/rim_width, 0, 1))**2)
     depth = 1.2 + (radius[:, None]-1.2)*rim
     gray = rgb.mean(2)/255
@@ -248,14 +267,14 @@ for g in garments:
     print_guard = np.clip((abs(xx-320)-140)/35, 0, 1)
     print_guard = np.maximum(print_guard, np.clip((180-yy)/35, 0, 1))
     fold *= print_guard*np.clip(distance/18, 0, 1)
-    front = ndi.gaussian_filter(centre[:, None] + depth + fold, 1.2)
-    back = ndi.gaussian_filter(centre[:, None] - depth + fold*.35, 1.2)
+    front = centre[:, None] + depth + ndi.gaussian_filter(fold, 1.2)
+    back = centre[:, None] - depth + ndi.gaussian_filter(fold*.35, 1.2)
     # The reference rack is edge-on. At 80 degrees the whole front print was
     # squeezed into the side, magnifying the faulty depth fit on mobile.
     rest_yaw = np.pi/2
     if slug == 'hoodie':
         cavity = np.exp(-((xx-320)/55)**2-((yy-152)/37)**2)
-        front -= cavity*40
+        front -= np.minimum(cavity*40, np.maximum(front-back-3, 0)*.7)
         # Extra hood volume and the raised kangaroo-pocket surface are baked in.
         front += np.exp(-((abs(xx-320)-88)/25)**2-((yy-151)/52)**2)*15
         pocket = ((yy > 450) & (yy < 638) & (abs(xx-320) < (125-(638-yy)*.13)))

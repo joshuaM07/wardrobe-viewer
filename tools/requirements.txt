@@ -2,3 +2,4 @@ Pillow
 numpy
 scipy
 opencv-python-headless
+moderngl
