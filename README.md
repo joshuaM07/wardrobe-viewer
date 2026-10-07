@@ -1,6 +1,6 @@
 # Wardrobe Viewer
 
-An interactive Next.js App Router recreation of the supplied Batch Merch wardrobe video, rendered with **Three.js**. Continuous 3D rotation replaces the earlier Canvas2D angle atlases. The garments have closed front, back, and seam geometry, static fold relief, photographic textures, wooden hangers, and separate metal hooks. There is no cloth simulation.
+A Next.js App Router recreation of the supplied Batch Merch clothing rack, rendered with **Three.js**, with a garment design studio. Closed front, back, and seam meshes carry photographic fabric detail and artwork. Continuous rotation, damped hanger sway, and soft normal-based lighting keep garments responsive without runtime cloth simulation.
 
 ## Run
 
@@ -13,51 +13,50 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Normal checkouts run Next.js. The managed Sites preview uses its Vite/Vinext adapter for the same App Router source. Production is built by Next.js and statically exported to `out/`.
+Normal checkouts run Next.js. Managed Sites preview uses its Vite/Vinext adapter for the same source. Production builds with Next.js and exports to `out/`.
 
 ```sh
 pnpm typecheck
-pnpm lint
 pnpm build
 pnpm start
 ```
 
-`pnpm start` serves the export on localhost:3000. No server, database, secrets, or remote media APIs are needed.
+`pnpm start` serves the export on localhost:3000. No database, secrets, upload service, or remote media API is required.
 
-## Interaction
+## Explore and customize
 
-- Hover to turn a garment forward; click or press Enter to inspect it.
-- On mobile, the enlarged rack pans with a slider, swipes, or arrows. The nearest garment turns forward automatically. Camera movement stops at the rack ends, and the entire garment fits the available height. Arrows stay in sync with the slider and added hoodie.
-- Desktop rack arrows turn the previous or next garment forward without opening the viewer and wrap through the collection.
-- Previous/next buttons and arrow keys navigate the viewer. Escape closes it.
-- Drag the selected garment to rotate it. Touch opens garments directly.
-- The bottom handle opens **Add hoodie** and **Replay reference motion**.
-- Reduced-motion preferences are honored.
+- Hover a garment to turn it forward; click or press Enter to inspect it. Rack arrows browse without opening the viewer.
+- On mobile, swipe, use arrows, or move the slider. The nearest piece faces forward automatically; camera movement stops at the rail ends.
+- Drag a selected piece through a full rotation, or use Front and Back. Arrow keys navigate pieces; Escape closes the editor before closing the viewer.
+- Choose **Customize** to set any fabric colour with swatches, the colour picker, or a hex value. Keep or remove the original graphic.
+- Upload independent front and back artwork, then change print size and horizontal/vertical placement while viewing it on the actual mesh. Transparent PNGs retain their alpha.
+- PNG, JPG, and WebP files up to 15 MB are supported. Images decode once, reduce to a 1536px maximum edge, and lose unnecessary transparent padding. Artwork never switches to a screen overlay during rotation.
+- Add blank T-shirts, long sleeves, crewnecks, or hoodies from the studio or bottom handle. Up to 20 pieces spread along the rail, with spacing around the active garment. Added pieces can be removed.
+- Designs, added pieces, and processed images save in IndexedDB on the current device. There is no account sync; removing browser storage also removes these designs. Save failures appear in the editor.
+- The bottom handle also offers **Replay motion**. Reduced-motion preferences are honored.
 
-Availability, About, and Contact are local presentation panels. Live inventory and checkout are not connected.
+Availability, About, and Contact remain local presentation panels. Live inventory and checkout are not connected. Without WebGL, an explicitly labelled static catalogue preview appears and customization is disabled.
 
-## Rendering
+## Rendering and assets
 
-`lib/wardrobe-three.ts` owns the renderer, orthographic camera, demand-driven animation, rigid transforms, chrome rail, GPU background blur, and selection. Each garment and wooden hanger share one draw call; its metal hook uses a second. Geometry and textures are prepared while loading, not recreated during animation. Picking uses a static BVH. Resolution adapts to the pixel budget and measured frame intervals. Rendering stops when the scene settles and pauses when the document is hidden.
+`lib/wardrobe-three.ts` owns the renderer, orthographic camera, demand-driven animation, chrome rail, GPU background blur, selection, and design texture lifecycle. Geometry and picking BVHs stay fixed during interaction. Each garment/hanger uses one body draw call plus one metal hook. Rotation follows the pointer with a faster spring during dragging, then settles; rendering stops when the scene settles and pauses while the document is hidden. Resolution adapts to the pixel budget and measured frame intervals. Mobile retains a 750,000-pixel limit and DPR up to 2; desktop retains 1.4 million pixels and DPR 1.5.
 
-`lib/rack-view.ts` fits mobile garments to the viewport height and bounds the camera at the rack ends. Mobile uses a 750,000-pixel limit with DPR up to 2; desktop retains 1.4 million pixels and DPR 1.5. Product blur buffers are allocated on demand. Portrait and landscape layouts provide 44px navigation, slider, and availability targets. The mobile framing check exercises the production renderer against all 11 GLBs in 132 rack/product cases.
+`lib/garment-material.ts` retains the original fixed UV albedo atlas, separate front/back surfaces, and wooden hanger. Neutral fabric maps are loaded only when a piece is customized. The material combines a colour-neutral fold texture, optional original-graphic mask, and independent alpha artwork for each side. Artwork placement uses object coordinates, including a reversed X coordinate on the back so lettering reads correctly. Lighting follows transformed mesh normals. Slider movement changes uniforms, with no image decoding, mesh rebuild, or shader compilation. Superseded uploads and removed pieces release their textures; late uploads cannot overwrite newer choices.
 
-`lib/garment-material.ts` applies fixed UV textures to the actual garment surfaces, preserving captured fabric detail and artwork. Front and side photographs occupy separate islands of one immutable albedo atlas. Smooth texture stitching is baked offline from the mesh's object-space shape. Each surface needs one texture lookup; there is no runtime texture stitching or camera/rotation-dependent blend. The printed chest retains its front UVs through the complete turn. Side captures also constrain a smooth volume offline; row-by-row silhouette extrusion is avoided because it buckles the fabric. There are no animated image atlases, videos, time-indexed images, or per-frame image decoding in the normal renderer. A browser without WebGL receives an explicitly labelled static poster, with replay disabled. Asset revision URLs keep cached meshes, atlases and posters consistent after updates.
+`lib/garment-design.ts` supplies template types, upload processing, saved-state validation, and rack placement. `components/GarmentStudio.tsx` is a desktop side panel and mobile bottom sheet; the canvas fits the full piece alongside it.
 
-Meshes and textures live in `public/models/`; `lib/garments.json` defines the measured pivots, resting angles, product framing, and calibrated turn response. `tools/build-garment-meshes.py` generates the static meshes offline from registered front/side photos. Side boundaries are smoothed before meshing; only vertical fabric edges are rounded, so the hem and cuffs do not collapse into a swollen, pointed outline. The hoodie collar recess is limited to the available panel separation. To add garments, supply consistently registered RGBA photos around the hanger pivot, add their metadata, then generate the GLB. Hood volume, pocket relief, and sleeve folds are baked once.
+`public/models/` contains GLBs and fixed textures. `lib/garments.json` describes catalogue meshes, hanger pivots, resting angles, framing, and calibrated turn response. `tools/build-garment-meshes.py` reconstructs static meshes from registered front/side photos. `tools/build-custom-fabric.py` produces neutral maps and print masks without changing the original catalogue textures. Its fabric continuation avoids angular large-region inpaint patches. Front, back, and side texture islands remain fixed throughout a turn; there are no angle atlases, runtime cloth physics, or per-frame image loads.
 
 ## Reference and verification
 
-All **1,136 reference frames at 60 fps** were decoded and reviewed in order. `docs/frame-audit.json` records frame deltas; `docs/reference-analysis.md` records layout and motion measurements. The subsequent 3D comparison measures all **341 frames across seven revealed turns**, retaining every measurement and its segmentation uncertainty.
+All **1,136 frames at 60 fps** of the supplied reference were decoded in order. Layout and motion measurements are in `docs/reference-analysis.md`; subsequent comparisons retain all **341 frames of seven revealed turns**. Seven fronts use the supplied pixels. Camo, studio, and washed-grey fronts, unseen backs, and added hoodies include inferred photography or surfaces; they do not claim to reproduce unseen original artwork.
 
-Seven fronts use the supplied video pixels. The camo, studio, and washed-grey fronts are inferred because the clip never reveals them. Their original side views are retained. The added hoodie uses generated source photography. Unseen backs are inferred fabric surfaces; they are not claimed to reproduce unknown original artwork.
+Production GLSL and GLBs are rendered under Mesa/EGL for asset QA. The design checks cover four clothing templates in five colours, transparent front/back prints through a full turn, original silhouettes, 632 camera-framing cases, uploads, late-upload races, texture disposal, and validated saved state. The framing checks include a 20-piece rack and the mobile/desktop studio. Evidence and reproducible tools live in `docs/qa/three/` and `tools/`.
 
-`docs/qa/three/` includes production-shader renders, a side-by-side comparison of every captured turn frame, front and side silhouette comparisons, motion measurements, and BVH picking checks. `sides/` compares every garment with its registered side photograph, retains ten viewpoints per garment, and records 2,981 rasterized poses. The side correction prioritizes a smooth, textured volume over fitting every silhouette row exactly. Outline metrics are not whole-screen similarity scores.
+Hardware browser FPS and the final browser UI cannot be verified in the available managed environment. Software-driver timings are asset QA, not browser performance claims. The WebGL canvas exposes measured browser intervals, draw counts, and resolution in its `data-performance` attribute on a WebGL-capable browser.
 
-The managed QA browser has WebGL disabled, so hardware browser FPS cannot be verified there. The actual garment and blur GLSL compiled under Mesa/EGL, and production GLBs were rendered offscreen. Those software-driver timings are asset QA, not browser performance claims. The real renderer exposes measured browser intervals and draw counts in the canvas `data-performance` attribute on a WebGL-capable browser.
-
-The offline tools are not needed to run or deploy the app. They require Python, Pillow, NumPy, SciPy, OpenCV, ModernGL, and the original decoded reference for source measurements. Old angle metadata is retained in `docs/original-angle-metadata.json`; removed atlases remain recoverable in Git history.
+Offline tools are not needed to run or deploy the app. Python QA requires Pillow, NumPy, SciPy, OpenCV, ModernGL, and reference crops. `node tools/check-design-studio.mjs` also exercises native image processing when `@napi-rs/canvas` is available, including through the primary runtime. `node tools/check-mobile-rack.mjs` validates production renderer transforms against the actual GLB bounds.
 
 ## Source history
 
-The project is committed and pushed to [joshuaM07/wardrobe-viewer](https://github.com/joshuaM07/wardrobe-viewer). Meaningful implementation and verification steps are saved as separate commits. Sites maintains the same source state for the published preview. GitHub credentials are never bundled in the source.
+Meaningful implementation and verification steps are committed and pushed to [joshuaM07/wardrobe-viewer](https://github.com/joshuaM07/wardrobe-viewer). Sites maintains the same source state for deployment. Credentials are never bundled in the source.

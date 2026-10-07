@@ -4,13 +4,15 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
-import { garmentMaterial } from './garment-material';
+import { garmentMaterial, type FabricMaterial } from './garment-material';
+import type { GarmentDesign, PrintSide } from './garment-design';
 import { garmentAssetUrl } from './garment-assets';
 import { clamp, spring, stepSpring, type Spring } from './motion';
 import { mobileRackView, mobileProductView } from './rack-view';
 
 export type Garment = {
   id: string; name: string; type: string; pivot: number; mesh: string;
+  sourceId?: string;
   restYaw: number; reference: boolean;
   fabricColor?: string;
   hangerTop?: number;
@@ -21,12 +23,19 @@ export type Mode = 'rack' | 'product' | 'about' | 'contact';
 export type WardrobeState = {
   active: number; selected: number; mode: Mode; demo: boolean; demoStart: number;
   reduced: boolean; spin: number;
+  dragging?: boolean;
+  studio?: boolean;
   mobile: boolean; rackPosition: number;
 };
 type Item = {
-  garment: Garment; root: THREE.Group; body: THREE.Mesh; focus: Spring;
+  garment: Garment; root: THREE.Group; body: THREE.Mesh<THREE.BufferGeometry, FabricMaterial>; focus: Spring;
   x: Spring; y: Spring; scale: Spring;
   backMap: THREE.Texture;
+  sway: Spring; designVersion: number; released: boolean;
+  prepared: boolean;
+  designTextures: Set<THREE.Texture>;
+  fabric?: Promise<THREE.Texture[]>;
+  artwork: Partial<Record<PrintSide, { url: string; texture: Promise<THREE.Texture>; value?: THREE.Texture }>>;
 };
 
 const W = 2912, H = 1620, GARMENT_Y = 418;
@@ -53,6 +62,7 @@ export class WardrobeRenderer {
   private camera = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, .1, 8000);
   private rail = new THREE.Group();
   private items: Item[] = [];
+  private rackSpread = 182;
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
   private loader = new GLTFLoader(new THREE.LoadingManager().setURLModifier(garmentAssetUrl));
@@ -71,6 +81,9 @@ export class WardrobeRenderer {
   private viewX = spring();
   private viewY = spring();
   private viewZoom = spring(1);
+  private spin = spring();
+  private spinSelected = -1;
+  private textureLoader = new THREE.TextureLoader();
   private raf = 0;
   private disposed = false;
   private previous = 0;
@@ -207,14 +220,20 @@ export class WardrobeRenderer {
     const x = garment.pivot*W;
     root.position.set(x-W/2, H/2-GARMENT_Y, restingZ);
     return { garment, root, body, focus: spring(), x: spring(x), y: spring(GARMENT_Y),
-      scale: spring(1), backMap:backTexture };
+      scale: spring(1), backMap:backTexture, sway: spring(), designVersion: 0,
+      released: false, prepared: true, designTextures: new Set(), artwork: {} };
   }
 
-  async add(garment: Garment) {
+  async add(garment: Garment, design?: GarmentDesign) {
     const item = await this.loadItem(garment);
     if (this.disposed) { this.releaseItem(item); return; }
+    item.prepared=!design;item.root.visible=item.prepared;
     this.items.push(item); this.scene.add(item.root);
-    await this.renderer.compileAsync(this.scene, this.camera);
+    try{
+      if(design)await this.applyDesign(garment.id,design);
+      item.prepared=true;item.root.visible=true;
+      await this.renderer.compileAsync(this.scene, this.camera);
+    }catch(error){this.remove(garment.id);throw error;}
     this.invalidate();
   }
 
@@ -225,11 +244,83 @@ export class WardrobeRenderer {
     this.invalidate();
   }
 
+  setGarments(garments: Garment[]) {
+    for (const item of this.items) {
+      const garment=garments.find(g=>g.id===item.garment.id);
+      if(garment)item.garment=garment;
+    }
+    let gap=Infinity;
+    for(let i=1;i<this.items.length;i++)gap=Math.min(gap,(this.items[i].garment.pivot-this.items[i-1].garment.pivot)*W);
+    this.rackSpread=Math.max(182,360-gap);
+    this.invalidate();
+  }
+
+  async applyDesign(id: string, design: GarmentDesign) {
+    const item=this.items.find(i=>i.garment.id===id);
+    if(!item)return;
+    const version=++item.designVersion;
+    const uniforms=item.body.material.fabricUniforms;
+    const cleanTextures=()=>{
+      const keep=new Set<THREE.Texture>([item.backMap,item.body.material.map!,uniforms.fabricMap.value,uniforms.fabricBackMap.value,uniforms.printMask.value,uniforms.frontArtwork.value,uniforms.backArtwork.value]);
+      for(const art of Object.values(item.artwork))if(art?.value)keep.add(art.value);
+      for(const texture of item.designTextures)if(!keep.has(texture)){texture.dispose();item.designTextures.delete(texture);}
+    };
+    const customized=!!design.color||!!design.front||!!design.back||!design.originalPrint;
+    if(!customized){
+      uniforms.customized.value=0;
+      for(const side of ['front','back'] as const){uniforms[`${side}Artwork`].value=item.body.material.map!;uniforms[`${side}Enabled`].value=0;delete item.artwork[side];}
+      cleanTextures();this.invalidate();return;
+    }
+    const source=item.garment.sourceId??item.garment.id;
+    const loadTexture=async(url:string,atlas=false,mask=false)=>{
+      const texture=await this.textureLoader.loadAsync(url);
+      texture.colorSpace=mask?THREE.NoColorSpace:THREE.SRGBColorSpace;
+      texture.flipY=!atlas;
+      texture.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
+      texture.needsUpdate=true;
+      if(item.released||this.disposed){texture.dispose();return texture;}
+      item.designTextures.add(texture);
+      this.renderer.initTexture(texture);
+      return texture;
+    };
+    if(!item.fabric)item.fabric=Promise.all([
+      loadTexture(garmentAssetUrl(`/models/${source}-fabric.jpg`),true),
+      loadTexture(garmentAssetUrl(`/models/${source}-fabric-back.jpg`),true),
+      loadTexture(garmentAssetUrl(`/models/${source}-print-mask.png`),true,true),
+    ]).catch(error=>{item.fabric=undefined;throw error;});
+    const upload=(side:PrintSide)=>{
+      const art=design[side];if(!art)return Promise.resolve(undefined);
+      const existing=item.artwork[side];
+      if(existing?.url===art.dataUrl)return existing.texture;
+      const record:{url:string;texture:Promise<THREE.Texture>;value?:THREE.Texture}={url:art.dataUrl,texture:Promise.resolve(item.body.material.map!)};
+      record.texture=loadTexture(art.dataUrl).then(texture=>{record.value=texture;return texture;}).catch(error=>{if(item.artwork[side]===record)delete item.artwork[side];throw error;});
+      item.artwork[side]=record;
+      return record.texture;
+    };
+    const [fabric,front,back]=await Promise.all([item.fabric,upload('front'),upload('back')]);
+    if(item.released||this.disposed)return;
+    uniforms.fabricMap.value=fabric[0];uniforms.fabricBackMap.value=fabric[1];uniforms.printMask.value=fabric[2];
+    if(version!==item.designVersion){cleanTextures();return;}
+    uniforms.fabricColor.value.set(design.color??item.garment.fabricColor??'#e8e3d8');
+    uniforms.keepOriginal.value=design.originalPrint?1:0;
+    for(const [side,texture] of [['front',front],['back',back]] as const){
+      const art=design[side];
+      uniforms[`${side}Enabled`].value=art&&texture?1:0;
+      if(art&&texture){
+        uniforms[`${side}Artwork`].value=texture;
+        uniforms[`${side}Placement`].value.set(art.x,-art.y,art.width,art.width/art.aspect);
+      }else{
+        uniforms[`${side}Artwork`].value=item.body.material.map!;delete item.artwork[side];
+      }
+    }
+    uniforms.customized.value=1;cleanTextures();this.invalidate();
+  }
+
   hit(clientX: number, clientY: number, touch = false) {
     const r = this.canvas.getBoundingClientRect();
     this.pointer.set((clientX-r.left)/r.width*2-1, -(clientY-r.top)/r.height*2+1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    const result = this.raycaster.intersectObjects(this.items.map(i => i.body), false);
+    const result = this.raycaster.intersectObjects(this.items.filter(i=>i.prepared).map(i => i.body), false);
     for (const h of result) {
       if (!h.object.userData.garmentId) continue;
       const i = this.items.findIndex(item => item.garment.id === h.object.userData.garmentId);
@@ -280,6 +371,11 @@ export class WardrobeRenderer {
     if(s.mobile!==this.mobileProfile)this.resize();
     const active = s.mode === 'product' ? s.selected : s.active;
     let moving = Math.abs(this.expand.value-modal) > .0001 || Math.abs(this.expand.velocity) > .001;
+    const spinTarget=s.mode==='product'?s.spin:0;
+    if(this.spinSelected!==s.selected){this.spinSelected=s.selected;this.spin.value=spinTarget;this.spin.velocity=0;}
+    if(s.reduced){this.spin.value=spinTarget;this.spin.velocity=0;}
+    else stepSpring(this.spin,spinTarget,dt,s.dragging?420:125,s.dragging?38:21);
+    if(Math.abs(this.spin.value-spinTarget)>.0001||Math.abs(this.spin.velocity)>.001)moving=true;
     this.items.forEach((item, i) => {
       const target = i === active ? 1 : 0;
       if (s.reduced) item.focus.value = target;
@@ -289,7 +385,7 @@ export class WardrobeRenderer {
       const g = item.garment;
       let x = g.pivot*W;
       this.items.forEach((other, j) => {
-        if (i !== j) x += Math.sign(i-j)*182*Math.pow(.6, Math.abs(i-j)-1)*clamp(other.focus.value);
+        if (i !== j) x += Math.sign(i-j)*this.rackSpread*Math.pow(.6, Math.abs(i-j)-1)*clamp(other.focus.value);
       });
       const selected = i === s.selected;
       const detail = selected ? p : 0;
@@ -302,8 +398,12 @@ export class WardrobeRenderer {
         if (Math.abs(sp.value-value) > .0001 || Math.abs(sp.velocity) > .001) moving=true;
       }
       const f = clamp(item.focus.value);
-      item.root.rotation.y = g.restYaw*(1-f)+(selected ? s.spin*p : 0);
-      item.root.rotation.z = s.reduced ? 0 : clamp(item.focus.velocity,-.8,.8)*-.012*(1-p);
+      item.root.rotation.y = g.restYaw*(1-f)+(selected ? this.spin.value*p : 0);
+      const swayTarget=s.reduced?0:clamp(item.focus.velocity,-1.5,1.5)*-.014*(1-p)+(selected?clamp(this.spin.velocity,-3,3)*-.003*p:0);
+      if(s.reduced){item.sway.value=0;item.sway.velocity=0;}
+      else stepSpring(item.sway,swayTarget,dt,85,13);
+      item.root.rotation.z=item.sway.value;
+      if(Math.abs(item.sway.value-swayTarget)>.0001||Math.abs(item.sway.velocity)>.001)moving=true;
       item.root.position.set(item.x.value-W/2,H/2-item.y.value,selected ? p*120 : restingZ);
       item.root.scale.setScalar(item.scale.value);
       if (Math.abs(item.focus.value-(i===active?1:0)) > .0001 || Math.abs(item.focus.velocity) > .001) moving=true;
@@ -311,7 +411,7 @@ export class WardrobeRenderer {
     const view=s.mobile&&!s.demo?mobileRackView(this.items.map(item=>item.garment.pivot),s.rackPosition,this.cssWidth,this.cssHeight):{x:0,y:0,zoom:1};
     const selectedItem=this.items[s.selected];
     const height=-(selectedItem?.body.geometry.boundingBox?.min.y??-756);
-    const detail=s.mobile&&!s.demo&&selectedItem?mobileProductView(selectedItem.garment,this.cssWidth,this.cssHeight,height):{x:0,y:0,zoom:s.mobile?1.4:1};
+    const detail=(s.mobile||s.studio)&&!s.demo&&selectedItem?mobileProductView(selectedItem.garment,this.cssWidth,this.cssHeight,height):{x:0,y:0,zoom:s.mobile?1.4:1};
     const targets:[[Spring,number],[Spring,number],[Spring,number]]=[[this.viewX,view.x*(1-p)],[this.viewY,view.y+(detail.y-view.y)*p],[this.viewZoom,view.zoom+(detail.zoom-view.zoom)*p]];
     for(const [sp,target] of targets){
       if(s.reduced||dt===0){sp.value=target;sp.velocity=0;}
@@ -328,6 +428,7 @@ export class WardrobeRenderer {
   private draw() {
     const p = clamp(this.expand.value), s = this.state();
     const r = this.renderer;
+    this.items.forEach(item=>{item.root.visible=item.prepared;});
     r.info.reset();
     r.setRenderTarget(null); r.autoClear=true;
     if (p < .003 || !this.items[s.selected]) { r.render(this.scene, this.camera); return; }
@@ -344,9 +445,9 @@ export class WardrobeRenderer {
     this.blur.uniforms.direction.value.set(0,p*13/H);
     this.blur.uniforms.opacity.value=1-.94*p;
     r.setRenderTarget(null); r.render(this.postScene,this.postCamera);
-    this.items.forEach((item,i)=>{item.root.visible=i===s.selected;}); this.rail.visible=false;
+    this.items.forEach((item,i)=>{item.root.visible=item.prepared&&i===s.selected;}); this.rail.visible=false;
     r.autoClear=false; r.clearDepth(); r.render(this.scene,this.camera); r.autoClear=true;
-    this.items.forEach(item=>{item.root.visible=true;}); this.rail.visible=true;
+    this.items.forEach(item=>{item.root.visible=item.prepared;}); this.rail.visible=true;
   }
 
   private frame = (now: number) => {
@@ -392,6 +493,8 @@ export class WardrobeRenderer {
   }
 
   private releaseItem(item: Item) {
+    item.released=true;item.designVersion++;
+    item.designTextures.forEach(texture=>texture.dispose());item.designTextures.clear();
     const disposedTextures = new Set<THREE.Texture>();
     item.root.traverse(o => {
       if (!(o instanceof THREE.Mesh)) return;

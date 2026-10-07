@@ -7,9 +7,21 @@ import { clamp } from '@/lib/motion';
 import { garmentAssetUrl } from '@/lib/garment-assets';
 import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three';
 import { MOBILE_RACK_QUERY, RACK_WIDTH, mobileRackView, mobileProductView } from '@/lib/rack-view';
+import GarmentStudio from './GarmentStudio';
+import { arrangeRack, blankDesign, CLOTHING_TYPES, defaultDesign, readSavedWardrobe, saveWardrobe, type GarmentDesign, type PrintSide } from '@/lib/garment-design';
 
 const W = 2912;
 const PRODUCTS = rawGarments as Garment[];
+let hoodieTemplate: Promise<Garment> | undefined;
+async function getTemplate(source:string):Promise<Garment> {
+  const existing=PRODUCTS.find(g=>g.id===source);if(existing)return existing;
+  if(source!=='hoodie')throw new Error('Unknown garment type');
+  hoodieTemplate??=fetch('/garments/hoodie.json').then(async response=>{
+    if(!response.ok)throw new Error('Hoodie unavailable');
+    return await response.json() as Garment;
+  }).catch(error=>{hoodieTemplate=undefined;throw error;});
+  return hoodieTemplate;
+}
 const TIMELINE:[number,number,Mode][]=[[0,-1,'rack'],[1.05,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rack'],[5.016667,4,'rack'],[6.366667,5,'rack'],[7.2,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,6,'rack'],[14.333333,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
 
 export default function Wardrobe() {
@@ -20,7 +32,7 @@ export default function Wardrobe() {
   const [loadError,setLoadError]=useState(false);
   const [availability,setAvailability]=useState(false);
   const [adding,setAdding]=useState(false);
-  const scene = useRef({ active: -1, selected: 6, mode: 'rack' as Mode, hoodie: false, demo: false, demoStart: 0, reduced: false, dragging: false, dragX: 0, dragStartSpin: 0, spin: 0, mobile:false,rackPosition:6,dragRackStart:6 });
+  const scene = useRef({ active: -1, selected: 6, mode: 'rack' as Mode, hoodie: false, demo: false, demoStart: 0, reduced: false, dragging: false, dragX: 0, dragStartSpin: 0, spin: 0, mobile:false,rackPosition:6,dragRackStart:6,studio:false });
   const [mode, setMode] = useState<Mode>('rack');
   const [hover, setHover] = useState(-1);
   const [selected, setSelected] = useState(6);
@@ -32,6 +44,39 @@ export default function Wardrobe() {
   const [mobile,setMobile]=useState(false);
   const [rackPosition,setRackPosition]=useState(6);
   const [frame,setFrame]=useState({width:W,height:1620});
+  const [showStudio,setShowStudio]=useState(false);
+  const [designs,setDesigns]=useState<Record<string,GarmentDesign>>({});
+  const designsRef=useRef<Record<string,GarmentDesign>>({});
+  const addedRef=useRef<Garment[]>([]);
+  const saveHydrated=useRef(false);
+  const saveTimer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+  const saveRevision=useRef(0);
+  const saveChain=useRef(Promise.resolve());
+  const [saveStatus,setSaveStatus]=useState('Saved on this device');
+  const [designError,setDesignError]=useState('');
+  const [orientation,setOrientation]=useState<PrintSide|null>('front');
+  const persist=useCallback(()=>{
+    if(!saveHydrated.current)return;
+    const revision=++saveRevision.current;
+    clearTimeout(saveTimer.current);setSaveStatus('Saving…');
+    saveTimer.current=setTimeout(()=>{
+      const snapshot={version:1 as const,designs:designsRef.current,added:addedRef.current};
+      const write=saveChain.current.catch(()=>{}).then(()=>saveWardrobe(snapshot));
+      saveChain.current=write;
+      void write.then(()=>{if(revision===saveRevision.current)setSaveStatus('Saved on this device');})
+        .catch(()=>{if(revision===saveRevision.current)setSaveStatus('Could not save on this device');});
+    },250);
+  },[]);
+  const updateDesign=useCallback((id:string,design:GarmentDesign)=>{
+    designsRef.current={...designsRef.current,[id]:design};setDesigns(designsRef.current);setDesignError('');
+    void engine.current?.applyDesign(id,design).catch(()=>setDesignError('Could not load this design. Try again.'));
+    persist();
+  },[persist]);
+  const rotate=useCallback((side:PrintSide)=>{
+    const target=side==='front'?0:Math.PI;
+    scene.current.spin+=Math.atan2(Math.sin(target-scene.current.spin),Math.cos(target-scene.current.spin));
+    setOrientation(side);engine.current?.invalidate();
+  },[]);
   const lastFocus = useRef<HTMLElement | null>(null);
   const rackCursor = useRef(6);
   const highlightRack = useCallback((i: number) => {
@@ -57,7 +102,7 @@ export default function Wardrobe() {
   const pick = useCallback((i: number) => {
     const count = loaded.current.length || 10;
     i = (i + count) % count;
-    scene.current.selected = i; setSelected(i);
+    scene.current.selected = i;scene.current.spin=0;setOrientation('front');setDesignError('');setSelected(i);
   }, []);
   const openProduct = useCallback((i: number) => {
     lastFocus.current = document.activeElement as HTMLElement;
@@ -65,7 +110,7 @@ export default function Wardrobe() {
     setDemo(false); setMode('product');
   }, [pick]);
   const close = useCallback(() => {
-    setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(active);setMode('rack');
+    setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(active);setMode('rack');
     requestAnimationFrame(() => lastFocus.current?.focus());
   }, [highlightRack,focusRack]);
 
@@ -97,9 +142,23 @@ export default function Wardrobe() {
       const fail=()=>{setLoadError(true);engine.current?.dispose();engine.current=null;};
       const renderer=new WardrobeRenderer(canvas.current!,()=>scene.current,tick,fail);
       engine.current=renderer;
-      void renderer.load(PRODUCTS).then(()=>{
+      void Promise.all([renderer.load(PRODUCTS),readSavedWardrobe().catch(()=>undefined)]).then(async([,saved])=>{
         if(stopped||engine.current!==renderer)return;
-        loaded.current=PRODUCTS;setReady(true);setLoadError(false);
+        const extras:Garment[]=[];
+        for(const stored of (saved?.added??[]).slice(0,10)){
+          try{
+            const type=CLOTHING_TYPES.find(t=>t.source===stored.sourceId);if(!type)continue;
+            const template=await getTemplate(type.source);
+            const g={...template,id:stored.id,name:stored.name,sourceId:type.source,reference:false};
+            await renderer.add(g,saved?.designs[g.id]??blankDesign());extras.push(g);
+          }catch{setDesignError('One saved piece could not be restored.');}
+          if(stopped||engine.current!==renderer)return;
+        }
+        loaded.current=arrangeRack([...PRODUCTS,...extras]);addedRef.current=extras;renderer.setGarments(loaded.current);
+        designsRef.current=saved?.designs??{};setDesigns(designsRef.current);
+        await Promise.all(Object.entries(designsRef.current).map(([id,design])=>renderer.applyDesign(id,design).catch(()=>setDesignError('One saved design could not be restored.'))));
+        if(stopped||engine.current!==renderer)return;
+        setCollection(loaded.current);setHoodie(extras.some(g=>g.type==='hoodie'));saveHydrated.current=true;setReady(true);setLoadError(false);
       }).catch(()=>{if(!stopped)fail();});
     }catch{queueMicrotask(()=>{if(!stopped)setLoadError(true);});}
     const visible=()=>{if(!document.hidden)engine.current?.invalidate();};
@@ -107,24 +166,31 @@ export default function Wardrobe() {
     return()=>{stopped=true;engine.current?.dispose();engine.current=null;mq.removeEventListener('change',applyMotion);document.removeEventListener('visibilitychange',visible);};
   }, [highlightRack,focusRack]);
 
+  useEffect(()=>()=>{
+    clearTimeout(saveTimer.current);
+    if(saveHydrated.current)void saveChain.current.catch(()=>{}).then(()=>saveWardrobe({version:1,designs:designsRef.current,added:addedRef.current})).catch(()=>{});
+  },[]);
+
   useEffect(()=>{engine.current?.invalidate();},[mode,hover,selected,hoodie,demo,mobile,rackPosition]);
+  useEffect(()=>{scene.current.studio=showStudio;engine.current?.invalidate();},[showStudio]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { if(availability){setAvailability(false);return;}close(); scene.current.demo = false; setDemo(false); }
+      if (e.key === 'Escape') { if(availability){setAvailability(false);return;}if(showStudio){setShowStudio(false);return;}close(); scene.current.demo = false; setDemo(false); }
       if(e.key==='Tab'&&scene.current.mode==='product') {
-        const selector=availability?'.availability-panel button':'.product-controls button,.availability,.drawer-handle';
-        const buttons=Array.from(panel.current!.querySelectorAll<HTMLButtonElement>(selector));
+        const selector=availability?'.availability-panel button':'.product-controls button,.product-controls input,.drawer-handle';
+        const buttons=Array.from(panel.current!.querySelectorAll<HTMLButtonElement>(selector)).filter(element=>!element.disabled&&element.tabIndex>=0);
         const first=buttons[0],last=buttons.at(-1);
         if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}
         else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}
       }
-      if (scene.current.mode === 'product' && e.key === 'ArrowLeft') { e.preventDefault(); pick(scene.current.selected - 1); }
-      if (scene.current.mode === 'product' && e.key === 'ArrowRight') { e.preventDefault(); pick(scene.current.selected + 1); }
+      const editing=(e.target as HTMLElement).closest('.garment-studio')||['INPUT','TEXTAREA','SELECT'].includes((e.target as HTMLElement).tagName);
+      if (!editing&&scene.current.mode === 'product' && e.key === 'ArrowLeft') { e.preventDefault(); pick(scene.current.selected - 1); }
+      if (!editing&&scene.current.mode === 'product' && e.key === 'ArrowRight') { e.preventDefault(); pick(scene.current.selected + 1); }
       if (e.key.toLowerCase() === 'h' && !['INPUT','TEXTAREA'].includes((e.target as HTMLElement).tagName)) setShowTools(v => !v);
     };
     window.addEventListener('keydown', handleKey); return () => window.removeEventListener('keydown', handleKey);
-  }, [close, pick,availability]);
+  }, [close, pick,availability,showStudio]);
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const hydration=requestAnimationFrame(()=>{
@@ -167,7 +233,7 @@ export default function Wardrobe() {
     const s=scene.current;
     if(e.buttons===1&&Math.abs(e.clientX-s.dragX)>5)s.dragging=true;
     if(mode==='product'&&e.buttons===1){
-      s.spin=clamp(s.dragStartSpin+(e.clientX-s.dragX)*.008,-1.1,1.1);
+      s.spin=s.dragStartSpin+(e.clientX-s.dragX)*.012;setOrientation(null);
       engine.current?.invalidate();return;
     }
     if(mode==='rack'&&s.mobile&&e.buttons===1&&s.dragging){
@@ -180,25 +246,34 @@ export default function Wardrobe() {
     const i=targetAt(e);if(s.active!==i)highlightRack(i);
   };
   const leave = () => { if(!scene.current.demo&&!scene.current.mobile)highlightRack(-1); };
-  const addHoodie = async () => {
-    if(adding)return;setAdding(true);
+  const addPiece = async (type:string) => {
+    if(adding||!ready||!engine.current)return;
+    if(loaded.current.length>=20){setDesignError('The rack holds up to 20 pieces. Remove one to add another.');return;}
+    const choice=CLOTHING_TYPES.find(t=>t.type===type);if(!choice)return;
+    setAdding(true);setDesignError('');
     try {
-      if(hoodie){
-        engine.current?.remove('hoodie');loaded.current=PRODUCTS;
-        setHoodie(false);setCollection(PRODUCTS);close();return;
-      }
-      const res=await fetch('/garments/hoodie.json');if(!res.ok)throw new Error('Hoodie unavailable');
-      const g:Garment=await res.json();await engine.current?.add(g);
-      loaded.current=[...PRODUCTS,g];setHoodie(true);setCollection([...PRODUCTS,g]);
-      if(scene.current.mobile)focusRack(10);else highlightRack(10);
-    }catch{setLoadError(true);}finally{setAdding(false);}
+      const template=await getTemplate(choice.source);
+      const g:Garment={...template,id:`custom-${crypto.randomUUID()}`,sourceId:choice.source,name:`My ${choice.label}`,reference:false};
+      await engine.current.add(g,blankDesign());addedRef.current=[...addedRef.current,g];
+      loaded.current=arrangeRack([...PRODUCTS,...addedRef.current]);engine.current.setGarments(loaded.current);
+      setCollection(loaded.current);setHoodie(addedRef.current.some(g=>g.type==='hoodie'));
+      updateDesign(g.id,blankDesign());openProduct(loaded.current.length-1);setShowStudio(true);setShowTools(false);
+    }catch{setDesignError('Could not add this piece. Try again.');}finally{setAdding(false);}
+  };
+  const removePiece=()=>{
+    const g=loaded.current[scene.current.selected];if(!g?.sourceId)return;
+    engine.current?.remove(g.id);addedRef.current=addedRef.current.filter(piece=>piece.id!==g.id);
+    const next={...designsRef.current};delete next[g.id];designsRef.current=next;setDesigns(next);
+    loaded.current=arrangeRack([...PRODUCTS,...addedRef.current]);engine.current?.setGarments(loaded.current);
+    setCollection(loaded.current);setHoodie(addedRef.current.some(piece=>piece.type==='hoodie'));
+    pick(Math.min(scene.current.selected,loaded.current.length-1));persist();
   };
   const title = collection[selected]?.name;
   const fallbackView=mode==='product'?mobileProductView(collection[selected]??{},frame.width,frame.height):mobileRackView(collection.map(g=>g.pivot),rackPosition,frame.width,frame.height);
   const fallbackStyle=mobile?{transform:`translate(${(-fallbackView.x/W*100*fallbackView.zoom).toFixed(3)}%,${(fallbackView.y/W*frame.width/frame.height*100*fallbackView.zoom).toFixed(3)}%) scale(${fallbackView.zoom})`}:undefined;
   return (
     <main className="world">
-      <div className={`wardrobe ${mode === 'product' ? 'is-product' : ''} ${mode === 'about' || mode === 'contact' ? 'is-text' : ''}`} ref={panel}>
+      <div className={`wardrobe ${!ready&&!loadError?'is-loading':''} ${mode === 'product' ? 'is-product' : ''} ${showStudio&&mode==='product'?'has-studio':''} ${mode === 'about' || mode === 'contact' ? 'is-text' : ''}`} ref={panel}>
         <div className="wall" aria-hidden="true" />
         <header className="header" inert={mode!=='rack'}>
           <button onClick={() => { scene.current.mode='about';setMode('about'); }} className="text-button">ABOUT</button>
@@ -206,11 +281,11 @@ export default function Wardrobe() {
           <button onClick={() => { scene.current.mode='contact';setMode('contact'); }} className="text-button">CONTACT</button>
         </header>
         <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={e=>{scene.current.dragX=e.clientX;scene.current.dragStartSpin=scene.current.spin;scene.current.dragRackStart=scene.current.rackPosition;scene.current.dragging=false;if(mode==='product'||scene.current.mobile)e.currentTarget.setPointerCapture(e.pointerId);}}
-          onPointerUp={()=>{if(scene.current.mobile&&mode==='rack'&&scene.current.dragging)focusRack(Math.round(scene.current.rackPosition));}}
+          onPointerUp={()=>{if(scene.current.mobile&&mode==='rack'&&scene.current.dragging)focusRack(Math.round(scene.current.rackPosition));if(mode==='product'){scene.current.dragging=false;engine.current?.invalidate();}}}
           onPointerCancel={()=>{if(scene.current.mobile&&mode==='rack')focusRack(Math.round(scene.current.rackPosition));scene.current.dragging=false;}}
           onClick={(e) => { if(scene.current.dragging){scene.current.dragging=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
           aria-label={mobile?'Interactive clothing rack. Swipe or use the slider to browse; tap a garment to inspect it.':'Interactive clothing rack. Hover or use the rack arrows to browse; click a garment to inspect it.'} />
-        {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={garmentAssetUrl(`/posters/${mode==='product'?(collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`)} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
+        {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={garmentAssetUrl(`/posters/${mode==='product'?(collection[selected]?.sourceId||collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`)} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
         {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">
@@ -223,7 +298,7 @@ export default function Wardrobe() {
           <output className="sr-only" aria-live="polite" aria-atomic="true">{hover>=0?`${hover+1} of ${collection.length}: ${collection[hover]?.name}`:''}</output>
         </nav>}
         {mode==='rack' && hover>=0 && <div className="hover-label" style={{left:`${(collection[hover]?.pivot || .5)*100}%`}}>{collection[hover]?.name}</div>}
-        <button className="availability" disabled={!ready&&!loadError} onClick={() => mode==='product'?setAvailability(true):openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>
+        {mode==='rack'&&<button className="availability" disabled={!ready&&!loadError} onClick={() => openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>}
         <div className="ticker" aria-label="New designs daily, subscribe to our newsletter" aria-hidden={mode!=='rack'}>
           <div className="ticker-track">{Array.from({length:8},(_,i)=><span key={i}>NEW DESIGNS DAILY <b>•</b> SUBSCRIBE TO OUR NEWSLETTER <b>•</b></span>)}</div>
         </div>
@@ -233,6 +308,9 @@ export default function Wardrobe() {
           <button className="round-button previous" aria-label="Previous garment" onClick={() => pick(selected-1)}><span aria-hidden="true">←</span></button>
           <button className="round-button next" aria-label="Next garment" onClick={() => pick(selected+1)}><span aria-hidden="true">→</span></button>
           <div className="product-caption" aria-live="polite"><span className="product-count">{String(selected+1).padStart(2,'0')} / {String(collection.length).padStart(2,'0')}</span><h1>{title}</h1></div>
+          <div className="product-actions"><button className="customize-button" disabled={!ready||loadError} aria-expanded={showStudio} onClick={()=>{setShowStudio(v=>!v);setShowTools(false);}}>CUSTOMIZE</button><button disabled={!ready||loadError} aria-pressed={orientation==='front'} onClick={()=>rotate('front')}>FRONT</button><button disabled={!ready||loadError} aria-pressed={orientation==='back'} onClick={()=>rotate('back')}>BACK</button><button className="product-stock" onClick={()=>setAvailability(true)}>AVAILABILITY</button></div>
+          {!showStudio&&ready&&<p className="rotation-hint">Drag to rotate · front and back</p>}
+          {showStudio&&<GarmentStudio key={collection[selected].id} garment={collection[selected]} design={designs[collection[selected].id]??defaultDesign()} onChange={design=>updateDesign(collection[selected].id,design)} onClose={()=>setShowStudio(false)} onRotate={rotate} onAdd={type=>void addPiece(type)} onRemove={collection[selected].sourceId?removePiece:undefined} busy={adding} error={designError} saveStatus={saveStatus} />}
         </section>}
         {(mode==='about'||mode==='contact') && <section className="text-panel">
           <button className="close-button text-button" onClick={close} autoFocus>CLOSE</button>
@@ -241,7 +319,7 @@ export default function Wardrobe() {
         </section>}
         <button className="drawer-handle" disabled={!ready&&!loadError} aria-label="Garment options" aria-expanded={showTools} onClick={()=>setShowTools(v=>!v)} />
       </div>
-      {showTools && <div className="collection-tools"><button className={hoodie?'active':''} onClick={addHoodie} disabled={adding}>{adding?'Loading hoodie':hoodie?'Remove hoodie':'Add hoodie'}</button><button disabled={loadError||!ready} onClick={()=>{scene.current.demo=!demo;scene.current.demoStart=performance.now();setDemo(!demo);if(demo&&scene.current.mobile)focusRack(scene.current.active>=0?scene.current.active:scene.current.rackPosition,false);}}>{demo?'Stop replay':'Replay reference motion'}</button><button aria-label="Close garment options" onClick={()=>setShowTools(false)}>×</button></div>}
+      {showTools && <div className="collection-tools"><span>Add a blank piece</span>{CLOTHING_TYPES.map(({type,label})=><button key={type} onClick={()=>void addPiece(type)} disabled={adding||!ready||loadError}>+ {label}</button>)}<button disabled={loadError||!ready} onClick={()=>{scene.current.demo=!demo;scene.current.demoStart=performance.now();setDemo(!demo);if(demo&&scene.current.mobile)focusRack(scene.current.active>=0?scene.current.active:scene.current.rackPosition,false);}}>{demo?'Stop replay':'Replay motion'}</button><button aria-label="Close garment options" onClick={()=>setShowTools(false)}>×</button></div>}
     </main>
   );
 }
