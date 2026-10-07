@@ -28,7 +28,36 @@ def normals(positions, triangles):
     return n / np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-9)
 
 
-def shell(mask, depth_front, depth_back, material):
+def hanging_envelope(side_mask, cloth):
+    """Use smooth silhouette boundaries, with no fold-sized row oscillations."""
+    rows, left, right = [], [], []
+    for y in range(110, 810):
+        xs = np.flatnonzero(side_mask[y])
+        if len(xs) < 8 or not cloth[y].any():
+            continue
+        rows.append(y)
+        left.append(xs[0]-320)
+        right.append(xs[-1]-320)
+    if not rows:
+        raise ValueError('A registered side silhouette is required')
+    row_y = np.arange(810)
+    # Smooth the two boundaries together. A small filter removes matte noise
+    # while retaining the sleeve/torso step and the hanging hem in the source.
+    boundaries = np.stack([np.interp(row_y, rows, left),
+                           np.interp(row_y, rows, right)])
+    boundaries = ndi.gaussian_filter1d(boundaries, 12, axis=1, mode='nearest')
+    return boundaries.mean(axis=0), np.maximum((boundaries[1]-boundaries[0])/2, 3)
+
+
+def horizontal_edge_distance(mask):
+    """Round vertical fabric edges without curling the hem/cuffs into a pillow."""
+    x = np.broadcast_to(np.arange(mask.shape[1]), mask.shape)
+    left = np.maximum.accumulate(np.where(~mask, x, -1), axis=1)
+    right = np.minimum.accumulate(np.where(~mask, x, mask.shape[1])[:, ::-1], axis=1)[:, ::-1]
+    return np.minimum(x-left, right-x)*mask
+
+
+def shell(mask, depth_front, depth_back, material, bake_surfaces=None):
     contours, _ = cv2.findContours(mask.astype('uint8'), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     contour = max(contours, key=cv2.contourArea).reshape(-1, 2)
     boundary = contour[::3]
@@ -78,8 +107,25 @@ def shell(mask, depth_front, depth_back, material):
         # side photograph; it is never projected or blended by the camera.
         return np.stack([(960+positions[:, 2])/1280, -positions[:, 1]/810], 1)
 
-    return [(front, uv*np.array([.5, 1]), front_tri, 0), (back, uv, back_tri, 1),
-            (sides, side_uv(sides), side_tri, 2)]
+    def stitch_weights(positions, triangles):
+        nx = abs(normals(positions, triangles)[:, 0])
+        w = np.clip((nx-.15)/.65, 0, 1)
+        return w*w*(3-2*w)
+
+    fw, bw = stitch_weights(front, front_tri), stitch_weights(back, back_tri)
+    if bake_surfaces is not None:
+        bake_surfaces.extend([(front, front_tri, fw), (back, back_tri, bw)])
+    # Fully side-facing triangles get their own UV island. This retains the
+    # original side photograph's texel density instead of stretching a narrow
+    # strip of front UVs over the whole depth of the garment.
+    fp, bp = fw[front_tri].min(axis=1)>.999, bw[back_tri].min(axis=1)>.999
+    def compact(positions, texcoords, triangles, kind):
+        used, remap = np.unique(triangles, return_inverse=True)
+        return positions[used], texcoords[used], remap.reshape(-1, 3), kind
+    sp = np.concatenate([front, back, sides])
+    st = np.concatenate([front_tri[fp], back_tri[bp]+len(front), side_tri+len(front)+len(back)])
+    return [compact(front, uv*np.array([.5, 1]), front_tri[~fp], 0),
+            compact(back, uv, back_tri[~bp], 1), compact(sp, side_uv(sp), st, 2)]
 
 
 def write_glb(path, primitives, slug):
@@ -121,6 +167,41 @@ def write_glb(path, primitives, slug):
     length = 12+8+len(js)+8+len(blob)
     path.write_bytes(struct.pack('<III', 0x46546c67, 2, length)+struct.pack('<II', len(js), 0x4e4f534a)+js+
                      struct.pack('<II', len(blob), 0x004e4942)+blob)
+
+
+def bake_fabric_panel(rgb, surface, cloth, side_rgb):
+    """Stitch side detail into fixed UV texels, once, without a runtime blend."""
+    positions, triangles, vertex_weights = surface
+    xy = np.stack([positions[:, 0]+320, -positions[:, 1]], 1)
+    weight = np.zeros((810, 640)); depth = np.zeros((810, 640))
+    # Rasterize the actual triangle interpolation, matching the original GPU
+    # stitch rather than guessing normals from a pixel-grid depth derivative.
+    for triangle in triangles:
+        a, b, c = xy[triangle]
+        low = np.maximum(np.floor(np.minimum(np.minimum(a, b), c)).astype(int), [0, 0])
+        high = np.minimum(np.ceil(np.maximum(np.maximum(a, b), c)).astype(int), [639, 809])
+        x, y = np.meshgrid(np.arange(low[0], high[0]+1)+.5, np.arange(low[1], high[1]+1)+.5)
+        denominator = (b[1]-c[1])*(a[0]-c[0])+(c[0]-b[0])*(a[1]-c[1])
+        if abs(denominator)<1e-9: continue
+        u = ((b[1]-c[1])*(x-c[0])+(c[0]-b[0])*(y-c[1]))/denominator
+        v = ((c[1]-a[1])*(x-c[0])+(a[0]-c[0])*(y-c[1]))/denominator
+        w = 1-u-v
+        inside = (u>=-1e-6)&(v>=-1e-6)&(w>=-1e-6)
+        region = np.s_[low[1]:high[1]+1, low[0]:high[0]+1]
+        weights = vertex_weights[triangle]; z = positions[triangle, 2]
+        weight[region][inside] = (u*weights[0]+v*weights[1]+w*weights[2])[inside]
+        depth[region][inside] = (u*z[0]+v*z[1]+w*z[2])[inside]
+    weight[~cloth] = 0
+    def linear(value):
+        value = value.astype(float)/255
+        return np.where(value <= .04045, value/12.92, ((value+.055)/1.055)**2.4)
+    y, _ = np.mgrid[:810, :640]
+    sampled = cv2.remap(linear(side_rgb).astype('float32'),
+                        (319.5+depth).astype('float32'), y.astype('float32'),
+                        cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    color = linear(rgb)*(1-weight[:, :, None])+sampled*weight[:, :, None]
+    color = np.where(color <= .0031308, color*12.92, 1.055*np.maximum(color, 0)**(1/2.4)-.055)
+    return np.rint(np.clip(color, 0, 1)*255).astype('uint8')
 
 
 for g in garments:
@@ -169,24 +250,14 @@ for g in garments:
     # Reconstruct a smooth envelope and a rounded fabric edge instead.
     distance = ndi.distance_transform_edt(cloth)
     yy, xx = np.mgrid[:810, :640]
-    sm = side[:, :, 3] > 90
-    rows, centres, radii = [], [], []
-    for y in range(110, 810):
-        xs = np.where(sm[y])[0]
-        if len(xs) < 8 or not cloth[y].any(): continue
-        rows.append(y)
-        centres.append((xs[0]+xs[-1])/2-320)
-        radii.append((xs[-1]-xs[0])/2)
-    row_y = np.arange(810)
-    centre = ndi.gaussian_filter1d(np.interp(row_y, rows, centres), 32)
-    radius = ndi.gaussian_filter1d(np.interp(row_y, rows, radii), 24)
-    radius = np.clip(radius, 14, 110 if g['type'] == 'hoodie' else 90)
+    centre, radius = hanging_envelope(side[:, :, 3] > 90, cloth)
     # Flat chest/print area, broad rounded edges. The same physical surface and
     # fixed UVs remain visible throughout the turn; there is no angle texture swap.
     rim_width = 28 if g['type'] == 'hoodie' else 22
-    # A hem is a short stitched edge, not a rounded pillow end. Anisotropic
-    # distance retains broad side curvature without rolling up the hem/cuffs.
-    side_distance = ndi.distance_transform_edt(cloth, sampling=(7, 1))
+    # Vertical edges can roll over, but distance from a horizontal hem must not
+    # squeeze both panels back to their centre line. That caused the bulbous
+    # outline and pointed, curled-up hems visible in the enlarged mobile rack.
+    side_distance = horizontal_edge_distance(cloth)
     rim = np.sqrt(1-(1-np.clip(side_distance/rim_width, 0, 1))**2)
     depth = 1.2 + (radius[:, None]-1.2)*rim
     gray = rgb.mean(2)/255
@@ -196,19 +267,20 @@ for g in garments:
     print_guard = np.clip((abs(xx-320)-140)/35, 0, 1)
     print_guard = np.maximum(print_guard, np.clip((180-yy)/35, 0, 1))
     fold *= print_guard*np.clip(distance/18, 0, 1)
-    front = ndi.gaussian_filter(centre[:, None] + depth + fold, 1.2)
-    back = ndi.gaussian_filter(centre[:, None] - depth + fold*.35, 1.2)
+    front = centre[:, None] + depth + ndi.gaussian_filter(fold, 1.2)
+    back = centre[:, None] - depth + ndi.gaussian_filter(fold*.35, 1.2)
     # The reference rack is edge-on. At 80 degrees the whole front print was
     # squeezed into the side, magnifying the faulty depth fit on mobile.
     rest_yaw = np.pi/2
     if slug == 'hoodie':
         cavity = np.exp(-((xx-320)/55)**2-((yy-152)/37)**2)
-        front -= cavity*40
+        front -= np.minimum(cavity*40, np.maximum(front-back-3, 0)*.7)
         # Extra hood volume and the raised kangaroo-pocket surface are baked in.
         front += np.exp(-((abs(xx-320)-88)/25)**2-((yy-151)/52)**2)*15
         pocket = ((yy > 450) & (yy < 638) & (abs(xx-320) < (125-(638-yy)*.13)))
         front += ndi.gaussian_filter(pocket.astype(float), 6)*6
-    primitives = shell(cloth, front, back, 0)
+    bake_surfaces = []
+    primitives = shell(cloth, front, back, 0, bake_surfaces)
     if wood.sum() > 50:
         primitives += shell(wood, np.full((810, 640), 5), np.full((810, 640), -5), 3)
     # Fill outside the matte with the nearest cloth/wood texel. This prevents
@@ -221,15 +293,21 @@ for g in garments:
     inpaint = np.zeros((810, 640), 'uint8')
     inpaint[140:600, 195:447] = 255
     inferred_back = cv2.inpaint(filled, inpaint, 15, cv2.INPAINT_TELEA)
-    Image.fromarray(inferred_back).save(OUT/f'{slug}-back.jpg', quality=91)
     sm = side[:, :, 3] > 100
     _, ni = ndi.distance_transform_edt(~sm, return_indices=True)
     srgb = side[:, :, :3].copy()
     srgb[~sm] = srgb[ni[0][~sm], ni[1][~sm]]
     Image.fromarray(srgb).save(OUT/f'{slug}-side.jpg', quality=96, subsampling=0)
-    # One immutable atlas keeps the body/side/wood in one draw call. Front art
-    # and side fabric occupy separate UV islands on the same actual 3D mesh.
-    atlas = np.concatenate([filled, srgb], axis=1)
+    # Prebake the immutable normal-based stitch into UV texels. Mobile renders
+    # each surface with one texture lookup; there is no per-frame texture blend.
+    baked_front = bake_fabric_panel(filled, bake_surfaces[0], cloth, srgb)
+    baked_back = bake_fabric_panel(inferred_back, bake_surfaces[1], cloth, srgb)
+    for panel in [baked_front, baked_back]:
+        panel[~safe_mask] = panel[nearest[0][~safe_mask], nearest[1][~safe_mask]]
+    Image.fromarray(baked_back).save(OUT/f'{slug}-back.jpg', quality=91)
+    # One atlas keeps the body/side/wood in one draw call. Front art and side
+    # fabric occupy fixed UV islands on the same actual 3D mesh.
+    atlas = np.concatenate([baked_front, srgb], axis=1)
     Image.fromarray(atlas).save(OUT/f'{slug}-albedo.jpg', quality=96, subsampling=0)
     write_glb(OUT/f'{slug}.glb', primitives, slug)
     g.update(mesh=f'/models/{slug}.glb', sideTexture=f'/models/{slug}-side.jpg', restYaw=float(rest_yaw),

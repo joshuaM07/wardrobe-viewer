@@ -3,7 +3,7 @@
   "checks": [
     {
       "id": "camo",
-      "restSilhouetteIoU": 0.9499,
+      "restSilhouetteIoU": 0.9671,
       "sourceWidth": 171,
       "meshWidth": 171,
       "sourceHem": 754,
@@ -11,73 +11,73 @@
     },
     {
       "id": "essential",
-      "restSilhouetteIoU": 0.9692,
+      "restSilhouetteIoU": 0.9783,
       "sourceWidth": 160,
-      "meshWidth": 154,
+      "meshWidth": 157,
       "sourceHem": 691,
       "meshHem": 698
     },
     {
       "id": "dollar",
-      "restSilhouetteIoU": 0.9608,
+      "restSilhouetteIoU": 0.9739,
       "sourceWidth": 147,
-      "meshWidth": 143,
+      "meshWidth": 146,
       "sourceHem": 689,
       "meshHem": 685
     },
     {
       "id": "underclass",
-      "restSilhouetteIoU": 0.9761,
+      "restSilhouetteIoU": 0.9814,
       "sourceWidth": 160,
-      "meshWidth": 154,
+      "meshWidth": 157,
       "sourceHem": 691,
       "meshHem": 685
     },
     {
       "id": "republic",
-      "restSilhouetteIoU": 0.9722,
+      "restSilhouetteIoU": 0.9832,
       "sourceWidth": 147,
-      "meshWidth": 144,
+      "meshWidth": 147,
       "sourceHem": 757,
       "meshHem": 756
     },
     {
       "id": "world",
-      "restSilhouetteIoU": 0.9724,
+      "restSilhouetteIoU": 0.981,
       "sourceWidth": 184,
-      "meshWidth": 175,
+      "meshWidth": 179,
       "sourceHem": 728,
       "meshHem": 723
     },
     {
       "id": "flowers",
-      "restSilhouetteIoU": 0.9536,
+      "restSilhouetteIoU": 0.9706,
       "sourceWidth": 146,
-      "meshWidth": 143,
+      "meshWidth": 145,
       "sourceHem": 686,
       "meshHem": 681
     },
     {
       "id": "studio",
-      "restSilhouetteIoU": 0.9595,
+      "restSilhouetteIoU": 0.9756,
       "sourceWidth": 146,
-      "meshWidth": 144,
+      "meshWidth": 145,
       "sourceHem": 686,
       "meshHem": 686
     },
     {
       "id": "portrait",
-      "restSilhouetteIoU": 0.9568,
+      "restSilhouetteIoU": 0.97,
       "sourceWidth": 152,
-      "meshWidth": 144,
+      "meshWidth": 147,
       "sourceHem": 686,
       "meshHem": 691
     },
     {
       "id": "washed",
-      "restSilhouetteIoU": 0.9642,
+      "restSilhouetteIoU": 0.9782,
       "sourceWidth": 145,
-      "meshWidth": 141,
+      "meshWidth": 143,
       "sourceHem": 756,
       "meshHem": 756
     }

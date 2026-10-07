@@ -5,17 +5,17 @@
       "pose": "resting rack",
       "rays": 384,
       "identicalPicks": true,
-      "plainMsP95": 1.198,
-      "bvhMsP95": 0.022,
+      "plainMsP95": 1.854,
+      "bvhMsP95": 0.031,
       "bvhMsP50": 0.005
     },
     {
       "pose": "flowers focused",
       "rays": 384,
       "identicalPicks": true,
-      "plainMsP95": 1.258,
-      "bvhMsP95": 0.01,
-      "bvhMsP50": 0.002
+      "plainMsP95": 1.86,
+      "bvhMsP95": 0.024,
+      "bvhMsP50": 0.005
     }
   ]
 }
