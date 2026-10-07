@@ -19,6 +19,7 @@ function moduleURL(file){
 }
 const {WardrobeRenderer}=await import(moduleURL(path.join(root,'lib/wardrobe-three.ts')));
 const {spring}=await import(moduleURL(path.join(root,'lib/motion.ts')));
+const {arrangeRack}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
 const garments=[...JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'))),JSON.parse(fs.readFileSync(path.join(root,'public/garments/hoodie.json')))];
 function geometry(g){
   const raw=fs.readFileSync(path.join(root,'public',g.mesh));
@@ -32,7 +33,7 @@ function geometry(g){
 }
 const geometries=garments.map(geometry);
 const material=new THREE.MeshBasicMaterial();
-function rig(width,height,mobile=true){
+function rig(width,height,mobile=true,collection=garments){
   const state={active:6,selected:6,mode:'rack',demo:false,demoStart:0,reduced:false,spin:0,mobile,rackPosition:6};
   const renderer=Object.create(WardrobeRenderer.prototype);
   renderer.state=()=>state;renderer.cssWidth=width;renderer.cssHeight=height;renderer.mobileProfile=mobile;
@@ -40,10 +41,14 @@ function rig(width,height,mobile=true){
   renderer.camera=new THREE.OrthographicCamera(-1456,1456,worldHeight/2,-worldHeight/2,.1,8000);
   renderer.camera.position.z=3000;renderer.scene=new THREE.Scene();
   renderer.expand=spring();renderer.viewX=spring();renderer.viewY=spring();renderer.viewZoom=spring(1);
-  renderer.items=garments.map((garment,i)=>{
-    const group=new THREE.Group(),body=new THREE.Mesh(geometries[i],material);group.add(body);renderer.scene.add(group);
-    return {garment,root:group,body,focus:spring(),x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
+  renderer.spin=spring();renderer.spinSelected=-1;
+  renderer.rackSpread=182;renderer.invalidate=()=>{};
+  renderer.items=collection.map(garment=>{
+    const index=garments.findIndex(g=>g.id===(garment.sourceId??garment.id));
+    const group=new THREE.Group(),body=new THREE.Mesh(geometries[index],material);group.add(body);renderer.scene.add(group);
+    return {garment,root:group,body,focus:spring(),sway:spring(),x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
   });
+  renderer.setGarments(collection);
   renderer.update(0);return {renderer,state};
 }
 function settle(renderer){let moving=true;for(let i=0;i<360;i++)moving=renderer.update(1/60);assert.equal(moving,false,'camera and garment motion must stop after settling');}
@@ -85,7 +90,24 @@ for(const viewport of viewports){
 }
 const desktop=rig(1151,1151*1620/2912,false);
 for(const mode of ['rack','product']){desktop.state.mode=mode;settle(desktop.renderer);assert.equal(desktop.renderer.camera.zoom,1);assert.equal(desktop.renderer.camera.position.x,0);assert.equal(desktop.renderer.camera.position.y,0);}
+const expanded=arrangeRack([...garments.slice(0,10),...Array.from({length:10},(_,i)=>{const g=garments[[6,5,4,10][i%4]];return {...g,id:`custom-${i}`,sourceId:g.id};})]);
+let studioChecks=0,dynamicChecks=0;
+for(const viewport of viewports){
+  const [sw,sh]=viewport.screen,cw=viewport.landscape?Math.min(sw*.94,700):sw*.94,ch=viewport.landscape?Math.max(300,sh*.92):Math.max(480,Math.min(sh*.86,700));
+  for(const studio of [false,true]){
+    const width=cw*(viewport.landscape?(studio?.58:.65):1),height=ch*(viewport.landscape?(studio?.92:.88):(studio?.4:.68));
+    const {renderer,state}=rig(width,height,true,expanded);state.studio=studio;
+    for(let i=0;i<expanded.length;i++)for(const angle of [0,Math.PI]){
+      state.mode='product';state.selected=i;state.spin=angle;settle(renderer);
+      const bounds=projectedBounds(renderer,renderer.items[i]);
+      assert(bounds.top>=-.001&&bounds.bottom<=height+.001&&bounds.left>=-.001&&bounds.right<=width+.001,`custom garment clipped: ${sw}/${studio}/${i}/${angle}`);
+      if(studio)studioChecks++;else dynamicChecks++;
+    }
+  }
+}
+const desktopStudio=rig(640,534,false,expanded);desktopStudio.state.studio=true;desktopStudio.state.mode='product';
+for(let i=0;i<expanded.length;i++){desktopStudio.state.selected=i;settle(desktopStudio.renderer);const b=projectedBounds(desktopStudio.renderer,desktopStudio.renderer.items[i]);assert(b.top>=0&&b.bottom<=534&&b.left>=0&&b.right<=640);studioChecks++;}
 const output=process.argv[2]||path.join(root,'docs/qa/three/mobile-framing.json');
 fs.mkdirSync(path.dirname(output),{recursive:true});
-fs.writeFileSync(output,JSON.stringify({scope:'Production renderer CPU transforms and actual GLB bounding boxes; not browser FPS',garments:garments.length,framingChecks:checks.length,desktopCameraUnchanged:true,checks,poses},null,2)+'\n');
-console.log(JSON.stringify({output,garments:garments.length,framingChecks:checks.length,desktopCameraUnchanged:true,allGarmentsFit:true}));
+fs.writeFileSync(output,JSON.stringify({scope:'Production renderer CPU transforms and actual GLB bounding boxes; not browser FPS',garments:garments.length,framingChecks:checks.length,studioChecks,dynamicChecks,desktopCameraUnchanged:true,checks,poses},null,2)+'\n');
+console.log(JSON.stringify({output,garments:garments.length,framingChecks:checks.length,studioChecks,dynamicChecks,desktopCameraUnchanged:true,allGarmentsFit:true}));

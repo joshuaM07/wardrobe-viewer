@@ -14,13 +14,15 @@ export default function GarmentStudio({ garment, design, onChange, onClose, onRo
   const [uploading,setUploading]=useState(false);
   const [uploadError,setUploadError]=useState('');
   const [dragOver,setDragOver]=useState(false);
-  const [hex,setHex]=useState(design.color??garment.fabricColor??'#e8e3d8');
+  const color=design.color??garment.fabricColor??'#e8e3d8';
+  const [hexDraft,setHexDraft]=useState<{source:string;value:string}|null>(null);
+  const hex=hexDraft?.source===color?hexDraft.value:color;
+  const setHex=(value:string)=>setHexDraft({source:color,value});
   const fileInput=useRef<HTMLInputElement>(null);
   const alive=useRef(true);
   const currentDesign=useRef(design);
   useEffect(()=>{currentDesign.current=design;},[design]);
   useEffect(()=>{alive.current=true;return()=>{alive.current=false;};},[]);
-  useEffect(()=>{setHex(design.color??garment.fabricColor??'#e8e3d8');},[design.color,garment.fabricColor]);
   const artwork=design[side];
   const setColor=(color:string)=>{setHex(color);onChange({...design,color});};
   const upload=async(file?:File)=>{

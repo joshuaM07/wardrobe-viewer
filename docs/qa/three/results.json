@@ -10,24 +10,24 @@
         1151,
         640
       ],
-      "renderMsP50": 37.03,
-      "renderMsP95": 50.18
+      "renderMsP50": 29.19,
+      "renderMsP95": 102.75
     },
     {
       "viewport": [
         1584,
         881
       ],
-      "renderMsP50": 40.31,
-      "renderMsP95": 51.36
+      "renderMsP50": 33.65,
+      "renderMsP95": 64.06
     },
     {
       "viewport": [
         948,
         528
       ],
-      "renderMsP50": 29.82,
-      "renderMsP95": 39.5
+      "renderMsP50": 25.67,
+      "renderMsP95": 78.98
     }
   ],
   "checks": [
