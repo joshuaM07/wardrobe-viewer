@@ -1,0 +1,11 @@
+{
+  "scope": "Production renderer/design integration and native-canvas image processor; no browser FPS claims",
+  "lazyFabricLoading": true,
+  "blackToWhiteColours": true,
+  "latestUploadWins": true,
+  "placementWithoutDecode": true,
+  "removalAndLateUploadDisposal": true,
+  "savedStateValidation": true,
+  "dynamicRack20Pieces": true,
+  "imageProcessingChecks": 6
+}

@@ -1,0 +1,118 @@
+{
+  "scope": "Software EGL production garment shader/GLBs, not browser FPS",
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "colours": [
+    {
+      "type": "tee",
+      "color": "#f5f1e8",
+      "nonEmpty": true
+    },
+    {
+      "type": "tee",
+      "color": "#17191c",
+      "nonEmpty": true
+    },
+    {
+      "type": "tee",
+      "color": "#8b3437",
+      "nonEmpty": true
+    },
+    {
+      "type": "tee",
+      "color": "#3d5b48",
+      "nonEmpty": true
+    },
+    {
+      "type": "tee",
+      "color": "#263e62",
+      "nonEmpty": true
+    },
+    {
+      "type": "long-sleeve",
+      "color": "#f5f1e8",
+      "nonEmpty": true
+    },
+    {
+      "type": "long-sleeve",
+      "color": "#17191c",
+      "nonEmpty": true
+    },
+    {
+      "type": "long-sleeve",
+      "color": "#8b3437",
+      "nonEmpty": true
+    },
+    {
+      "type": "long-sleeve",
+      "color": "#3d5b48",
+      "nonEmpty": true
+    },
+    {
+      "type": "long-sleeve",
+      "color": "#263e62",
+      "nonEmpty": true
+    },
+    {
+      "type": "crewneck",
+      "color": "#f5f1e8",
+      "nonEmpty": true
+    },
+    {
+      "type": "crewneck",
+      "color": "#17191c",
+      "nonEmpty": true
+    },
+    {
+      "type": "crewneck",
+      "color": "#8b3437",
+      "nonEmpty": true
+    },
+    {
+      "type": "crewneck",
+      "color": "#3d5b48",
+      "nonEmpty": true
+    },
+    {
+      "type": "crewneck",
+      "color": "#263e62",
+      "nonEmpty": true
+    },
+    {
+      "type": "hoodie",
+      "color": "#f5f1e8",
+      "nonEmpty": true
+    },
+    {
+      "type": "hoodie",
+      "color": "#17191c",
+      "nonEmpty": true
+    },
+    {
+      "type": "hoodie",
+      "color": "#8b3437",
+      "nonEmpty": true
+    },
+    {
+      "type": "hoodie",
+      "color": "#3d5b48",
+      "nonEmpty": true
+    },
+    {
+      "type": "hoodie",
+      "color": "#263e62",
+      "nonEmpty": true
+    }
+  ],
+  "rotationAngles": [
+    0,
+    45,
+    80,
+    90,
+    135,
+    180,
+    225,
+    270,
+    315,
+    360
+  ]
+}

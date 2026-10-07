@@ -5,7 +5,7 @@ preview's Chrome has WebGL disabled. Mesa/EGL lets us still inspect every mesh,
 front and side pose, and the continuous rigid rotation against reference pixels.
 """
 from pathlib import Path
-import struct, json, sys, time
+import struct, json, sys, time, os
 from io import BytesIO
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
@@ -18,11 +18,16 @@ OUT.mkdir(parents=True,exist_ok=True)
 W,H=2912,1620
 ctx=moderngl.create_standalone_context(backend='egl',require=330)
 ctx.enable(moderngl.DEPTH_TEST|moderngl.CULL_FACE)
-shader_path=Path(sys.argv[2] if __name__=='__main__' and len(sys.argv)>2 else '/workspace/scratch/wardrobe-shaders.json')
+shader_path=Path(sys.argv[2] if __name__=='__main__' and len(sys.argv)>2 else os.environ.get('WARDROBE_SHADER_PATH','/workspace/scratch/wardrobe-shaders.json'))
 shaders=json.loads(shader_path.read_text())
 program=ctx.program(vertex_shader=shaders['garment']['vertex'],fragment_shader=shaders['garment']['fragment'])
 blur_program=ctx.program(vertex_shader=shaders['blur']['vertex'],fragment_shader=shaders['blur']['fragment'])
 program['map'].value=0;program['backMap'].value=1
+for name,slot in [('fabricMap',2),('fabricBackMap',3),('printMask',4),('frontArtwork',5),('backArtwork',6)]:program[name].value=slot
+for name,value in [('customized',0),('keepOriginal',1),('frontEnabled',0),('backEnabled',0)]:program[name].value=value
+program['frontPlacement'].value=(0,-300,240,240);program['backPlacement'].value=(0,-300,240,240)
+empty_texture=ctx.texture((1,1),4,bytes([255,255,255,0]),internal_format=0x8c43)
+for slot in range(2,7):empty_texture.use(slot)
 program['diffuse'].value=(1,1,1);program['opacity'].value=1
 program['mapTransform'].write(np.eye(3,dtype='f4').tobytes())
 projection=np.eye(4,dtype='f4');projection[0,0]=2/W;projection[1,1]=2/H
@@ -52,12 +57,12 @@ def glb(g):
   tex=ctx.texture(im.size,3,im.tobytes(),internal_format=0x8c41);tex.build_mipmaps();textures.append(tex)
  vertices=[];indices=[];offset=0
  for p in doc['meshes'][0]['primitives']:
-  pos=arr(p['attributes']['POSITION']);uv=arr(p['attributes']['TEXCOORD_0']);idx=arr(p['indices'])
+  pos=arr(p['attributes']['POSITION']);normal=arr(p['attributes']['NORMAL']);uv=arr(p['attributes']['TEXCOORD_0']);idx=arr(p['indices'])
   surface=np.full((len(pos),1),p['material'],dtype='f4')
-  vertices.append(np.concatenate([pos,uv,surface],1));indices.append(idx+offset);offset+=len(pos)
+  vertices.append(np.concatenate([pos,normal,uv,surface],1));indices.append(idx+offset);offset+=len(pos)
  vertex=ctx.buffer(np.concatenate(vertices).astype('f4').tobytes())
  index=ctx.buffer(np.concatenate(indices).astype('u4').tobytes())
- vao=ctx.vertex_array(program,[(vertex,'3f 2f 1f','position','uv','garmentSurface')],index,index_element_size=4)
+ vao=ctx.vertex_array(program,[(vertex,'3f 3f 2f 1f','position','normal','uv','garmentSurface')],index,index_element_size=4)
  return vao,textures
 
 
@@ -78,8 +83,9 @@ for g in gs+[hoodie]:
   for j in range(8):
    a=i*8+j;b=i*8+(j+1)%8;c=(i+1)*8+j;d=(i+1)*8+(j+1)%8
    indices.extend([a,c,b,b,c,d])
- v=ctx.buffer(np.concatenate([positions,uv,np.full((len(positions),1),5,dtype='f4')],1).tobytes());ib=ctx.buffer(np.array(indices,'u4').tobytes())
- hooks[g['id']]=ctx.vertex_array(program,[(v,'3f 2f 1f','position','uv','garmentSurface')],ib,index_element_size=4)
+ normal=np.tile([0,0,1],(len(positions),1)).astype('f4')
+ v=ctx.buffer(np.concatenate([positions,normal,uv,np.full((len(positions),1),5,dtype='f4')],1).tobytes());ib=ctx.buffer(np.array(indices,'u4').tobytes())
+ hooks[g['id']]=ctx.vertex_array(program,[(v,'3f 3f 2f 1f','position','normal','uv','garmentSurface')],ib,index_element_size=4)
 def garment(g,x=1456,y=418,scale=1,angle=0,camera_yaw=0):
  c,s=np.cos(angle),np.sin(angle)
  transform=np.array([[c*scale,0,s*scale,x-W/2],[0,scale,0,H/2-y],[-s*scale,0,c*scale,100], [0,0,0,1]],dtype='f4')
@@ -93,6 +99,7 @@ def garment(g,x=1456,y=418,scale=1,angle=0,camera_yaw=0):
   rotate=np.array([[cc,0,-ss,0],[0,1,0,0],[ss,0,cc,0],[0,0,0,1]],dtype='f4')
   transform=translate@rotate@inverse@transform
  program['modelViewMatrix'].write(transform.T.tobytes())
+ program['modelMatrix'].write(transform.T.tobytes())
  vao,textures=models[g['id']];textures[0].use(0);textures[1].use(1)
  program['fabricColor'].value=linear_color(g.get('fabricColor','#dcd6df'))
  program['woodColor'].value=linear_color('#563a2f');vao.render()
