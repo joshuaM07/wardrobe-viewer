@@ -2,9 +2,13 @@
 
 Reference: https://x.com/cambreedesigns/status/2104999693113766152
 
-The 18.933-second reference was retrieved and inspected as a consecutive contact sheet. Its motion uses essentially rigid garments, hanger turns, restrained roll, and adjacent pieces making space. Existing full-resolution measurements cover 341 frames of seven turns.
+The initial implementation review used a sampled contact sheet. That was insufficient to establish motion parity. The subsequent review decoded the original 3448 × 2160 clip without frame selection and inspected all 1,136 frames in 32 consecutive sheets, with larger consecutive crops for turns and product changes. `reference-frame-audit.json` retains every timestamp, JPEG hash, and adjacent-frame image-space diagnostic. Existing silhouette measurements also cover 341 frames of seven turns.
 
-The renderer now integrates a damped oscillator analytically instead of using frame-dependent Euler substeps. Garment turns retain their individual stiffness, with a damping ratio at most 0.85 so rotation can settle continuously through its endpoint. Neighbor displacement, product positioning, and the camera each respond directly to their input target, removing cascaded easing. Hanger roll responds to turn and rail velocity, including neighboring garments. Geometry, UVs, and surface artwork stay fixed.
+The renderer integrates a damped oscillator analytically instead of using frame-dependent Euler substeps. Garment turns retain individual stiffness and damping. The first black tee was refitted from consecutive silhouette measurements: its turn crosses the front and continues settling, rather than stopping when it first appears front-facing. Other candidate fits were rejected because pale fabric and occlusions made them uncertain. Neighbor displacement, product positioning, and the camera respond directly to input targets. Hanger roll follows turn and rail velocity with a longer decay, including neighboring garments. Geometry, UVs, and surface artwork stay fixed.
+
+Reference frames 606–620, 643–657, 677–691, and 732–746 show a centered product reveal. Product navigation now places the next mesh at its detail position, facing forward, and reveals its body and hook over 220 ms. It no longer slides visibly across the rack. The initial rack-to-product transition remains continuous.
+
+Closing the desktop viewer also releases rack focus, allowing garments to settle back. Mobile keeps its current browsing position. The replay's return at 13.55 seconds follows the same release instead of leaving the Flowers tee facing forward indefinitely.
 
 Pointer velocity is measured in event time. Released product rotation decays exponentially with friction 5.5/s and a 12 rad/s velocity cap. A hold longer than 80 ms releases without a fling. Re-grabbing begins at the visible orientation and stops the coast. Front/back controls, selection changes, cancellation, and reduced-motion preferences cancel momentum. Touch swipes project to a nearby bounded rack position and suppress the synthetic click.
 
@@ -26,6 +30,22 @@ PORT=3001 pnpm start
 python tools/check-browser-motion.py http://localhost:3001 /tmp/wardrobe-browser-qa
 ```
 
-`fluid-motion.json` records 54 spring comparisons across 30, 60, 90, 120, and 144 Hz plus irregular frame intervals. It also covers rapid retargeting, neighbor response, fling direction, re-grabs, held releases, reduced motion, and cache invalidation. Turns settle in 0.50–0.60 seconds using yaw error <0.02 rad and normalized turn velocity <0.15/s; overshoot is 0.63–0.72%. The nearest neighbor travels 157.35 of its 182 world units within 250 ms. All 632 actual-GLB camera-framing cases pass, including 20-piece racks, studio layouts, and hoodies.
+`fluid-motion.json` records 54 spring comparisons across 30, 60, 90, 120, and 144 Hz plus irregular frame intervals. It also covers rapid retargeting, neighbor response, fling direction, re-grabs, held releases, reduced motion, centered product reveals, hanger follow-through after the main turn, and cache invalidation. The first tee's modeled yaw settles after approximately 1.7 seconds; its near-front arrival occurs earlier. The previous universal 0.50–0.60-second endpoint statement did not describe the reference's full motion. The nearest neighbor travels 157.35 of its 182 world units within 250 ms. All 632 actual-GLB camera-framing cases pass, including 20-piece racks, studio layouts, and hoodies.
 
 `fluid-browser.json` records production-export interaction checks in Chromium with SwiftShader software WebGL: mouse and touch rotation, release momentum, front control, rapid navigation, return to rack, mobile swiping without accidental clicks, and reduced motion. No page errors occurred. This verifies browser behavior and draw counts. Software rendering does not establish hardware FPS or guarantee subjective parity with the reference on a particular device. Hardware frame pacing remains to be checked using the canvas `data-performance` measurements on the target phone and desktop.
+
+## Continuous comparison
+
+[The full comparison](continuous-comparison.mp4) pairs every original source frame with the actual browser WebGL canvas at the same simulation timestamp: 1,136 consecutive pairs, encoded at 60 fps. `continuous-capture.json` records capture coverage. Two deterministic capture segments were combined after correcting the exit; their overlapping frame 812 was byte-identical, and the second run simulated every preceding timestep. The application's JavaScript animation clock is controlled during capture; the resulting video tests motion trajectories, not real-time frame delivery. DOM labels, controls, and wall styling are excluded on the application side. Static frames reuse the previous rendered image, as the application itself uses demand-driven rendering.
+
+The full comparison exposes remaining differences in mesh silhouettes and motion; it is review evidence, not a claim that native playback feels identical. Inspecting all frames improves temporal coverage, but neither contact sheets nor this controlled capture establish perceptual or hardware playback parity.
+
+To reproduce after starting the production export:
+
+```sh
+mkdir -p /tmp/wardrobe-continuous/reference
+ffmpeg -i /path/to/reference.mp4 -map 0:v:0 -fps_mode passthrough -start_number 0 -q:v 2 /tmp/wardrobe-continuous/reference/%04d.jpg
+python tools/audit-reference-video.py /path/to/reference.mp4 /tmp/wardrobe-continuous
+python tools/fit-consecutive-turns.py /tmp/wardrobe-continuous/reference /tmp/wardrobe-turn-fits.json
+python tools/capture-continuous-motion.py http://localhost:3001 /tmp/wardrobe-continuous/capture /tmp/wardrobe-continuous/reference
+```

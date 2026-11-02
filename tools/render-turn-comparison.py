@@ -1,4 +1,7 @@
-"""Render every captured turn frame beside the reference using production GLSL.
+"""Legacy asset comparison with the original Euler/clamped turn model.
+
+This does not reproduce the current renderer's temporal behavior. Use
+capture-continuous-motion.py to compare the actual browser renderer frame by frame.
 
 Offline asset QA only. The MP4 is never loaded by the application.
 Usage: python tools/render-turn-comparison.py /path/to/reference-analysis /path/to/output

@@ -87,6 +87,8 @@ export class WardrobeRenderer {
   private spinSelected = -1;
   private spinMomentum = 0;
   private spinFollowing = false;
+  private previousMode: Mode = 'rack';
+  private productReveal = 1;
   private textureLoader = new THREE.TextureLoader();
   private raf = 0;
   private disposed = false;
@@ -230,6 +232,7 @@ export class WardrobeRenderer {
     // Build once while loading. Hover only traverses this static spatial index.
     computeBoundsTree.call(geometry, { indirect: true });
     const material=garmentMaterial(frontTexture,backTexture,garment.fabricColor??'#dcd6df');
+    material.transparent=true;
     const body=new THREE.Mesh(geometry,material);
     body.raycast=acceleratedRaycast;body.userData.garmentId=garment.id;root.add(body);
     const path = new THREE.CatmullRomCurve3([
@@ -238,7 +241,7 @@ export class WardrobeRenderer {
       new THREE.Vector3(1,0,0),new THREE.Vector3(-9,-5,0),new THREE.Vector3(-12,-13,0),
     ]);
     const hook = new THREE.Mesh(new THREE.TubeGeometry(path, 36, 1.45, 8, false),
-      new THREE.MeshStandardMaterial({ color: 0xaaa79e, roughness: .24, metalness: 1 }));
+      new THREE.MeshStandardMaterial({ color: 0xaaa79e, roughness: .24, metalness: 1, transparent: true }));
     root.add(hook);
     const x = garment.pivot*W;
     root.position.set(x-W/2, H/2-GARMENT_Y, restingZ);
@@ -393,7 +396,15 @@ export class WardrobeRenderer {
     const p = clamp(this.expand.value);
     if(s.mobile!==this.mobileProfile)this.resize();
     const active = s.mode === 'product' ? s.selected : s.active;
+    const replaceProduct = this.spinSelected !== s.selected && this.previousMode === 'product' && modal === 1;
+    this.previousMode = s.mode;
+    // Reference frames 606–620, 643–657, 677–691 and 732–746 reveal the
+    // next piece in place. Sliding it across the rail changes the whole rhythm.
+    if (s.reduced || !modal) this.productReveal=1;
+    else if (replaceProduct) this.productReveal=0;
+    else this.productReveal=Math.min(1,this.productReveal+dt/.22);
     let moving = Math.abs(this.expand.value-modal) > .0001 || Math.abs(this.expand.velocity) > .001;
+    if(this.productReveal<1)moving=true;
     if (s.mode !== 'product' || s.reduced) this.stopMomentum();
     if(this.spinSelected!==s.selected){this.spinSelected=s.selected;this.spin.value=s.spin;this.spin.velocity=0;this.stopMomentum();}
     const coasting = !s.dragging && Math.abs(this.spinMomentum) > .015;
@@ -427,18 +438,19 @@ export class WardrobeRenderer {
       const y = GARMENT_Y+((g.detailY??276)-GARMENT_Y)*detail;
       const scale = 1+((g.detailScale??1.36)-1)*detail;
       for (const [sp, value] of [[item.x,x],[item.y,y],[item.scale,scale]] as [Spring,number][]) {
-        if (s.reduced || dt === 0) { sp.value=value; sp.velocity=0; }
+        if (s.reduced || dt === 0 || (replaceProduct && selected)) { sp.value=value; sp.velocity=0; }
         else stepSpring(sp,value,dt,145,21);
         if (Math.abs(sp.value-value) > .0001 || Math.abs(sp.velocity) > .001) moving=true;
       }
       // Preserve the spring's small overshoot at both ends of the turn.
+      if(replaceProduct&&selected){item.focus.value=1;item.focus.velocity=0;item.sway.value=0;item.sway.velocity=0;}
       const f = item.focus.value;
       item.root.rotation.y = g.restYaw*(1-f)+(selected ? this.spin.value*p : 0);
       const turnVelocity = -g.restYaw * item.focus.velocity + (selected ? this.spin.velocity * p : 0);
       // Inertia is driven by actual turn/rail velocity, including neighbors.
-      const swayTarget=s.reduced?0:clamp(-turnVelocity*.009-item.x.velocity*.000035,-.065,.065);
+      const swayTarget=s.reduced?0:clamp(-turnVelocity*.018-item.x.velocity*.000035,-.09,.09);
       if(s.reduced){item.sway.value=0;item.sway.velocity=0;}
-      else stepSpring(item.sway,swayTarget,dt,105,12);
+      else stepSpring(item.sway,swayTarget,dt,70,6);
       item.root.rotation.z=item.sway.value;
       if(Math.abs(item.sway.value-swayTarget)>.0001||Math.abs(item.sway.velocity)>.001)moving=true;
       item.root.position.set(item.x.value-W/2,H/2-item.y.value,selected ? p*120 : restingZ);
@@ -466,6 +478,10 @@ export class WardrobeRenderer {
     const p = clamp(this.expand.value), s = this.state();
     const r = this.renderer;
     this.items.forEach(item=>{item.root.visible=item.prepared;});
+    this.items.forEach((item,i)=>{
+      const opacity=i===s.selected&&s.mode==='product'?1-Math.pow(1-this.productReveal,3):1;
+      item.root.traverse(object=>{if(object instanceof THREE.Mesh)(object.material as THREE.Material).opacity=opacity;});
+    });
     r.info.reset();
     r.setRenderTarget(null); r.autoClear=true;
     if (p < .003 || !this.items[s.selected]) { this.backgroundStamp='';r.render(this.scene, this.camera); return; }

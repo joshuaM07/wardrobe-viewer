@@ -22,7 +22,7 @@ async function getTemplate(source:string):Promise<Garment> {
   }).catch(error=>{hoodieTemplate=undefined;throw error;});
   return hoodieTemplate;
 }
-const TIMELINE:[number,number,Mode][]=[[0,-1,'rack'],[1.05,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rack'],[5.016667,4,'rack'],[6.366667,5,'rack'],[7.2,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,6,'rack'],[14.333333,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
+const TIMELINE:[number,number,Mode][]=[[0,-1,'rack'],[.970017,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rack'],[5.016667,4,'rack'],[6.366667,5,'rack'],[7.2,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,-1,'rack'],[14.333333,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
 
 export default function Wardrobe() {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -116,7 +116,7 @@ export default function Wardrobe() {
   }, [pick]);
   const close = useCallback(() => {
     engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
-    setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(active);setMode('rack');
+    setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(-1);setMode('rack');
     requestAnimationFrame(() => lastFocus.current?.focus());
   }, [highlightRack,focusRack]);
 

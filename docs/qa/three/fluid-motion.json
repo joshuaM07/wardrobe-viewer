@@ -23,8 +23,8 @@
     },
     {
       "id": "essential",
-      "settledSeconds": 0.508,
-      "overshootPercent": 0.628
+      "settledSeconds": 1.7,
+      "overshootPercent": 19.218
     },
     {
       "id": "dollar",
@@ -72,7 +72,7 @@
     {
       "id": "essential",
       "frames": 52,
-      "widthMaeSourcePixels": 14.83
+      "widthMaeSourcePixels": 8.92
     },
     {
       "id": "dollar",

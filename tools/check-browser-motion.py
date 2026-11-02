@@ -51,6 +51,7 @@ with sync_playwright() as p:
  page.get_by_role('button',name='CLOSE',exact=True).click()
  page.wait_for_timeout(1600)
  assert page.locator('.wardrobe.is-product').count()==0
+ assert page.locator('.hover-label').count()==0,'closing must release desktop rack focus'
  results['checks'].append('Viewer returns to rack')
  # Actual mobile touch events through Chromium, including generated clicks.
  mobile=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,device_scale_factor=1)

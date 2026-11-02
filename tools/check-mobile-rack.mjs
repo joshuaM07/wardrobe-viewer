@@ -42,6 +42,7 @@ function rig(width,height,mobile=true,collection=garments){
   renderer.camera.position.z=3000;renderer.scene=new THREE.Scene();
   renderer.expand=spring();renderer.viewX=spring();renderer.viewY=spring();renderer.viewZoom=spring(1);
   renderer.spin=spring();renderer.spinSelected=-1;
+  renderer.previousMode='rack';renderer.productReveal=1;
   renderer.rackSpread=182;renderer.invalidate=()=>{};
   renderer.items=collection.map(garment=>{
     const index=garments.findIndex(g=>g.id===(garment.sourceId??garment.id));

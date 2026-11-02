@@ -54,7 +54,7 @@ function rig(){
   Object.assign(renderer,{state:()=>state,cssWidth:1151,cssHeight:640,mobileProfile:false,rackSpread:182,
     scene:new THREE.Scene(),camera:new THREE.OrthographicCamera(-1456,1456,810,-810,.1,8000),
     expand:spring(),viewX:spring(),viewY:spring(),viewZoom:spring(1),spin:spring(),spinSelected:-1,
-    spinMomentum:0,spinFollowing:false,invalidate:()=>{},textureRevision:0,backgroundStamp:''});
+    spinMomentum:0,spinFollowing:false,previousMode:'rack',productReveal:1,invalidate:()=>{},textureRevision:0,backgroundStamp:''});
   renderer.camera.position.z=3000;
   renderer.items=garments.map(garment=>{
     const group=new THREE.Group(),geometry=new THREE.BoxGeometry(600,750,90);geometry.computeBoundingBox();
@@ -69,13 +69,13 @@ const response=[];
 for(let index=0;index<garments.length;index++){
   const {renderer,state}=rig();state.active=index;
   let peak=0,settledAt=0;
-  for(let frame=0;frame<180;frame++){
+  for(let frame=0;frame<360;frame++){
     renderer.update(1/120);const item=renderer.items[index];peak=Math.max(peak,item.focus.value);
     if(Math.abs(item.root.rotation.y)>.02||Math.abs(item.focus.velocity)>.15)settledAt=(frame+1)/120;
   }
   assert(peak>1,'turn must retain a small, continuous overshoot');
-  assert(peak<1.015,'overshoot must remain subtle');
-  assert(settledAt<.8,'turn should settle in the reference time range');
+  assert(peak<1.22,'turn overshoot must remain bounded');
+  assert(settledAt<2.5,'turn must settle after its follow-through');
   state.active=-1;
   const before=renderer.items[index].root.rotation.y;renderer.update(0);close(renderer.items[index].root.rotation.y,before);
   settle(renderer);
@@ -88,7 +88,20 @@ assert(Math.abs(neighbor.sway.value)>.001,'rail displacement must create hanger 
 for(const target of [1,8,2,9,0,6]){state.active=target;advance(renderer,.08);}
 settle(renderer);assert(renderer.items.every(item=>Number.isFinite(item.root.rotation.z)));
 
+const followThrough=rig();followThrough.state.active=6;
+advance(followThrough.renderer,.9);
+assert(Math.abs(followThrough.renderer.items[6].sway.value)>.003,'hanger roll must continue after the main turn');
+assert(Math.abs(followThrough.renderer.items[6].sway.value)<.12,'follow-through must remain restrained');
+settle(followThrough.renderer);
+
 state.mode='product';settle(renderer);
+state.selected=4;renderer.update(1/60);
+assert.equal(renderer.productReveal,0,'a replacement starts with a clean reveal');
+close(renderer.items[4].x.value,1456+(garments[4].detailX??0));
+close(renderer.items[4].root.rotation.y,0);
+advance(renderer,.1);assert(renderer.productReveal>0&&renderer.productReveal<1);
+advance(renderer,.2);assert.equal(renderer.productReveal,1);
+state.selected=6;settle(renderer);
 state.dragging=true;renderer.beginSpinDrag();state.spin=1.5;advance(renderer,.1);
 const releaseAngle=renderer.spin.value;state.dragging=false;renderer.releaseSpin(6);
 close(renderer.spin.value,releaseAngle);advance(renderer,.25);
@@ -130,7 +143,8 @@ for(const turn of reference.turns){
   }
   const {renderer,state}=rig(),index=garments.indexOf(garment);let error=0;
   for(let frame=0;frame<turn.widths.length;frame++){
-    state.active=frame>=turn.calibrated.delayFrames?index:-1;renderer.update(1/60);
+    const started=garment.referenceTurnStart===undefined?frame>=turn.calibrated.delayFrames:(turn.startFrame+frame)/60>=garment.referenceTurnStart;
+    state.active=started?index:-1;renderer.update(1/60);
     const angle=renderer.items[index].root.rotation.y,c=Math.cos(angle),s=Math.sin(angle);let lo=Infinity,hi=-Infinity;
     for(const mesh of positions)for(let p=0;p<mesh.length;p+=3){const x=mesh[p]*c+mesh[p+2]*s;lo=Math.min(lo,x);hi=Math.max(hi,x);}
     error+=Math.abs(hi-lo-turn.widths[frame]);

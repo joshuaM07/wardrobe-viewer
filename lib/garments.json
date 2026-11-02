@@ -37,8 +37,9 @@
     "detailY": 280,
     "detailScale": 1.246418,
     "detailX": 0,
-    "turnStiffness": 92.087,
-    "turnDamping": 18.834
+    "turnStiffness": 25.822,
+    "turnDamping": 4.724,
+    "referenceTurnStart": 0.970017
   },
   {
     "id": "dollar",

@@ -1,4 +1,8 @@
-"""Measure every captured turn frame and fit rigid spring response to GLB widths.
+"""Historical width calibration using the original Euler/clamped spring model.
+
+Use fit-consecutive-turns.py for current analytic candidate fitting and
+capture-continuous-motion.py for actual browser output. Width alone is not a
+perceptual smoothness measurement.
 Usage: python tools/measure-reference-motion.py /path/to/reference-analysis
 Records measurements without changing runtime garment metadata.
 """

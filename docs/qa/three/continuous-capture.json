@@ -1,0 +1,6838 @@
+{
+  "scope": "Every source frame paired with actual browser output at controlled 60 Hz; two deterministic capture segments with an identical overlap frame. Not real-time performance.",
+  "frames": 1136,
+  "sourceFrames": 1136,
+  "skippedSourceFrames": 0,
+  "frameIndex": [
+    {
+      "frame": 0,
+      "seconds": 0.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1,
+      "seconds": 0.016667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 2,
+      "seconds": 0.033333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 3,
+      "seconds": 0.05,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 4,
+      "seconds": 0.066667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 5,
+      "seconds": 0.083333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 6,
+      "seconds": 0.1,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 7,
+      "seconds": 0.116667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 8,
+      "seconds": 0.133333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 9,
+      "seconds": 0.15,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 10,
+      "seconds": 0.166667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 11,
+      "seconds": 0.183333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 12,
+      "seconds": 0.2,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 13,
+      "seconds": 0.216667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 14,
+      "seconds": 0.233333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 15,
+      "seconds": 0.25,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 16,
+      "seconds": 0.266667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 17,
+      "seconds": 0.283333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 18,
+      "seconds": 0.3,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 19,
+      "seconds": 0.316667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 20,
+      "seconds": 0.333333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 21,
+      "seconds": 0.35,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 22,
+      "seconds": 0.366667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 23,
+      "seconds": 0.383333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 24,
+      "seconds": 0.4,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 25,
+      "seconds": 0.416667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 26,
+      "seconds": 0.433333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 27,
+      "seconds": 0.45,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 28,
+      "seconds": 0.466667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 29,
+      "seconds": 0.483333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 30,
+      "seconds": 0.5,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 31,
+      "seconds": 0.516667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 32,
+      "seconds": 0.533333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 33,
+      "seconds": 0.55,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 34,
+      "seconds": 0.566667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 35,
+      "seconds": 0.583333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 36,
+      "seconds": 0.6,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 37,
+      "seconds": 0.616667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 38,
+      "seconds": 0.633333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 39,
+      "seconds": 0.65,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 40,
+      "seconds": 0.666667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 41,
+      "seconds": 0.683333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 42,
+      "seconds": 0.7,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 43,
+      "seconds": 0.716667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 44,
+      "seconds": 0.733333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 45,
+      "seconds": 0.75,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 46,
+      "seconds": 0.766667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 47,
+      "seconds": 0.783333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 48,
+      "seconds": 0.8,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 49,
+      "seconds": 0.816667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 50,
+      "seconds": 0.833333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 51,
+      "seconds": 0.85,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 52,
+      "seconds": 0.866667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 53,
+      "seconds": 0.883333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 54,
+      "seconds": 0.9,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 55,
+      "seconds": 0.916667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 56,
+      "seconds": 0.933333,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 57,
+      "seconds": 0.95,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 58,
+      "seconds": 0.966667,
+      "animationCallbacks": 1,
+      "drawn": false
+    },
+    {
+      "frame": 59,
+      "seconds": 0.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 60,
+      "seconds": 1.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 61,
+      "seconds": 1.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 62,
+      "seconds": 1.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 63,
+      "seconds": 1.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 64,
+      "seconds": 1.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 65,
+      "seconds": 1.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 66,
+      "seconds": 1.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 67,
+      "seconds": 1.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 68,
+      "seconds": 1.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 69,
+      "seconds": 1.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 70,
+      "seconds": 1.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 71,
+      "seconds": 1.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 72,
+      "seconds": 1.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 73,
+      "seconds": 1.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 74,
+      "seconds": 1.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 75,
+      "seconds": 1.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 76,
+      "seconds": 1.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 77,
+      "seconds": 1.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 78,
+      "seconds": 1.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 79,
+      "seconds": 1.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 80,
+      "seconds": 1.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 81,
+      "seconds": 1.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 82,
+      "seconds": 1.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 83,
+      "seconds": 1.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 84,
+      "seconds": 1.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 85,
+      "seconds": 1.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 86,
+      "seconds": 1.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 87,
+      "seconds": 1.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 88,
+      "seconds": 1.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 89,
+      "seconds": 1.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 90,
+      "seconds": 1.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 91,
+      "seconds": 1.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 92,
+      "seconds": 1.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 93,
+      "seconds": 1.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 94,
+      "seconds": 1.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 95,
+      "seconds": 1.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 96,
+      "seconds": 1.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 97,
+      "seconds": 1.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 98,
+      "seconds": 1.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 99,
+      "seconds": 1.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 100,
+      "seconds": 1.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 101,
+      "seconds": 1.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 102,
+      "seconds": 1.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 103,
+      "seconds": 1.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 104,
+      "seconds": 1.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 105,
+      "seconds": 1.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 106,
+      "seconds": 1.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 107,
+      "seconds": 1.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 108,
+      "seconds": 1.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 109,
+      "seconds": 1.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 110,
+      "seconds": 1.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 111,
+      "seconds": 1.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 112,
+      "seconds": 1.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 113,
+      "seconds": 1.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 114,
+      "seconds": 1.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 115,
+      "seconds": 1.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 116,
+      "seconds": 1.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 117,
+      "seconds": 1.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 118,
+      "seconds": 1.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 119,
+      "seconds": 1.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 120,
+      "seconds": 2.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 121,
+      "seconds": 2.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 122,
+      "seconds": 2.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 123,
+      "seconds": 2.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 124,
+      "seconds": 2.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 125,
+      "seconds": 2.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 126,
+      "seconds": 2.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 127,
+      "seconds": 2.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 128,
+      "seconds": 2.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 129,
+      "seconds": 2.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 130,
+      "seconds": 2.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 131,
+      "seconds": 2.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 132,
+      "seconds": 2.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 133,
+      "seconds": 2.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 134,
+      "seconds": 2.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 135,
+      "seconds": 2.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 136,
+      "seconds": 2.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 137,
+      "seconds": 2.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 138,
+      "seconds": 2.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 139,
+      "seconds": 2.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 140,
+      "seconds": 2.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 141,
+      "seconds": 2.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 142,
+      "seconds": 2.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 143,
+      "seconds": 2.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 144,
+      "seconds": 2.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 145,
+      "seconds": 2.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 146,
+      "seconds": 2.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 147,
+      "seconds": 2.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 148,
+      "seconds": 2.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 149,
+      "seconds": 2.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 150,
+      "seconds": 2.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 151,
+      "seconds": 2.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 152,
+      "seconds": 2.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 153,
+      "seconds": 2.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 154,
+      "seconds": 2.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 155,
+      "seconds": 2.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 156,
+      "seconds": 2.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 157,
+      "seconds": 2.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 158,
+      "seconds": 2.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 159,
+      "seconds": 2.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 160,
+      "seconds": 2.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 161,
+      "seconds": 2.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 162,
+      "seconds": 2.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 163,
+      "seconds": 2.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 164,
+      "seconds": 2.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 165,
+      "seconds": 2.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 166,
+      "seconds": 2.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 167,
+      "seconds": 2.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 168,
+      "seconds": 2.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 169,
+      "seconds": 2.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 170,
+      "seconds": 2.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 171,
+      "seconds": 2.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 172,
+      "seconds": 2.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 173,
+      "seconds": 2.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 174,
+      "seconds": 2.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 175,
+      "seconds": 2.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 176,
+      "seconds": 2.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 177,
+      "seconds": 2.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 178,
+      "seconds": 2.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 179,
+      "seconds": 2.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 180,
+      "seconds": 3.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 181,
+      "seconds": 3.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 182,
+      "seconds": 3.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 183,
+      "seconds": 3.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 184,
+      "seconds": 3.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 185,
+      "seconds": 3.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 186,
+      "seconds": 3.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 187,
+      "seconds": 3.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 188,
+      "seconds": 3.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 189,
+      "seconds": 3.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 190,
+      "seconds": 3.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 191,
+      "seconds": 3.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 192,
+      "seconds": 3.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 193,
+      "seconds": 3.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 194,
+      "seconds": 3.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 195,
+      "seconds": 3.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 196,
+      "seconds": 3.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 197,
+      "seconds": 3.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 198,
+      "seconds": 3.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 199,
+      "seconds": 3.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 200,
+      "seconds": 3.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 201,
+      "seconds": 3.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 202,
+      "seconds": 3.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 203,
+      "seconds": 3.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 204,
+      "seconds": 3.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 205,
+      "seconds": 3.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 206,
+      "seconds": 3.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 207,
+      "seconds": 3.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 208,
+      "seconds": 3.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 209,
+      "seconds": 3.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 210,
+      "seconds": 3.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 211,
+      "seconds": 3.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 212,
+      "seconds": 3.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 213,
+      "seconds": 3.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 214,
+      "seconds": 3.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 215,
+      "seconds": 3.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 216,
+      "seconds": 3.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 217,
+      "seconds": 3.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 218,
+      "seconds": 3.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 219,
+      "seconds": 3.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 220,
+      "seconds": 3.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 221,
+      "seconds": 3.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 222,
+      "seconds": 3.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 223,
+      "seconds": 3.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 224,
+      "seconds": 3.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 225,
+      "seconds": 3.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 226,
+      "seconds": 3.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 227,
+      "seconds": 3.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 228,
+      "seconds": 3.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 229,
+      "seconds": 3.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 230,
+      "seconds": 3.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 231,
+      "seconds": 3.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 232,
+      "seconds": 3.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 233,
+      "seconds": 3.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 234,
+      "seconds": 3.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 235,
+      "seconds": 3.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 236,
+      "seconds": 3.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 237,
+      "seconds": 3.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 238,
+      "seconds": 3.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 239,
+      "seconds": 3.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 240,
+      "seconds": 4.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 241,
+      "seconds": 4.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 242,
+      "seconds": 4.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 243,
+      "seconds": 4.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 244,
+      "seconds": 4.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 245,
+      "seconds": 4.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 246,
+      "seconds": 4.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 247,
+      "seconds": 4.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 248,
+      "seconds": 4.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 249,
+      "seconds": 4.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 250,
+      "seconds": 4.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 251,
+      "seconds": 4.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 252,
+      "seconds": 4.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 253,
+      "seconds": 4.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 254,
+      "seconds": 4.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 255,
+      "seconds": 4.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 256,
+      "seconds": 4.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 257,
+      "seconds": 4.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 258,
+      "seconds": 4.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 259,
+      "seconds": 4.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 260,
+      "seconds": 4.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 261,
+      "seconds": 4.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 262,
+      "seconds": 4.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 263,
+      "seconds": 4.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 264,
+      "seconds": 4.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 265,
+      "seconds": 4.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 266,
+      "seconds": 4.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 267,
+      "seconds": 4.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 268,
+      "seconds": 4.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 269,
+      "seconds": 4.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 270,
+      "seconds": 4.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 271,
+      "seconds": 4.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 272,
+      "seconds": 4.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 273,
+      "seconds": 4.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 274,
+      "seconds": 4.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 275,
+      "seconds": 4.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 276,
+      "seconds": 4.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 277,
+      "seconds": 4.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 278,
+      "seconds": 4.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 279,
+      "seconds": 4.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 280,
+      "seconds": 4.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 281,
+      "seconds": 4.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 282,
+      "seconds": 4.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 283,
+      "seconds": 4.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 284,
+      "seconds": 4.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 285,
+      "seconds": 4.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 286,
+      "seconds": 4.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 287,
+      "seconds": 4.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 288,
+      "seconds": 4.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 289,
+      "seconds": 4.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 290,
+      "seconds": 4.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 291,
+      "seconds": 4.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 292,
+      "seconds": 4.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 293,
+      "seconds": 4.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 294,
+      "seconds": 4.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 295,
+      "seconds": 4.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 296,
+      "seconds": 4.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 297,
+      "seconds": 4.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 298,
+      "seconds": 4.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 299,
+      "seconds": 4.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 300,
+      "seconds": 5.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 301,
+      "seconds": 5.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 302,
+      "seconds": 5.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 303,
+      "seconds": 5.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 304,
+      "seconds": 5.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 305,
+      "seconds": 5.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 306,
+      "seconds": 5.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 307,
+      "seconds": 5.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 308,
+      "seconds": 5.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 309,
+      "seconds": 5.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 310,
+      "seconds": 5.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 311,
+      "seconds": 5.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 312,
+      "seconds": 5.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 313,
+      "seconds": 5.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 314,
+      "seconds": 5.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 315,
+      "seconds": 5.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 316,
+      "seconds": 5.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 317,
+      "seconds": 5.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 318,
+      "seconds": 5.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 319,
+      "seconds": 5.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 320,
+      "seconds": 5.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 321,
+      "seconds": 5.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 322,
+      "seconds": 5.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 323,
+      "seconds": 5.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 324,
+      "seconds": 5.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 325,
+      "seconds": 5.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 326,
+      "seconds": 5.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 327,
+      "seconds": 5.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 328,
+      "seconds": 5.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 329,
+      "seconds": 5.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 330,
+      "seconds": 5.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 331,
+      "seconds": 5.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 332,
+      "seconds": 5.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 333,
+      "seconds": 5.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 334,
+      "seconds": 5.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 335,
+      "seconds": 5.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 336,
+      "seconds": 5.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 337,
+      "seconds": 5.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 338,
+      "seconds": 5.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 339,
+      "seconds": 5.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 340,
+      "seconds": 5.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 341,
+      "seconds": 5.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 342,
+      "seconds": 5.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 343,
+      "seconds": 5.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 344,
+      "seconds": 5.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 345,
+      "seconds": 5.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 346,
+      "seconds": 5.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 347,
+      "seconds": 5.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 348,
+      "seconds": 5.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 349,
+      "seconds": 5.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 350,
+      "seconds": 5.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 351,
+      "seconds": 5.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 352,
+      "seconds": 5.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 353,
+      "seconds": 5.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 354,
+      "seconds": 5.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 355,
+      "seconds": 5.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 356,
+      "seconds": 5.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 357,
+      "seconds": 5.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 358,
+      "seconds": 5.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 359,
+      "seconds": 5.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 360,
+      "seconds": 6.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 361,
+      "seconds": 6.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 362,
+      "seconds": 6.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 363,
+      "seconds": 6.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 364,
+      "seconds": 6.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 365,
+      "seconds": 6.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 366,
+      "seconds": 6.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 367,
+      "seconds": 6.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 368,
+      "seconds": 6.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 369,
+      "seconds": 6.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 370,
+      "seconds": 6.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 371,
+      "seconds": 6.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 372,
+      "seconds": 6.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 373,
+      "seconds": 6.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 374,
+      "seconds": 6.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 375,
+      "seconds": 6.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 376,
+      "seconds": 6.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 377,
+      "seconds": 6.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 378,
+      "seconds": 6.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 379,
+      "seconds": 6.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 380,
+      "seconds": 6.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 381,
+      "seconds": 6.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 382,
+      "seconds": 6.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 383,
+      "seconds": 6.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 384,
+      "seconds": 6.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 385,
+      "seconds": 6.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 386,
+      "seconds": 6.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 387,
+      "seconds": 6.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 388,
+      "seconds": 6.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 389,
+      "seconds": 6.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 390,
+      "seconds": 6.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 391,
+      "seconds": 6.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 392,
+      "seconds": 6.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 393,
+      "seconds": 6.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 394,
+      "seconds": 6.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 395,
+      "seconds": 6.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 396,
+      "seconds": 6.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 397,
+      "seconds": 6.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 398,
+      "seconds": 6.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 399,
+      "seconds": 6.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 400,
+      "seconds": 6.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 401,
+      "seconds": 6.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 402,
+      "seconds": 6.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 403,
+      "seconds": 6.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 404,
+      "seconds": 6.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 405,
+      "seconds": 6.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 406,
+      "seconds": 6.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 407,
+      "seconds": 6.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 408,
+      "seconds": 6.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 409,
+      "seconds": 6.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 410,
+      "seconds": 6.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 411,
+      "seconds": 6.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 412,
+      "seconds": 6.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 413,
+      "seconds": 6.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 414,
+      "seconds": 6.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 415,
+      "seconds": 6.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 416,
+      "seconds": 6.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 417,
+      "seconds": 6.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 418,
+      "seconds": 6.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 419,
+      "seconds": 6.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 420,
+      "seconds": 7.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 421,
+      "seconds": 7.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 422,
+      "seconds": 7.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 423,
+      "seconds": 7.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 424,
+      "seconds": 7.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 425,
+      "seconds": 7.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 426,
+      "seconds": 7.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 427,
+      "seconds": 7.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 428,
+      "seconds": 7.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 429,
+      "seconds": 7.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 430,
+      "seconds": 7.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 431,
+      "seconds": 7.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 432,
+      "seconds": 7.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 433,
+      "seconds": 7.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 434,
+      "seconds": 7.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 435,
+      "seconds": 7.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 436,
+      "seconds": 7.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 437,
+      "seconds": 7.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 438,
+      "seconds": 7.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 439,
+      "seconds": 7.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 440,
+      "seconds": 7.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 441,
+      "seconds": 7.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 442,
+      "seconds": 7.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 443,
+      "seconds": 7.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 444,
+      "seconds": 7.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 445,
+      "seconds": 7.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 446,
+      "seconds": 7.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 447,
+      "seconds": 7.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 448,
+      "seconds": 7.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 449,
+      "seconds": 7.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 450,
+      "seconds": 7.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 451,
+      "seconds": 7.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 452,
+      "seconds": 7.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 453,
+      "seconds": 7.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 454,
+      "seconds": 7.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 455,
+      "seconds": 7.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 456,
+      "seconds": 7.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 457,
+      "seconds": 7.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 458,
+      "seconds": 7.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 459,
+      "seconds": 7.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 460,
+      "seconds": 7.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 461,
+      "seconds": 7.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 462,
+      "seconds": 7.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 463,
+      "seconds": 7.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 464,
+      "seconds": 7.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 465,
+      "seconds": 7.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 466,
+      "seconds": 7.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 467,
+      "seconds": 7.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 468,
+      "seconds": 7.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 469,
+      "seconds": 7.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 470,
+      "seconds": 7.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 471,
+      "seconds": 7.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 472,
+      "seconds": 7.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 473,
+      "seconds": 7.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 474,
+      "seconds": 7.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 475,
+      "seconds": 7.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 476,
+      "seconds": 7.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 477,
+      "seconds": 7.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 478,
+      "seconds": 7.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 479,
+      "seconds": 7.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 480,
+      "seconds": 8.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 481,
+      "seconds": 8.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 482,
+      "seconds": 8.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 483,
+      "seconds": 8.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 484,
+      "seconds": 8.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 485,
+      "seconds": 8.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 486,
+      "seconds": 8.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 487,
+      "seconds": 8.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 488,
+      "seconds": 8.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 489,
+      "seconds": 8.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 490,
+      "seconds": 8.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 491,
+      "seconds": 8.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 492,
+      "seconds": 8.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 493,
+      "seconds": 8.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 494,
+      "seconds": 8.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 495,
+      "seconds": 8.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 496,
+      "seconds": 8.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 497,
+      "seconds": 8.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 498,
+      "seconds": 8.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 499,
+      "seconds": 8.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 500,
+      "seconds": 8.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 501,
+      "seconds": 8.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 502,
+      "seconds": 8.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 503,
+      "seconds": 8.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 504,
+      "seconds": 8.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 505,
+      "seconds": 8.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 506,
+      "seconds": 8.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 507,
+      "seconds": 8.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 508,
+      "seconds": 8.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 509,
+      "seconds": 8.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 510,
+      "seconds": 8.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 511,
+      "seconds": 8.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 512,
+      "seconds": 8.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 513,
+      "seconds": 8.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 514,
+      "seconds": 8.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 515,
+      "seconds": 8.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 516,
+      "seconds": 8.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 517,
+      "seconds": 8.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 518,
+      "seconds": 8.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 519,
+      "seconds": 8.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 520,
+      "seconds": 8.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 521,
+      "seconds": 8.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 522,
+      "seconds": 8.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 523,
+      "seconds": 8.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 524,
+      "seconds": 8.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 525,
+      "seconds": 8.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 526,
+      "seconds": 8.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 527,
+      "seconds": 8.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 528,
+      "seconds": 8.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 529,
+      "seconds": 8.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 530,
+      "seconds": 8.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 531,
+      "seconds": 8.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 532,
+      "seconds": 8.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 533,
+      "seconds": 8.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 534,
+      "seconds": 8.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 535,
+      "seconds": 8.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 536,
+      "seconds": 8.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 537,
+      "seconds": 8.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 538,
+      "seconds": 8.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 539,
+      "seconds": 8.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 540,
+      "seconds": 9.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 541,
+      "seconds": 9.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 542,
+      "seconds": 9.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 543,
+      "seconds": 9.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 544,
+      "seconds": 9.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 545,
+      "seconds": 9.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 546,
+      "seconds": 9.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 547,
+      "seconds": 9.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 548,
+      "seconds": 9.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 549,
+      "seconds": 9.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 550,
+      "seconds": 9.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 551,
+      "seconds": 9.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 552,
+      "seconds": 9.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 553,
+      "seconds": 9.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 554,
+      "seconds": 9.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 555,
+      "seconds": 9.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 556,
+      "seconds": 9.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 557,
+      "seconds": 9.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 558,
+      "seconds": 9.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 559,
+      "seconds": 9.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 560,
+      "seconds": 9.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 561,
+      "seconds": 9.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 562,
+      "seconds": 9.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 563,
+      "seconds": 9.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 564,
+      "seconds": 9.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 565,
+      "seconds": 9.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 566,
+      "seconds": 9.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 567,
+      "seconds": 9.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 568,
+      "seconds": 9.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 569,
+      "seconds": 9.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 570,
+      "seconds": 9.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 571,
+      "seconds": 9.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 572,
+      "seconds": 9.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 573,
+      "seconds": 9.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 574,
+      "seconds": 9.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 575,
+      "seconds": 9.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 576,
+      "seconds": 9.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 577,
+      "seconds": 9.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 578,
+      "seconds": 9.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 579,
+      "seconds": 9.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 580,
+      "seconds": 9.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 581,
+      "seconds": 9.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 582,
+      "seconds": 9.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 583,
+      "seconds": 9.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 584,
+      "seconds": 9.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 585,
+      "seconds": 9.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 586,
+      "seconds": 9.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 587,
+      "seconds": 9.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 588,
+      "seconds": 9.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 589,
+      "seconds": 9.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 590,
+      "seconds": 9.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 591,
+      "seconds": 9.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 592,
+      "seconds": 9.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 593,
+      "seconds": 9.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 594,
+      "seconds": 9.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 595,
+      "seconds": 9.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 596,
+      "seconds": 9.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 597,
+      "seconds": 9.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 598,
+      "seconds": 9.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 599,
+      "seconds": 9.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 600,
+      "seconds": 10.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 601,
+      "seconds": 10.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 602,
+      "seconds": 10.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 603,
+      "seconds": 10.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 604,
+      "seconds": 10.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 605,
+      "seconds": 10.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 606,
+      "seconds": 10.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 607,
+      "seconds": 10.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 608,
+      "seconds": 10.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 609,
+      "seconds": 10.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 610,
+      "seconds": 10.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 611,
+      "seconds": 10.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 612,
+      "seconds": 10.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 613,
+      "seconds": 10.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 614,
+      "seconds": 10.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 615,
+      "seconds": 10.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 616,
+      "seconds": 10.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 617,
+      "seconds": 10.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 618,
+      "seconds": 10.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 619,
+      "seconds": 10.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 620,
+      "seconds": 10.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 621,
+      "seconds": 10.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 622,
+      "seconds": 10.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 623,
+      "seconds": 10.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 624,
+      "seconds": 10.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 625,
+      "seconds": 10.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 626,
+      "seconds": 10.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 627,
+      "seconds": 10.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 628,
+      "seconds": 10.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 629,
+      "seconds": 10.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 630,
+      "seconds": 10.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 631,
+      "seconds": 10.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 632,
+      "seconds": 10.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 633,
+      "seconds": 10.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 634,
+      "seconds": 10.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 635,
+      "seconds": 10.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 636,
+      "seconds": 10.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 637,
+      "seconds": 10.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 638,
+      "seconds": 10.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 639,
+      "seconds": 10.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 640,
+      "seconds": 10.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 641,
+      "seconds": 10.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 642,
+      "seconds": 10.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 643,
+      "seconds": 10.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 644,
+      "seconds": 10.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 645,
+      "seconds": 10.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 646,
+      "seconds": 10.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 647,
+      "seconds": 10.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 648,
+      "seconds": 10.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 649,
+      "seconds": 10.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 650,
+      "seconds": 10.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 651,
+      "seconds": 10.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 652,
+      "seconds": 10.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 653,
+      "seconds": 10.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 654,
+      "seconds": 10.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 655,
+      "seconds": 10.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 656,
+      "seconds": 10.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 657,
+      "seconds": 10.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 658,
+      "seconds": 10.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 659,
+      "seconds": 10.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 660,
+      "seconds": 11.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 661,
+      "seconds": 11.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 662,
+      "seconds": 11.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 663,
+      "seconds": 11.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 664,
+      "seconds": 11.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 665,
+      "seconds": 11.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 666,
+      "seconds": 11.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 667,
+      "seconds": 11.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 668,
+      "seconds": 11.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 669,
+      "seconds": 11.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 670,
+      "seconds": 11.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 671,
+      "seconds": 11.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 672,
+      "seconds": 11.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 673,
+      "seconds": 11.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 674,
+      "seconds": 11.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 675,
+      "seconds": 11.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 676,
+      "seconds": 11.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 677,
+      "seconds": 11.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 678,
+      "seconds": 11.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 679,
+      "seconds": 11.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 680,
+      "seconds": 11.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 681,
+      "seconds": 11.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 682,
+      "seconds": 11.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 683,
+      "seconds": 11.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 684,
+      "seconds": 11.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 685,
+      "seconds": 11.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 686,
+      "seconds": 11.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 687,
+      "seconds": 11.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 688,
+      "seconds": 11.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 689,
+      "seconds": 11.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 690,
+      "seconds": 11.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 691,
+      "seconds": 11.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 692,
+      "seconds": 11.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 693,
+      "seconds": 11.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 694,
+      "seconds": 11.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 695,
+      "seconds": 11.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 696,
+      "seconds": 11.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 697,
+      "seconds": 11.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 698,
+      "seconds": 11.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 699,
+      "seconds": 11.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 700,
+      "seconds": 11.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 701,
+      "seconds": 11.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 702,
+      "seconds": 11.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 703,
+      "seconds": 11.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 704,
+      "seconds": 11.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 705,
+      "seconds": 11.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 706,
+      "seconds": 11.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 707,
+      "seconds": 11.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 708,
+      "seconds": 11.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 709,
+      "seconds": 11.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 710,
+      "seconds": 11.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 711,
+      "seconds": 11.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 712,
+      "seconds": 11.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 713,
+      "seconds": 11.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 714,
+      "seconds": 11.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 715,
+      "seconds": 11.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 716,
+      "seconds": 11.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 717,
+      "seconds": 11.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 718,
+      "seconds": 11.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 719,
+      "seconds": 11.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 720,
+      "seconds": 12.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 721,
+      "seconds": 12.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 722,
+      "seconds": 12.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 723,
+      "seconds": 12.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 724,
+      "seconds": 12.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 725,
+      "seconds": 12.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 726,
+      "seconds": 12.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 727,
+      "seconds": 12.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 728,
+      "seconds": 12.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 729,
+      "seconds": 12.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 730,
+      "seconds": 12.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 731,
+      "seconds": 12.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 732,
+      "seconds": 12.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 733,
+      "seconds": 12.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 734,
+      "seconds": 12.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 735,
+      "seconds": 12.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 736,
+      "seconds": 12.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 737,
+      "seconds": 12.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 738,
+      "seconds": 12.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 739,
+      "seconds": 12.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 740,
+      "seconds": 12.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 741,
+      "seconds": 12.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 742,
+      "seconds": 12.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 743,
+      "seconds": 12.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 744,
+      "seconds": 12.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 745,
+      "seconds": 12.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 746,
+      "seconds": 12.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 747,
+      "seconds": 12.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 748,
+      "seconds": 12.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 749,
+      "seconds": 12.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 750,
+      "seconds": 12.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 751,
+      "seconds": 12.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 752,
+      "seconds": 12.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 753,
+      "seconds": 12.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 754,
+      "seconds": 12.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 755,
+      "seconds": 12.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 756,
+      "seconds": 12.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 757,
+      "seconds": 12.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 758,
+      "seconds": 12.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 759,
+      "seconds": 12.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 760,
+      "seconds": 12.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 761,
+      "seconds": 12.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 762,
+      "seconds": 12.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 763,
+      "seconds": 12.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 764,
+      "seconds": 12.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 765,
+      "seconds": 12.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 766,
+      "seconds": 12.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 767,
+      "seconds": 12.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 768,
+      "seconds": 12.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 769,
+      "seconds": 12.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 770,
+      "seconds": 12.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 771,
+      "seconds": 12.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 772,
+      "seconds": 12.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 773,
+      "seconds": 12.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 774,
+      "seconds": 12.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 775,
+      "seconds": 12.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 776,
+      "seconds": 12.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 777,
+      "seconds": 12.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 778,
+      "seconds": 12.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 779,
+      "seconds": 12.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 780,
+      "seconds": 13.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 781,
+      "seconds": 13.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 782,
+      "seconds": 13.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 783,
+      "seconds": 13.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 784,
+      "seconds": 13.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 785,
+      "seconds": 13.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 786,
+      "seconds": 13.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 787,
+      "seconds": 13.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 788,
+      "seconds": 13.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 789,
+      "seconds": 13.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 790,
+      "seconds": 13.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 791,
+      "seconds": 13.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 792,
+      "seconds": 13.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 793,
+      "seconds": 13.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 794,
+      "seconds": 13.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 795,
+      "seconds": 13.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 796,
+      "seconds": 13.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 797,
+      "seconds": 13.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 798,
+      "seconds": 13.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 799,
+      "seconds": 13.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 800,
+      "seconds": 13.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 801,
+      "seconds": 13.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 802,
+      "seconds": 13.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 803,
+      "seconds": 13.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 804,
+      "seconds": 13.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 805,
+      "seconds": 13.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 806,
+      "seconds": 13.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 807,
+      "seconds": 13.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 808,
+      "seconds": 13.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 809,
+      "seconds": 13.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 810,
+      "seconds": 13.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 811,
+      "seconds": 13.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 812,
+      "seconds": 13.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 813,
+      "seconds": 13.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 814,
+      "seconds": 13.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 815,
+      "seconds": 13.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 816,
+      "seconds": 13.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 817,
+      "seconds": 13.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 818,
+      "seconds": 13.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 819,
+      "seconds": 13.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 820,
+      "seconds": 13.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 821,
+      "seconds": 13.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 822,
+      "seconds": 13.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 823,
+      "seconds": 13.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 824,
+      "seconds": 13.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 825,
+      "seconds": 13.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 826,
+      "seconds": 13.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 827,
+      "seconds": 13.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 828,
+      "seconds": 13.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 829,
+      "seconds": 13.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 830,
+      "seconds": 13.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 831,
+      "seconds": 13.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 832,
+      "seconds": 13.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 833,
+      "seconds": 13.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 834,
+      "seconds": 13.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 835,
+      "seconds": 13.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 836,
+      "seconds": 13.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 837,
+      "seconds": 13.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 838,
+      "seconds": 13.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 839,
+      "seconds": 13.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 840,
+      "seconds": 14.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 841,
+      "seconds": 14.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 842,
+      "seconds": 14.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 843,
+      "seconds": 14.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 844,
+      "seconds": 14.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 845,
+      "seconds": 14.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 846,
+      "seconds": 14.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 847,
+      "seconds": 14.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 848,
+      "seconds": 14.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 849,
+      "seconds": 14.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 850,
+      "seconds": 14.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 851,
+      "seconds": 14.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 852,
+      "seconds": 14.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 853,
+      "seconds": 14.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 854,
+      "seconds": 14.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 855,
+      "seconds": 14.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 856,
+      "seconds": 14.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 857,
+      "seconds": 14.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 858,
+      "seconds": 14.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 859,
+      "seconds": 14.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 860,
+      "seconds": 14.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 861,
+      "seconds": 14.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 862,
+      "seconds": 14.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 863,
+      "seconds": 14.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 864,
+      "seconds": 14.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 865,
+      "seconds": 14.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 866,
+      "seconds": 14.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 867,
+      "seconds": 14.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 868,
+      "seconds": 14.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 869,
+      "seconds": 14.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 870,
+      "seconds": 14.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 871,
+      "seconds": 14.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 872,
+      "seconds": 14.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 873,
+      "seconds": 14.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 874,
+      "seconds": 14.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 875,
+      "seconds": 14.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 876,
+      "seconds": 14.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 877,
+      "seconds": 14.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 878,
+      "seconds": 14.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 879,
+      "seconds": 14.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 880,
+      "seconds": 14.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 881,
+      "seconds": 14.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 882,
+      "seconds": 14.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 883,
+      "seconds": 14.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 884,
+      "seconds": 14.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 885,
+      "seconds": 14.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 886,
+      "seconds": 14.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 887,
+      "seconds": 14.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 888,
+      "seconds": 14.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 889,
+      "seconds": 14.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 890,
+      "seconds": 14.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 891,
+      "seconds": 14.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 892,
+      "seconds": 14.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 893,
+      "seconds": 14.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 894,
+      "seconds": 14.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 895,
+      "seconds": 14.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 896,
+      "seconds": 14.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 897,
+      "seconds": 14.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 898,
+      "seconds": 14.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 899,
+      "seconds": 14.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 900,
+      "seconds": 15.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 901,
+      "seconds": 15.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 902,
+      "seconds": 15.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 903,
+      "seconds": 15.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 904,
+      "seconds": 15.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 905,
+      "seconds": 15.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 906,
+      "seconds": 15.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 907,
+      "seconds": 15.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 908,
+      "seconds": 15.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 909,
+      "seconds": 15.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 910,
+      "seconds": 15.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 911,
+      "seconds": 15.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 912,
+      "seconds": 15.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 913,
+      "seconds": 15.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 914,
+      "seconds": 15.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 915,
+      "seconds": 15.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 916,
+      "seconds": 15.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 917,
+      "seconds": 15.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 918,
+      "seconds": 15.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 919,
+      "seconds": 15.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 920,
+      "seconds": 15.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 921,
+      "seconds": 15.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 922,
+      "seconds": 15.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 923,
+      "seconds": 15.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 924,
+      "seconds": 15.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 925,
+      "seconds": 15.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 926,
+      "seconds": 15.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 927,
+      "seconds": 15.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 928,
+      "seconds": 15.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 929,
+      "seconds": 15.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 930,
+      "seconds": 15.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 931,
+      "seconds": 15.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 932,
+      "seconds": 15.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 933,
+      "seconds": 15.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 934,
+      "seconds": 15.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 935,
+      "seconds": 15.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 936,
+      "seconds": 15.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 937,
+      "seconds": 15.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 938,
+      "seconds": 15.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 939,
+      "seconds": 15.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 940,
+      "seconds": 15.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 941,
+      "seconds": 15.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 942,
+      "seconds": 15.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 943,
+      "seconds": 15.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 944,
+      "seconds": 15.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 945,
+      "seconds": 15.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 946,
+      "seconds": 15.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 947,
+      "seconds": 15.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 948,
+      "seconds": 15.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 949,
+      "seconds": 15.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 950,
+      "seconds": 15.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 951,
+      "seconds": 15.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 952,
+      "seconds": 15.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 953,
+      "seconds": 15.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 954,
+      "seconds": 15.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 955,
+      "seconds": 15.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 956,
+      "seconds": 15.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 957,
+      "seconds": 15.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 958,
+      "seconds": 15.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 959,
+      "seconds": 15.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 960,
+      "seconds": 16.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 961,
+      "seconds": 16.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 962,
+      "seconds": 16.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 963,
+      "seconds": 16.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 964,
+      "seconds": 16.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 965,
+      "seconds": 16.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 966,
+      "seconds": 16.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 967,
+      "seconds": 16.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 968,
+      "seconds": 16.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 969,
+      "seconds": 16.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 970,
+      "seconds": 16.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 971,
+      "seconds": 16.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 972,
+      "seconds": 16.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 973,
+      "seconds": 16.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 974,
+      "seconds": 16.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 975,
+      "seconds": 16.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 976,
+      "seconds": 16.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 977,
+      "seconds": 16.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 978,
+      "seconds": 16.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 979,
+      "seconds": 16.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 980,
+      "seconds": 16.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 981,
+      "seconds": 16.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 982,
+      "seconds": 16.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 983,
+      "seconds": 16.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 984,
+      "seconds": 16.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 985,
+      "seconds": 16.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 986,
+      "seconds": 16.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 987,
+      "seconds": 16.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 988,
+      "seconds": 16.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 989,
+      "seconds": 16.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 990,
+      "seconds": 16.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 991,
+      "seconds": 16.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 992,
+      "seconds": 16.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 993,
+      "seconds": 16.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 994,
+      "seconds": 16.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 995,
+      "seconds": 16.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 996,
+      "seconds": 16.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 997,
+      "seconds": 16.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 998,
+      "seconds": 16.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 999,
+      "seconds": 16.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1000,
+      "seconds": 16.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1001,
+      "seconds": 16.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1002,
+      "seconds": 16.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1003,
+      "seconds": 16.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1004,
+      "seconds": 16.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1005,
+      "seconds": 16.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1006,
+      "seconds": 16.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1007,
+      "seconds": 16.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1008,
+      "seconds": 16.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1009,
+      "seconds": 16.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1010,
+      "seconds": 16.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1011,
+      "seconds": 16.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1012,
+      "seconds": 16.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1013,
+      "seconds": 16.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1014,
+      "seconds": 16.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1015,
+      "seconds": 16.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1016,
+      "seconds": 16.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1017,
+      "seconds": 16.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1018,
+      "seconds": 16.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1019,
+      "seconds": 16.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1020,
+      "seconds": 17.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1021,
+      "seconds": 17.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1022,
+      "seconds": 17.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1023,
+      "seconds": 17.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1024,
+      "seconds": 17.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1025,
+      "seconds": 17.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1026,
+      "seconds": 17.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1027,
+      "seconds": 17.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1028,
+      "seconds": 17.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1029,
+      "seconds": 17.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1030,
+      "seconds": 17.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1031,
+      "seconds": 17.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1032,
+      "seconds": 17.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1033,
+      "seconds": 17.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1034,
+      "seconds": 17.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1035,
+      "seconds": 17.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1036,
+      "seconds": 17.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1037,
+      "seconds": 17.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1038,
+      "seconds": 17.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1039,
+      "seconds": 17.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1040,
+      "seconds": 17.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1041,
+      "seconds": 17.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1042,
+      "seconds": 17.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1043,
+      "seconds": 17.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1044,
+      "seconds": 17.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1045,
+      "seconds": 17.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1046,
+      "seconds": 17.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1047,
+      "seconds": 17.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1048,
+      "seconds": 17.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1049,
+      "seconds": 17.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1050,
+      "seconds": 17.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1051,
+      "seconds": 17.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1052,
+      "seconds": 17.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1053,
+      "seconds": 17.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1054,
+      "seconds": 17.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1055,
+      "seconds": 17.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1056,
+      "seconds": 17.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1057,
+      "seconds": 17.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1058,
+      "seconds": 17.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1059,
+      "seconds": 17.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1060,
+      "seconds": 17.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1061,
+      "seconds": 17.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1062,
+      "seconds": 17.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1063,
+      "seconds": 17.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1064,
+      "seconds": 17.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1065,
+      "seconds": 17.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1066,
+      "seconds": 17.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1067,
+      "seconds": 17.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1068,
+      "seconds": 17.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1069,
+      "seconds": 17.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1070,
+      "seconds": 17.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1071,
+      "seconds": 17.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1072,
+      "seconds": 17.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1073,
+      "seconds": 17.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1074,
+      "seconds": 17.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1075,
+      "seconds": 17.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1076,
+      "seconds": 17.933333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1077,
+      "seconds": 17.95,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1078,
+      "seconds": 17.966667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1079,
+      "seconds": 17.983333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1080,
+      "seconds": 18.0,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1081,
+      "seconds": 18.016667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1082,
+      "seconds": 18.033333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1083,
+      "seconds": 18.05,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1084,
+      "seconds": 18.066667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1085,
+      "seconds": 18.083333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1086,
+      "seconds": 18.1,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1087,
+      "seconds": 18.116667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1088,
+      "seconds": 18.133333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1089,
+      "seconds": 18.15,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1090,
+      "seconds": 18.166667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1091,
+      "seconds": 18.183333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1092,
+      "seconds": 18.2,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1093,
+      "seconds": 18.216667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1094,
+      "seconds": 18.233333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1095,
+      "seconds": 18.25,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1096,
+      "seconds": 18.266667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1097,
+      "seconds": 18.283333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1098,
+      "seconds": 18.3,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1099,
+      "seconds": 18.316667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1100,
+      "seconds": 18.333333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1101,
+      "seconds": 18.35,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1102,
+      "seconds": 18.366667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1103,
+      "seconds": 18.383333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1104,
+      "seconds": 18.4,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1105,
+      "seconds": 18.416667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1106,
+      "seconds": 18.433333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1107,
+      "seconds": 18.45,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1108,
+      "seconds": 18.466667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1109,
+      "seconds": 18.483333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1110,
+      "seconds": 18.5,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1111,
+      "seconds": 18.516667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1112,
+      "seconds": 18.533333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1113,
+      "seconds": 18.55,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1114,
+      "seconds": 18.566667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1115,
+      "seconds": 18.583333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1116,
+      "seconds": 18.6,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1117,
+      "seconds": 18.616667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1118,
+      "seconds": 18.633333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1119,
+      "seconds": 18.65,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1120,
+      "seconds": 18.666667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1121,
+      "seconds": 18.683333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1122,
+      "seconds": 18.7,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1123,
+      "seconds": 18.716667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1124,
+      "seconds": 18.733333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1125,
+      "seconds": 18.75,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1126,
+      "seconds": 18.766667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1127,
+      "seconds": 18.783333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1128,
+      "seconds": 18.8,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1129,
+      "seconds": 18.816667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1130,
+      "seconds": 18.833333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1131,
+      "seconds": 18.85,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1132,
+      "seconds": 18.866667,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1133,
+      "seconds": 18.883333,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1134,
+      "seconds": 18.9,
+      "animationCallbacks": 1,
+      "drawn": true
+    },
+    {
+      "frame": 1135,
+      "seconds": 18.916667,
+      "animationCallbacks": 1,
+      "drawn": true
+    }
+  ],
+  "pageErrors": [],
+  "captureSegments": [
+    {
+      "first": 0,
+      "last": 811
+    },
+    {
+      "first": 812,
+      "last": 1135,
+      "simulatedPrefixFrames": 812,
+      "overlapFrame812ByteIdentical": true
+    }
+  ],
+  "videoSha256": "14e79dbe1d37b9c564b4b059f754c1d89cc910dac7be8c55b4084d8c26b7fe74"
+}
