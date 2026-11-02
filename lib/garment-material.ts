@@ -64,6 +64,9 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
             if(vSurface>.5&&vSurface<1.5&&backEnabled>.5)ink=placedArtwork(backArtwork,backPlacement,1.);
             garmentColor.rgb=mix(garmentColor.rgb,ink.rgb*clamp(shade,.45,1.1),ink.a);
           }
+          // Open cuffs and hems expose the inside of the fabric, not another
+          // copy of the exterior artwork printed on the back of a card.
+          if(!gl_FrontFacing)garmentColor.rgb=fabricColor*.72;
           vec3 n=normalize(vFabricNormal)*(gl_FrontFacing?1.:-1.);
           float key=max(dot(n,normalize(vec3(-.45,.6,1.))),0.);
           float fill=max(dot(n,normalize(vec3(.8,.15,-.5))),0.);
