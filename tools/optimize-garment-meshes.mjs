@@ -32,17 +32,25 @@ for(const file of fs.readdirSync(source).filter(f=>f.endsWith('.glb')).sort()){
     views.push({buffer:0,byteOffset,byteLength:values.byteLength});
     const accessor={bufferView:views.length-1,componentType,count:values.length/{SCALAR:1,VEC2:2,VEC3:3}[type],type};
     if(original?.min){accessor.min=original.min;accessor.max=original.max;}
+    else if(type==='VEC3'){
+      accessor.min=[Infinity,Infinity,Infinity];accessor.max=[-Infinity,-Infinity,-Infinity];
+      for(let i=0;i<values.length;i++){const c=i%3;accessor.min[c]=Math.min(accessor.min[c],values[i]);accessor.max[c]=Math.max(accessor.max[c],values[i]);}
+    }
     accessors.push(accessor);payload.push(Buffer.from(values.buffer,values.byteOffset,values.byteLength));byteOffset+=values.byteLength;
     return index;
   };
   for(const mesh of doc.meshes)for(const p of mesh.primitives){
     assert.deepEqual(Object.keys(p.attributes).sort(),['NORMAL','POSITION','TEXCOORD_0']);
     const pos=read(p.attributes.POSITION),normals=read(p.attributes.NORMAL),uv=read(p.attributes.TEXCOORD_0),indices=read(p.indices);
-    const attrs=new Float32Array(pos.length/3*5);
+    const targets=(p.targets??[]).map(target=>Object.fromEntries(Object.entries(target).map(([name,index])=>[name,read(index)])));
+    const fields=targets.flatMap(target=>[target.POSITION,target.NORMAL].filter(Boolean));
+    const stride=5+fields.length*3,weights=[.05,.05,.05,1,1,...fields.flatMap((_,i)=>Array(3).fill(i%2===0?.1:.025))];
+    const attrs=new Float32Array(pos.length/3*stride);
     for(let i=0;i<pos.length/3;i++){
-      attrs.set(normals.subarray(i*3,i*3+3),i*5);attrs.set(uv.subarray(i*2,i*2+2),i*5+3);
+      attrs.set(normals.subarray(i*3,i*3+3),i*stride);attrs.set(uv.subarray(i*2,i*2+2),i*stride+3);
+      fields.forEach((field,j)=>attrs.set(field.subarray(i*3,i*3+3),i*stride+5+j*3));
     }
-    const [simplified,error]=MeshoptSimplifier.simplifyWithAttributes(indices,pos,3,attrs,5,[.05,.05,.05,1,1],null,3,maxError,['LockBorder','ErrorAbsolute']);
+    const [simplified,error]=MeshoptSimplifier.simplifyWithAttributes(indices,pos,3,attrs,stride,weights,null,3,maxError,['LockBorder','ErrorAbsolute']);
     assert(error<=maxError+1e-5);
     const [remap,count]=MeshoptSimplifier.compactMesh(simplified);
     const compact=(values,size)=>{
@@ -53,17 +61,18 @@ for(const file of fs.readdirSync(source).filter(f=>f.endsWith('.glb')).sort()){
     const positionAccessor=doc.accessors[p.attributes.POSITION];
     p.attributes={POSITION:append(compact(pos,3),'VEC3',5126,positionAccessor),NORMAL:append(compact(normals,3),'VEC3',5126),TEXCOORD_0:append(compact(uv,2),'VEC2',5126)};
     p.indices=append(simplified,'SCALAR',5125);
+    if(targets.length)p.targets=targets.map(target=>Object.fromEntries(Object.entries(target).map(([name,values])=>[name,append(compact(values,3),'VEC3',5126)])));
     trianglesBefore+=indices.length/3;trianglesAfter+=simplified.length/3;verticesBefore+=pos.length/3;verticesAfter+=count;largestError=Math.max(error,largestError);
   }
   doc.bufferViews=views;doc.accessors=accessors;doc.buffers=[{byteLength:byteOffset}];
-  doc.asset.generator='wardrobe static surfaces / meshoptimizer 1.1 / locked borders / 0.3-unit error';
+  doc.asset.generator='wardrobe native cloth poses / meshoptimizer 1.1 / locked borders / 0.3-unit error';
   let json=Buffer.from(JSON.stringify(doc));json=Buffer.concat([json,Buffer.alloc((4-json.length%4)%4,32)]);
   const header=Buffer.alloc(20);header.writeUInt32LE(0x46546c67,0);header.writeUInt32LE(2,4);header.writeUInt32LE(28+json.length+byteOffset,8);header.writeUInt32LE(json.length,12);header.writeUInt32LE(0x4e4f534a,16);
   const chunk=Buffer.alloc(8);chunk.writeUInt32LE(byteOffset);chunk.writeUInt32LE(0x004e4942,4);
   fs.writeFileSync(path.join(destination,file),Buffer.concat([header,json,chunk,...payload]));
   models.push({file,trianglesBefore,trianglesAfter,verticesBefore,verticesAfter,maxSimplifierError:+largestError.toFixed(6),bytesBefore:raw.length,bytesAfter:28+json.length+byteOffset});
 }
-const result={scope:'Offline static GLB optimization, all material borders locked; retained vertices, normals and UVs copied exactly. Simplifier error is a metric, not a pixel-quality guarantee.',errorLimitWorldUnits:maxError,models};
+const result={scope:'Offline GLB optimization, all material borders locked; retained vertices, normals, UVs and native cloth targets copied exactly. Simplifier error is a metric, not a pixel-quality guarantee.',errorLimitWorldUnits:maxError,models};
 if(path.resolve(destination)===path.join(root,'public/models')){
   const update=garment=>{
     const model=models.find(m=>m.file===path.basename(garment.mesh));
