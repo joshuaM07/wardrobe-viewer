@@ -35,7 +35,7 @@ The folds, sleeves, and hems remain essentially rigid throughout each turn. The 
 
 The ticker advances left by 76 source pixels per second, measured from correlations at 30, 60, 120, and 180 frames.
 
-Turns generally settle in roughly 0.5–0.7 seconds. Neighbors shift away from the active garment, with the nearest approximately 182 source pixels and farther displacements decaying geometrically. The Three.js rewrite fits per-garment spring response to all 341 frames across the seven revealed turns. The corresponding trigger times are refined to 1.05, 2.50, 3.583333, 5.016667, 6.366667, 7.20, and 14.333333 seconds. Interactive hover itself has no artificial delay. Fixed-step spring integration keeps rigid movement consistent across refresh rates.
+Turns generally settle in roughly 0.5–0.7 seconds. Neighbors shift away from the active garment, with the nearest approximately 182 source pixels and farther displacements decaying geometrically. The original per-garment calibration uses all 341 frames across the seven revealed turns. The corresponding trigger times are refined to 1.05, 2.50, 3.583333, 5.016667, 6.366667, 7.20, and 14.333333 seconds. Interactive hover itself has no artificial delay. The fluid-motion update uses exact damped-spring integration, retains per-garment stiffness, and limits damping to allow a small continuous overshoot. Neighbors respond directly to selection instead of following a second easing stage. Current measured response and comparison with all 341 reference widths are in `qa/three/fluid-motion.json`; these width comparisons include occlusion and segmentation uncertainty.
 
 ## Coverage and limits
 

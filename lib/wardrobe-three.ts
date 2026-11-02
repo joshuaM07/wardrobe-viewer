@@ -7,7 +7,7 @@ import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-
 import { garmentMaterial, type FabricMaterial } from './garment-material';
 import type { GarmentDesign, PrintSide } from './garment-design';
 import { garmentAssetUrl } from './garment-assets';
-import { clamp, spring, stepSpring, type Spring } from './motion';
+import { clamp, spring, stepSpring, stepGlide, type Spring } from './motion';
 import { mobileRackView, mobileProductView } from './rack-view';
 
 export type Garment = {
@@ -69,6 +69,8 @@ export class WardrobeRenderer {
   private environment: THREE.WebGLRenderTarget;
   private backBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
   private blurBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
+  private backgroundStamp = '';
+  private textureRevision = 0;
   private postScene = new THREE.Scene();
   private postCamera = new THREE.Camera();
   private blur = new THREE.ShaderMaterial({
@@ -83,6 +85,8 @@ export class WardrobeRenderer {
   private viewZoom = spring(1);
   private spin = spring();
   private spinSelected = -1;
+  private spinMomentum = 0;
+  private spinFollowing = false;
   private textureLoader = new THREE.TextureLoader();
   private raf = 0;
   private disposed = false;
@@ -101,6 +105,25 @@ export class WardrobeRenderer {
   private dirty = true;
   private lastStamp = '';
   private onContextLost: (e: Event) => void;
+
+  stopMomentum() { this.spinMomentum = 0; this.spinFollowing = false; }
+
+  beginSpinDrag() {
+    this.stopMomentum();
+    this.spinFollowing = true;
+    // Re-grabbing a coasting piece starts at its visible orientation.
+    this.state().spin = this.spin.value;
+    this.spin.velocity = 0;
+    return this.spin.value;
+  }
+
+  releaseSpin(velocity: number) {
+    this.spinFollowing = false;
+    this.spinMomentum = this.state().reduced ? 0 : clamp(velocity, -12, 12);
+    this.state().spin = this.spin.value;
+    this.spin.velocity = this.spinMomentum;
+    this.invalidate();
+  }
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -267,7 +290,7 @@ export class WardrobeRenderer {
     };
     const customized=!!design.color||!!design.front||!!design.back||!design.originalPrint;
     if(!customized){
-      uniforms.customized.value=0;
+      uniforms.customized.value=0;this.textureRevision++;
       for(const side of ['front','back'] as const){uniforms[`${side}Artwork`].value=item.body.material.map!;uniforms[`${side}Enabled`].value=0;delete item.artwork[side];}
       cleanTextures();this.invalidate();return;
     }
@@ -313,7 +336,7 @@ export class WardrobeRenderer {
         uniforms[`${side}Artwork`].value=item.body.material.map!;delete item.artwork[side];
       }
     }
-    uniforms.customized.value=1;cleanTextures();this.invalidate();
+    uniforms.customized.value=1;this.textureRevision++;cleanTextures();this.invalidate();
   }
 
   hit(clientX: number, clientY: number, touch = false) {
@@ -365,43 +388,57 @@ export class WardrobeRenderer {
   private update(dt: number) {
     const s = this.state();
     const modal = s.mode === 'product' ? 1 : 0;
-    if (s.reduced) this.expand.value = modal;
+    if (s.reduced) { this.expand.value = modal; this.expand.velocity = 0; }
     else stepSpring(this.expand, modal, dt, 110, 22);
     const p = clamp(this.expand.value);
     if(s.mobile!==this.mobileProfile)this.resize();
     const active = s.mode === 'product' ? s.selected : s.active;
     let moving = Math.abs(this.expand.value-modal) > .0001 || Math.abs(this.expand.velocity) > .001;
+    if (s.mode !== 'product' || s.reduced) this.stopMomentum();
+    if(this.spinSelected!==s.selected){this.spinSelected=s.selected;this.spin.value=s.spin;this.spin.velocity=0;this.stopMomentum();}
+    const coasting = !s.dragging && Math.abs(this.spinMomentum) > .015;
+    if (coasting) {
+      const glide = stepGlide(this.spinMomentum, dt);
+      s.spin += glide.distance; this.spinMomentum = glide.velocity;
+      this.spin.value=s.spin;this.spin.velocity=glide.velocity;moving = true;
+    } else this.spinMomentum = 0;
     const spinTarget=s.mode==='product'?s.spin:0;
-    if(this.spinSelected!==s.selected){this.spinSelected=s.selected;this.spin.value=spinTarget;this.spin.velocity=0;}
     if(s.reduced){this.spin.value=spinTarget;this.spin.velocity=0;}
-    else stepSpring(this.spin,spinTarget,dt,s.dragging?420:125,s.dragging?38:21);
+    else if(!coasting)stepSpring(this.spin,spinTarget,dt,this.spinFollowing?900:125,this.spinFollowing?60:21);
+    if(!s.dragging&&Math.abs(this.spinMomentum)<.015&&Math.abs(this.spin.value-spinTarget)<.0001&&Math.abs(this.spin.velocity)<.001)this.spinFollowing=false;
     if(Math.abs(this.spin.value-spinTarget)>.0001||Math.abs(this.spin.velocity)>.001)moving=true;
     this.items.forEach((item, i) => {
       const target = i === active ? 1 : 0;
-      if (s.reduced) item.focus.value = target;
-      else stepSpring(item.focus, target, dt, item.garment.turnStiffness??85, item.garment.turnDamping??18);
+      if (s.reduced) { item.focus.value = target; item.focus.velocity = 0; }
+      else {
+        const stiffness = item.garment.turnStiffness ?? 85;
+        stepSpring(item.focus, target, dt, stiffness, Math.min(item.garment.turnDamping ?? 18, 1.7 * Math.sqrt(stiffness)));
+      }
     });
     this.items.forEach((item, i) => {
       const g = item.garment;
       let x = g.pivot*W;
-      this.items.forEach((other, j) => {
-        if (i !== j) x += Math.sign(i-j)*this.rackSpread*Math.pow(.6, Math.abs(i-j)-1)*clamp(other.focus.value);
-      });
+      // Move neighbors from the input target. Following another spring here
+      // added a second easing stage and made the rack lag behind every turn.
+      if (active >= 0 && i !== active) x += Math.sign(i-active)*this.rackSpread*Math.pow(.6, Math.abs(i-active)-1);
       const selected = i === s.selected;
-      const detail = selected ? p : 0;
+      const detail = selected ? modal : 0;
       x += (W/2+(g.detailX||0)-x)*detail;
       const y = GARMENT_Y+((g.detailY??276)-GARMENT_Y)*detail;
       const scale = 1+((g.detailScale??1.36)-1)*detail;
       for (const [sp, value] of [[item.x,x],[item.y,y],[item.scale,scale]] as [Spring,number][]) {
         if (s.reduced || dt === 0) { sp.value=value; sp.velocity=0; }
-        else stepSpring(sp,value,dt,180,27);
+        else stepSpring(sp,value,dt,145,21);
         if (Math.abs(sp.value-value) > .0001 || Math.abs(sp.velocity) > .001) moving=true;
       }
-      const f = clamp(item.focus.value);
+      // Preserve the spring's small overshoot at both ends of the turn.
+      const f = item.focus.value;
       item.root.rotation.y = g.restYaw*(1-f)+(selected ? this.spin.value*p : 0);
-      const swayTarget=s.reduced?0:clamp(item.focus.velocity,-1.5,1.5)*-.014*(1-p)+(selected?clamp(this.spin.velocity,-3,3)*-.003*p:0);
+      const turnVelocity = -g.restYaw * item.focus.velocity + (selected ? this.spin.velocity * p : 0);
+      // Inertia is driven by actual turn/rail velocity, including neighbors.
+      const swayTarget=s.reduced?0:clamp(-turnVelocity*.009-item.x.velocity*.000035,-.065,.065);
       if(s.reduced){item.sway.value=0;item.sway.velocity=0;}
-      else stepSpring(item.sway,swayTarget,dt,85,13);
+      else stepSpring(item.sway,swayTarget,dt,105,12);
       item.root.rotation.z=item.sway.value;
       if(Math.abs(item.sway.value-swayTarget)>.0001||Math.abs(item.sway.velocity)>.001)moving=true;
       item.root.position.set(item.x.value-W/2,H/2-item.y.value,selected ? p*120 : restingZ);
@@ -412,10 +449,10 @@ export class WardrobeRenderer {
     const selectedItem=this.items[s.selected];
     const height=-(selectedItem?.body.geometry.boundingBox?.min.y??-756);
     const detail=(s.mobile||s.studio)&&!s.demo&&selectedItem?mobileProductView(selectedItem.garment,this.cssWidth,this.cssHeight,height):{x:0,y:0,zoom:s.mobile?1.4:1};
-    const targets:[[Spring,number],[Spring,number],[Spring,number]]=[[this.viewX,view.x*(1-p)],[this.viewY,view.y+(detail.y-view.y)*p],[this.viewZoom,view.zoom+(detail.zoom-view.zoom)*p]];
+    const targets:[[Spring,number],[Spring,number],[Spring,number]]=[[this.viewX,view.x*(1-modal)],[this.viewY,view.y+(detail.y-view.y)*modal],[this.viewZoom,view.zoom+(detail.zoom-view.zoom)*modal]];
     for(const [sp,target] of targets){
       if(s.reduced||dt===0){sp.value=target;sp.velocity=0;}
-      else stepSpring(sp,target,dt,180,27);
+      else stepSpring(sp,target,dt,s.dragging?650:180,s.dragging?50:27);
       if(Math.abs(sp.value-target)>.0001||Math.abs(sp.velocity)>.001)moving=true;
     }
     if(this.camera.zoom!==this.viewZoom.value){this.camera.zoom=this.viewZoom.value;this.camera.updateProjectionMatrix();}
@@ -431,16 +468,26 @@ export class WardrobeRenderer {
     this.items.forEach(item=>{item.root.visible=item.prepared;});
     r.info.reset();
     r.setRenderTarget(null); r.autoClear=true;
-    if (p < .003 || !this.items[s.selected]) { r.render(this.scene, this.camera); return; }
+    if (p < .003 || !this.items[s.selected]) { this.backgroundStamp='';r.render(this.scene, this.camera); return; }
     // Blur only the small background framebuffer. The selected mesh stays crisp.
     const width=Math.ceil(this.canvas.width/2),height=Math.ceil(this.canvas.height/2);
-    if(this.backBuffer.width!==width||this.backBuffer.height!==height){this.backBuffer.setSize(width,height);this.blurBuffer.setSize(width,height);}
-    this.items[s.selected].root.visible=false;
-    r.setRenderTarget(this.backBuffer); r.render(this.scene,this.camera);
-    this.blur.uniforms.image.value=this.backBuffer.texture;
-    this.blur.uniforms.direction.value.set(p*13/W,0);
-    this.blur.uniforms.opacity.value=1;
-    r.setRenderTarget(this.blurBuffer); r.render(this.postScene,this.postCamera);
+    if(this.backBuffer.width!==width||this.backBuffer.height!==height){this.backBuffer.setSize(width,height);this.blurBuffer.setSize(width,height);this.backgroundStamp='';}
+    // A settled rack is static while the selected piece rotates. Reuse its
+    // background instead of rendering all ten garments on every drag frame.
+    const stamp=[s.selected,p,this.textureRevision,width,height,
+      this.camera.zoom,this.camera.position.x,this.camera.position.y,this.camera.top,this.camera.bottom,
+      ...this.items.flatMap((item,i)=>i===s.selected?[]:[Number(item.prepared),item.root.position.x,item.root.position.y,
+        item.root.scale.x,item.root.rotation.y,item.root.rotation.z])]
+      .map(value=>Math.round(value*10_000)/10_000).join(':');
+    if(stamp!==this.backgroundStamp){
+      this.items[s.selected].root.visible=false;
+      r.setRenderTarget(this.backBuffer); r.render(this.scene,this.camera);
+      this.blur.uniforms.image.value=this.backBuffer.texture;
+      this.blur.uniforms.direction.value.set(p*13/W,0);
+      this.blur.uniforms.opacity.value=1;
+      r.setRenderTarget(this.blurBuffer); r.render(this.postScene,this.postCamera);
+      this.backgroundStamp=stamp;
+    }
     this.blur.uniforms.image.value=this.blurBuffer.texture;
     this.blur.uniforms.direction.value.set(0,p*13/H);
     this.blur.uniforms.opacity.value=1-.94*p;
@@ -457,7 +504,7 @@ export class WardrobeRenderer {
     const continuous=!!this.previous;
     this.previous=now;
     this.onFrame(now);
-    const moving=this.update(Math.min(delta/1000,.05));
+    const moving=this.update(Math.min(delta/1000,.1));
     const state=this.state();
     const stamp=[state.mode,state.active,state.selected,state.spin,state.rackPosition,state.mobile,this.items.length,this.canvas.width,this.canvas.height].join(':');
     if(moving||this.dirty||stamp!==this.lastStamp){
@@ -489,7 +536,8 @@ export class WardrobeRenderer {
       drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,
       textures:this.renderer.info.memory.textures,buffer:[this.canvas.width,this.canvas.height],
       display:[Math.round(this.cssWidth),Math.round(this.cssHeight)],
-      garmentMeshes:this.items.length,mode:this.state().mode,mobile:this.mobileProfile,cameraZoom:Math.round(this.camera.zoom*100)/100 });
+      garmentMeshes:this.items.length,mode:this.state().mode,mobile:this.mobileProfile,cameraZoom:Math.round(this.camera.zoom*100)/100,
+      rotationRad:Math.round(this.spin.value*10000)/10000,coasting:Math.abs(this.spinMomentum)>.015 });
   }
 
   private releaseItem(item: Item) {

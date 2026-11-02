@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import NextImage from 'next/image';
 import rawGarments from '@/lib/garments.json';
-import { clamp } from '@/lib/motion';
+import { clamp, dragMotion, sampleDrag, releaseVelocity } from '@/lib/motion';
 import { garmentAssetUrl } from '@/lib/garment-assets';
 import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three';
 import { MOBILE_RACK_QUERY, RACK_WIDTH, mobileRackView, mobileProductView } from '@/lib/rack-view';
@@ -33,6 +33,9 @@ export default function Wardrobe() {
   const [availability,setAvailability]=useState(false);
   const [adding,setAdding]=useState(false);
   const scene = useRef({ active: -1, selected: 6, mode: 'rack' as Mode, hoodie: false, demo: false, demoStart: 0, reduced: false, dragging: false, dragX: 0, dragStartSpin: 0, spin: 0, mobile:false,rackPosition:6,dragRackStart:6,studio:false });
+  const gesture = useRef(dragMotion(0, 0));
+  const pointerDown = useRef(false);
+  const suppressClick = useRef(false);
   const [mode, setMode] = useState<Mode>('rack');
   const [hover, setHover] = useState(-1);
   const [selected, setSelected] = useState(6);
@@ -73,6 +76,7 @@ export default function Wardrobe() {
     persist();
   },[persist]);
   const rotate=useCallback((side:PrintSide)=>{
+    engine.current?.stopMomentum();
     const target=side==='front'?0:Math.PI;
     scene.current.spin+=Math.atan2(Math.sin(target-scene.current.spin),Math.cos(target-scene.current.spin));
     setOrientation(side);engine.current?.invalidate();
@@ -100,6 +104,7 @@ export default function Wardrobe() {
     highlightRack((current+direction+count)%count);
   }, [highlightRack,focusRack,ready,loadError]);
   const pick = useCallback((i: number) => {
+    engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
     const count = loaded.current.length || 10;
     i = (i + count) % count;
     scene.current.selected = i;scene.current.spin=0;setOrientation('front');setDesignError('');setSelected(i);
@@ -110,6 +115,7 @@ export default function Wardrobe() {
     setDemo(false); setMode('product');
   }, [pick]);
   const close = useCallback(() => {
+    engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
     setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(active);setMode('rack');
     requestAnimationFrame(() => lastFocus.current?.focus());
   }, [highlightRack,focusRack]);
@@ -231,19 +237,44 @@ export default function Wardrobe() {
   };
   const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const s=scene.current;
-    if(e.buttons===1&&Math.abs(e.clientX-s.dragX)>5)s.dragging=true;
-    if(mode==='product'&&e.buttons===1){
+    if(pointerDown.current&&Math.abs(e.clientX-s.dragX)>5)s.dragging=true;
+    if(mode==='product'&&pointerDown.current&&s.dragging){
       s.spin=s.dragStartSpin+(e.clientX-s.dragX)*.012;setOrientation(null);
+      sampleDrag(gesture.current,s.spin,e.timeStamp);
       engine.current?.invalidate();return;
     }
-    if(mode==='rack'&&s.mobile&&e.buttons===1&&s.dragging){
+    if(mode==='rack'&&s.mobile&&pointerDown.current&&s.dragging){
       const bounds=e.currentTarget.getBoundingClientRect();
       const view=mobileRackView(collection.map(g=>g.pivot),s.rackPosition,bounds.width,bounds.height);
       const gap=(collection.at(-1)!.pivot-collection[0].pivot)*RACK_WIDTH/(collection.length-1);
-      focusRack(s.dragRackStart-(e.clientX-s.dragX)*RACK_WIDTH/(bounds.width*view.zoom*gap));return;
+      focusRack(s.dragRackStart-(e.clientX-s.dragX)*RACK_WIDTH/(bounds.width*view.zoom*gap));
+      sampleDrag(gesture.current,s.rackPosition,e.timeStamp);return;
     }
     if(s.demo||s.mobile||e.pointerType==='touch'||mode!=='rack')return;
     const i=targetAt(e);if(s.active!==i)highlightRack(i);
+  };
+  const startDrag = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if(e.button!==0||!ready)return;
+    const s=scene.current;
+    engine.current?.stopMomentum();
+    s.dragX=e.clientX;s.dragRackStart=s.rackPosition;s.dragging=false;
+    s.dragStartSpin=mode==='product'?(engine.current?.beginSpinDrag()??s.spin):s.spin;
+    gesture.current=dragMotion(mode==='product'?s.dragStartSpin:s.rackPosition,e.timeStamp);
+    pointerDown.current=true;suppressClick.current=false;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const endDrag = (e: React.PointerEvent<HTMLCanvasElement>, cancelled=false) => {
+    if(!pointerDown.current)return;
+    const s=scene.current,wasDragging=s.dragging;
+    const velocity=cancelled||s.reduced?0:releaseVelocity(gesture.current,e.timeStamp);
+    pointerDown.current=false;s.dragging=false;suppressClick.current=wasDragging;
+    if(wasDragging&&s.mobile&&mode==='rack'){
+      // A short throw carries to the next piece; long throws stay bounded.
+      focusRack(Math.round(s.rackPosition+clamp(velocity*.16,-2,2)));
+    }
+    if(wasDragging&&mode==='product')engine.current?.releaseSpin(velocity);
+    engine.current?.invalidate();
+    if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);
   };
   const leave = () => { if(!scene.current.demo&&!scene.current.mobile)highlightRack(-1); };
   const addPiece = async (type:string) => {
@@ -280,10 +311,9 @@ export default function Wardrobe() {
           <button className="brand" aria-label="Batch Merch home" onClick={close}><NextImage src="/brand.webp" alt="Batch Merch" width={200} height={119} unoptimized priority /></button>
           <button onClick={() => { scene.current.mode='contact';setMode('contact'); }} className="text-button">CONTACT</button>
         </header>
-        <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={e=>{scene.current.dragX=e.clientX;scene.current.dragStartSpin=scene.current.spin;scene.current.dragRackStart=scene.current.rackPosition;scene.current.dragging=false;if(mode==='product'||scene.current.mobile)e.currentTarget.setPointerCapture(e.pointerId);}}
-          onPointerUp={()=>{if(scene.current.mobile&&mode==='rack'&&scene.current.dragging)focusRack(Math.round(scene.current.rackPosition));if(mode==='product'){scene.current.dragging=false;engine.current?.invalidate();}}}
-          onPointerCancel={()=>{if(scene.current.mobile&&mode==='rack')focusRack(Math.round(scene.current.rackPosition));scene.current.dragging=false;}}
-          onClick={(e) => { if(scene.current.dragging){scene.current.dragging=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
+        <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={startDrag}
+          onPointerUp={e=>endDrag(e)} onPointerCancel={e=>endDrag(e,true)} onLostPointerCapture={e=>endDrag(e,true)}
+          onClick={(e) => { if(suppressClick.current){suppressClick.current=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
           aria-label={mobile?'Interactive clothing rack. Swipe or use the slider to browse; tap a garment to inspect it.':'Interactive clothing rack. Hover or use the rack arrows to browse; click a garment to inspect it.'} />
         {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={garmentAssetUrl(`/posters/${mode==='product'?(collection[selected]?.sourceId||collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`)} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}

@@ -17,6 +17,8 @@ button:disabled{cursor:wait}
 .brand img{width:100%;height:100%;object-fit:contain}
 .rack-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:pan-y;cursor:default}
 .rack-canvas.has-hover{cursor:pointer}
+.is-product .rack-canvas{cursor:grab;touch-action:none}
+.is-product .rack-canvas:active{cursor:grabbing}
 .is-loading .rack-canvas{opacity:0;pointer-events:none}
 .static-poster{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;object-fit:contain}
 .poster-window{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}

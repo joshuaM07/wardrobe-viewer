@@ -27,7 +27,7 @@ pnpm start
 
 - Hover a garment to turn it forward; click or press Enter to inspect it. Rack arrows browse without opening the viewer.
 - On mobile, swipe, use arrows, or move the slider. The nearest piece faces forward automatically; camera movement stops at the rail ends.
-- Drag a selected piece through a full rotation, or use Front and Back. Arrow keys navigate pieces; Escape closes the editor before closing the viewer.
+- Drag a selected piece through a full rotation, then release to let it coast. Grab it again to stop it, or use Front and Back. Mobile rack swipes carry toward the next piece. Arrow keys navigate pieces; Escape closes the editor before closing the viewer.
 - Choose **Customize** to set any fabric colour with swatches, the colour picker, or a hex value. Keep or remove the original graphic.
 - Upload independent front and back artwork, then change print size and horizontal/vertical placement while viewing it on the actual mesh. Transparent PNGs retain their alpha.
 - PNG, JPG, and WebP files up to 15 MB are supported. Images decode once, reduce to a 1536px maximum edge, and lose unnecessary transparent padding. Artwork never switches to a screen overlay during rotation.
@@ -39,7 +39,7 @@ Availability, About, and Contact remain local presentation panels. Live inventor
 
 ## Rendering and assets
 
-`lib/wardrobe-three.ts` owns the renderer, orthographic camera, demand-driven animation, chrome rail, GPU background blur, selection, and design texture lifecycle. Geometry and picking BVHs stay fixed during interaction. Each garment/hanger uses one body draw call plus one metal hook. Rotation follows the pointer with a faster spring during dragging, then settles; rendering stops when the scene settles and pauses while the document is hidden. Resolution adapts to the pixel budget and measured frame intervals. Mobile retains a 750,000-pixel limit and DPR up to 2; desktop retains 1.4 million pixels and DPR 1.5.
+`lib/wardrobe-three.ts` owns the renderer, orthographic camera, demand-driven animation, chrome rail, GPU background blur, selection, and design texture lifecycle. Geometry and picking BVHs stay fixed during interaction. Each garment/hanger uses one body draw call plus one metal hook. Rotation follows the pointer with a fast spring during dragging, then coasts with damped momentum. Garment turns retain a small overshoot; neighbors make space with velocity-driven hanger sway. A stationary blurred rack background is cached during product rotation. Rendering stops when the scene settles and pauses while the document is hidden. Resolution adapts to the pixel budget and measured frame intervals. Mobile retains a 750,000-pixel limit and DPR up to 2; desktop retains 1.4 million pixels and DPR 1.5.
 
 `lib/garment-material.ts` retains the original fixed UV albedo atlas, separate front/back surfaces, and wooden hanger. Neutral fabric maps are loaded only when a piece is customized. The material combines a colour-neutral fold texture, optional original-graphic mask, and independent alpha artwork for each side. Artwork placement uses object coordinates, including a reversed X coordinate on the back so lettering reads correctly. Lighting follows transformed mesh normals. Slider movement changes uniforms, with no image decoding, mesh rebuild, or shader compilation. Superseded uploads and removed pieces release their textures; late uploads cannot overwrite newer choices.
 
@@ -53,9 +53,9 @@ All **1,136 frames at 60 fps** of the supplied reference were decoded in order. 
 
 Production GLSL and GLBs are rendered under Mesa/EGL for asset QA. The design checks cover four clothing templates in five colours, transparent front/back prints through a full turn, original silhouettes, 632 camera-framing cases, uploads, late-upload races, texture disposal, and validated saved state. The framing checks include a 20-piece rack and the mobile/desktop studio. Evidence and reproducible tools live in `docs/qa/three/` and `tools/`.
 
-Hardware browser FPS and the final browser UI cannot be verified in the available managed environment. Software-driver timings are asset QA, not browser performance claims. The WebGL canvas exposes measured browser intervals, draw counts, and resolution in its `data-performance` attribute on a WebGL-capable browser.
+Chromium with software WebGL verifies desktop and mobile interactions. Hardware browser FPS has not been verified; software-driver timings do not establish hardware performance. The WebGL canvas exposes measured browser intervals, draw counts, resolution, rotation, and coasting state in its `data-performance` attribute on a WebGL-capable browser.
 
-Offline tools are not needed to run or deploy the app. Python QA requires Pillow, NumPy, SciPy, OpenCV, ModernGL, and reference crops. `node tools/check-design-studio.mjs` also exercises native image processing when `@napi-rs/canvas` is available, including through the primary runtime. `node tools/check-mobile-rack.mjs` validates production renderer transforms against the actual GLB bounds.
+Offline tools are not needed to run or deploy the app. Python QA requires Pillow, NumPy, SciPy, OpenCV, ModernGL, and reference crops. `node tools/check-design-studio.mjs` also exercises native image processing when `@napi-rs/canvas` is available, including through the primary runtime. `node tools/check-mobile-rack.mjs` validates production renderer transforms against the actual GLB bounds. `node tools/check-motion.mjs` checks spring consistency across refresh rates, gesture momentum, re-grabs, reference turn widths, and background-cache invalidation. `python tools/check-browser-motion.py http://localhost:3001 /tmp/wardrobe-browser-qa` verifies desktop and touch interactions against a running production export with Playwright Chromium. Motion verification and its hardware-performance limits are recorded in `docs/qa/three/fluid-motion.md`.
 
 ## Source history
 
