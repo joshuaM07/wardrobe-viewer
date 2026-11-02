@@ -15,7 +15,7 @@ Verification:
 - `controlled-cloth-browser.json`: all nine desktop/touch checks pass, including stable hover, click selection, rapid navigation, drag/release, mobile swipes and reduced motion. No page errors.
 - `controlled-cloth-motion.json`: refresh-rate spring checks, 267 stable hover acquisitions, reference-width guards and raster-cache invalidation pass. Camera framing passes all 632 existing cases, including the hoodie and 20-piece studio. Design texture lifecycle and six image-processing checks pass. Production build and lint pass.
 
-The continuous reference comparison is refreshed separately and retains all 1,136 source frames. Its controlled clock checks trajectories, not native frame delivery or perceptual parity. The earlier topology and native software-driver measurements remain historical evidence for commit `f49fd0b`; they do not measure the added cloth warp.
+[The continuous reference comparison](continuous-comparison.mp4) is refreshed from renderer commit `01ad17a` in one uninterrupted capture and retains all 1,136 source frames. `continuous-capture.json` records every output image hash and the video hash. Its controlled clock checks trajectories, not native frame delivery or perceptual parity. The earlier topology and native software-driver measurements remain historical evidence for commit `f49fd0b`; they do not measure the added cloth warp.
 
 Reproduce with the production export running:
 
