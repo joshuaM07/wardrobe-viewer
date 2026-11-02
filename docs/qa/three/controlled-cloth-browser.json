@@ -12,12 +12,12 @@
     "Reduced motion cancels momentum"
   ],
   "desktopDrag": {
-    "samples": 52,
-    "frames": 56,
+    "samples": 60,
+    "frames": 64,
     "frameMsP50": 16.7,
-    "frameMsP95": 100,
-    "renderMsP95": 3.9,
-    "framesOver33ms": 11,
+    "frameMsP95": 83.4,
+    "renderMsP95": 3.1,
+    "framesOver33ms": 14,
     "drawCalls": 3,
     "triangles": 5402,
     "textures": 24,
@@ -33,18 +33,18 @@
     "mode": "product",
     "mobile": false,
     "cameraZoom": 1,
-    "rotationRad": 2.16,
-    "coasting": false
+    "rotationRad": 3.1845,
+    "coasting": true
   },
   "desktop": {
-    "samples": 98,
-    "frames": 104,
-    "frameMsP50": 33.4,
-    "frameMsP95": 183.3,
-    "renderMsP95": 6.1,
-    "framesOver33ms": 47,
-    "drawCalls": 35,
-    "triangles": 60836,
+    "samples": 135,
+    "frames": 140,
+    "frameMsP50": 33.3,
+    "frameMsP95": 116.6,
+    "renderMsP95": 2.4,
+    "framesOver33ms": 62,
+    "drawCalls": 3,
+    "triangles": 5658,
     "textures": 24,
     "buffer": [
       608,
@@ -62,18 +62,18 @@
     "coasting": false
   },
   "mobile": {
-    "samples": 194,
-    "frames": 198,
-    "frameMsP50": 33.3,
+    "samples": 169,
+    "frames": 173,
+    "frameMsP50": 16.7,
     "frameMsP95": 133.3,
     "renderMsP95": 2.7,
-    "framesOver33ms": 78,
+    "framesOver33ms": 50,
     "drawCalls": 3,
-    "triangles": 5622,
+    "triangles": 5790,
     "textures": 24,
     "buffer": [
-      257,
-      333
+      292,
+      380
     ],
     "display": [
       367,
@@ -83,7 +83,7 @@
     "mode": "product",
     "mobile": true,
     "cameraZoom": 3.5,
-    "rotationRad": 2.5136,
+    "rotationRad": 2.3769,
     "coasting": false
   },
   "pageErrors": []

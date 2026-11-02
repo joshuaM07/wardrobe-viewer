@@ -125,15 +125,10 @@ export class WardrobeRenderer {
     return {left:this.boundsBox.min.x*scale-padding,right:this.boundsBox.max.x*scale+padding};
   }
 
-  private rackLayout(active: number, current=false) {
+  private rackLayout(active: number) {
     const positions=this.items.map((item,i)=>item.garment.pivot*W+
       (active<0||i===active?0:Math.sign(i-active)*this.rackSpread*Math.pow(.6,Math.abs(i-active)-1)));
-    const envelopes=this.items.map((item,i)=>{
-      const target=this.envelope(item,i===active?0:item.garment.restYaw);
-      if(!current||(i===active&&this.state().mode==='product'))return target;
-      const occupied=this.envelope(item,item.root.rotation.y,item.root.rotation.z,item.scale.value,this.clothPadding(item));
-      return {left:Math.min(target.left,occupied.left),right:Math.max(target.right,occupied.right)};
-    });
+    const envelopes=this.items.map((item,i)=>this.envelope(item,i===active?0:item.garment.restYaw));
     return separateRack(positions,envelopes,active);
   }
 
@@ -519,7 +514,7 @@ export class WardrobeRenderer {
         stepSpring(item.focus,target,dt,stiffness,damping);
       }
     });
-    const rackTargets=this.rackLayout(active,dt>0);
+    const rackTargets=this.rackLayout(active);
     this.items.forEach((item, i) => {
       const g = item.garment;
       let x = rackTargets[i];

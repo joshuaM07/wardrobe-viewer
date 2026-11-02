@@ -47,6 +47,7 @@ function check(engine,label){
   const padding=(Math.abs(item.cloth.bend.value)+Math.abs(item.cloth.twist.value)*radius)*item.root.scale.x;
   return box.clone().applyMatrix4(item.root.matrixWorld).expandByScalar(padding);
  });
+ if(engine.items.length===10)for(const box of boxes)assert(box.min.x>=-1456&&box.max.x<=1456,`catalogue clipped: ${label}`);
  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
   checkedPairs++;
   if(boxes[i].intersectsBox(boxes[j]))worst.push({label,i,j,depth:[engine.items[i].root.position.z,engine.items[j].root.position.z]});
@@ -65,6 +66,15 @@ for(const collection of [originals.slice(0,10),originals,expanded])for(const hz 
  state.reduced=true;state.mode='rack';state.active=3;engine.update(1/60);check(engine,'reduced');
  assert(engine.items.every(i=>i.cloth.bend.value===0&&i.cloth.twist.value===0));
 }
+const timeline=[[0,-1,'rack'],[.970017,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rack'],[5.016667,4,'rack'],[6.366667,5,'rack'],[7.2,6,'rack'],[8.45,6,'product'],[10.1,5,'product'],[10.72,4,'product'],[11.29,3,'product'],[12.21,2,'product'],[13.55,-1,'rack'],[14.333333,8,'rack'],[15.02,5,'rack'],[15.34,2,'rack'],[16.81,1,'rack'],[17.95,-1,'rack']];
+{
+ const {engine,state}=rig(originals.slice(0,10));
+ for(let frame=0;frame<1136;frame++){
+  const entry=timeline.findLast(entry=>entry[0]<=frame/60);state.mode=entry[2];if(entry[2]==='product')state.selected=entry[1];else state.active=entry[1];
+  engine.update(1/60);
+  check(engine,`reference/${frame}`);
+ }
+}
 assert.equal(worst.length,0,JSON.stringify(worst.slice(0,8)));
 assert(maxHangerRoll<.025);assert(maxHemTwist<.07);assert(maxBend<12);
 // The support is pinned; every material, original UV and rest-space print point
@@ -72,7 +82,7 @@ assert(maxHangerRoll<.025);assert(maxHemTwist<.07);assert(maxBend<12);
 for(const y of [0,-40,-100,-130])assert.deepEqual(clothPoint(100,y,30,10,7,.06),[100,y,30]);
 const light=clothMotion(),heavy=clothMotion();stepCloth(light,8,900,.18,'tee',false);stepCloth(heavy,8,900,.18,'hoodie',false);
 assert(Math.abs(heavy.bend.value)<Math.abs(light.bend.value)*.6);assert(Math.abs(heavy.twist.value)<Math.abs(light.twist.value)*.6);
-const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20],rates:[30,60,120],rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend};
+const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20],rates:[30,60,120],referenceReplayFrames:1136,rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,catalogueInsideFrame:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend};
 const output=process.argv[2];if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
 if(process.argv[3]){
  const samples=[];
