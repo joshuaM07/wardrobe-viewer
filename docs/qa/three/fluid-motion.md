@@ -36,7 +36,7 @@ python tools/check-browser-motion.py http://localhost:3001 /tmp/wardrobe-browser
 
 ## Continuous comparison
 
-[The full comparison](continuous-comparison.mp4) pairs every original source frame with the actual browser WebGL canvas at the same simulation timestamp: 1,136 consecutive pairs, encoded at 60 fps. `continuous-capture.json` records capture coverage. Two deterministic capture segments were combined after correcting the exit; their overlapping frame 812 was byte-identical, and the second run simulated every preceding timestep. The application's JavaScript animation clock is controlled during capture; the resulting video tests motion trajectories, not real-time frame delivery. DOM labels, controls, and wall styling are excluded on the application side. Static frames reuse the previous rendered image, as the application itself uses demand-driven rendering.
+[The full comparison](continuous-comparison.mp4) pairs every original source frame with the actual browser WebGL canvas at the same simulation timestamp: 1,136 consecutive pairs, encoded at 60 fps. `continuous-capture.json` records capture coverage. The current video was refreshed from renderer commit `f49fd0b` in one uninterrupted capture after the input and topology fixes. All 1,136 output frames were also compared with the prior complete capture; the maximum full-canvas mean RGB change is 0.282807/255. The topology change retains the existing motion trajectories. The application's JavaScript animation clock is controlled during capture; the resulting video tests motion trajectories, not real-time frame delivery. DOM labels, controls, and wall styling are excluded on the application side. Static frames reuse the previous rendered image, as the application itself uses demand-driven rendering.
 
 The full comparison exposes remaining differences in mesh silhouettes and motion; it is review evidence, not a claim that native playback feels identical. Inspecting all frames improves temporal coverage, but neither contact sheets nor this controlled capture establish perceptual or hardware playback parity.
 
@@ -49,3 +49,5 @@ python tools/audit-reference-video.py /path/to/reference.mp4 /tmp/wardrobe-conti
 python tools/fit-consecutive-turns.py /tmp/wardrobe-continuous/reference /tmp/wardrobe-turn-fits.json
 python tools/capture-continuous-motion.py http://localhost:3001 /tmp/wardrobe-continuous/capture /tmp/wardrobe-continuous/reference
 ```
+
+Subsequent input stability, direct manipulation, mesh quality and native frame delivery checks are documented in [input-fluidity.md](input-fluidity.md).
