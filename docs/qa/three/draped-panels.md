@@ -18,3 +18,5 @@ Verification tools:
 - Browser upload/editor and 100-piece rail checks cover both-side artwork, all four clothing types, PNG export, touch, responsive layouts, persistence and bounded texture residency.
 
 The continuous browser capture pairs all 1,136 source frames with the actual production WebGL canvas at a controlled 60 Hz. It is a motion recording, not a measurement of hardware frame delivery. Hardware FPS remains unmeasured.
+
+Final evidence is in `draped/`: geometry, shader transform feedback, collision/motion/framing results, browser runs, and before/after views. `public/previews/cloth-motion.mp4` contains the final construction revision captured against every reference frame; `draped/continuous.json` records its source commit, frame index, zero skipped frames and zero page errors. The final 100-piece browser run also completes with zero page errors.

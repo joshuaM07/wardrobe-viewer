@@ -1,0 +1,158 @@
+{
+  "scope": "Production CPU motion and cache regressions; reference width segmentation includes occlusions. No hardware FPS claim.",
+  "springCases": 54,
+  "refreshRates": [
+    30,
+    60,
+    90,
+    120,
+    144
+  ],
+  "jitteredFrames": true,
+  "gestureHoldCancelsFling": true,
+  "directDragFollowsPointer": true,
+  "coastAndRegrab": true,
+  "rapidRetargets": true,
+  "reducedMotion": true,
+  "backgroundCacheInvalidation": true,
+  "stableHoverCases": 197,
+  "animatedMeshDropouts": 48,
+  "dropoutExamples": [
+    {
+      "initial": -1,
+      "x": 670,
+      "y": 270,
+      "selected": 6
+    },
+    {
+      "initial": 3,
+      "x": 220,
+      "y": 270,
+      "selected": 1
+    },
+    {
+      "initial": 3,
+      "x": 295,
+      "y": 270,
+      "selected": 2
+    },
+    {
+      "initial": 3,
+      "x": 685,
+      "y": 270,
+      "selected": 5
+    },
+    {
+      "initial": 3,
+      "x": 790,
+      "y": 270,
+      "selected": 7
+    },
+    {
+      "initial": 3,
+      "x": 820,
+      "y": 270,
+      "selected": 7
+    }
+  ],
+  "slowFrameKeepsElapsedTime": true,
+  "smallCanvasAdapts": true,
+  "neighborDisplacementAt250ms": 296.37,
+  "response": [
+    {
+      "id": "camo",
+      "settledSeconds": 0.525,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "essential",
+      "settledSeconds": 1.692,
+      "overshootPercent": 19.218
+    },
+    {
+      "id": "dollar",
+      "settledSeconds": 0.592,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "underclass",
+      "settledSeconds": 0.542,
+      "overshootPercent": 0.718
+    },
+    {
+      "id": "republic",
+      "settledSeconds": 0.558,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "world",
+      "settledSeconds": 0.5,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "flowers",
+      "settledSeconds": 0.558,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "studio",
+      "settledSeconds": 0.525,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "portrait",
+      "settledSeconds": 0.6,
+      "overshootPercent": 0.629
+    },
+    {
+      "id": "washed",
+      "settledSeconds": 0.525,
+      "overshootPercent": 0.629
+    }
+  ],
+  "referenceFrames": 341,
+  "referenceWidths": [
+    {
+      "id": "essential",
+      "frames": 52,
+      "widthMaeSourcePixels": 30.85,
+      "normalizedTurnProgressMae": 0.0443
+    },
+    {
+      "id": "dollar",
+      "frames": 49,
+      "widthMaeSourcePixels": 19.62,
+      "normalizedTurnProgressMae": 0.0224
+    },
+    {
+      "id": "underclass",
+      "frames": 50,
+      "widthMaeSourcePixels": 20.93,
+      "normalizedTurnProgressMae": 0.0405
+    },
+    {
+      "id": "republic",
+      "frames": 51,
+      "widthMaeSourcePixels": 14.59,
+      "normalizedTurnProgressMae": 0.0375
+    },
+    {
+      "id": "world",
+      "frames": 48,
+      "widthMaeSourcePixels": 15.79,
+      "normalizedTurnProgressMae": 0.0398
+    },
+    {
+      "id": "flowers",
+      "frames": 51,
+      "widthMaeSourcePixels": 19.98,
+      "normalizedTurnProgressMae": 0.0339
+    },
+    {
+      "id": "portrait",
+      "frames": 40,
+      "widthMaeSourcePixels": 26.77,
+      "normalizedTurnProgressMae": 0.0678
+    }
+  ]
+}

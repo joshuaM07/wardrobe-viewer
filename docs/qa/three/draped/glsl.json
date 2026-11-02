@@ -1,0 +1,86 @@
+{
+  "scope": "Full production garment vertex GLSL under EGL transform feedback. Actual GLB samples; CPU warp and numeric normal derivative comparison; not a browser FPS test.",
+  "shaderSha256": "18012b5b7b0ffc742af5c2d8c69486bf214e7e441a687455be97c34b7a29db80",
+  "checks": [
+    {
+      "state": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "vertices": 1812,
+      "maxPositionError": 0.0,
+      "maxNormalError": 1.084996594791221e-07,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        -24,
+        15,
+        0.115,
+        -32,
+        32,
+        20
+      ],
+      "vertices": 1812,
+      "maxPositionError": 5.898775839341397e-05,
+      "maxNormalError": 4.769172263199839e-05,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        24,
+        -15,
+        -0.115,
+        32,
+        -32,
+        -20
+      ],
+      "vertices": 1812,
+      "maxPositionError": 5.898775839341397e-05,
+      "maxNormalError": 4.8078508282242693e-05,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        0,
+        0,
+        0,
+        32,
+        0,
+        0
+      ],
+      "vertices": 1812,
+      "maxPositionError": 3.0196907346180524e-05,
+      "maxNormalError": 4.7959066319019916e-05,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        0,
+        0,
+        0,
+        0,
+        -32,
+        20
+      ],
+      "vertices": 1812,
+      "maxPositionError": 5.745024236603058e-05,
+      "maxNormalError": 4.465350335497442e-05,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "scope": "Actual optimized GLB geometry; open hems/cuffs and thin, separated draped panels. Not a realism score or FPS test.",
+  "checks": [
+    {
+      "id": "camo",
+      "openHemEdges": 78,
+      "openCuffEdges": 43,
+      "panelGapSamples": 91,
+      "maxPanelGap": 24.932,
+      "torsoDepthSpan": 42.281
+    },
+    {
+      "id": "essential",
+      "openHemEdges": 56,
+      "openCuffEdges": 62,
+      "panelGapSamples": 91,
+      "maxPanelGap": 23.45,
+      "torsoDepthSpan": 44.497
+    },
+    {
+      "id": "dollar",
+      "openHemEdges": 62,
+      "openCuffEdges": 76,
+      "panelGapSamples": 89,
+      "maxPanelGap": 22.954,
+      "torsoDepthSpan": 45.088
+    },
+    {
+      "id": "underclass",
+      "openHemEdges": 58,
+      "openCuffEdges": 91,
+      "panelGapSamples": 89,
+      "maxPanelGap": 23.006,
+      "torsoDepthSpan": 44.364
+    },
+    {
+      "id": "republic",
+      "openHemEdges": 36,
+      "openCuffEdges": 30,
+      "panelGapSamples": 198,
+      "maxPanelGap": 30.062,
+      "torsoDepthSpan": 43.866
+    },
+    {
+      "id": "world",
+      "openHemEdges": 44,
+      "openCuffEdges": 38,
+      "panelGapSamples": 79,
+      "maxPanelGap": 24.378,
+      "torsoDepthSpan": 42.285
+    },
+    {
+      "id": "flowers",
+      "openHemEdges": 76,
+      "openCuffEdges": 112,
+      "panelGapSamples": 89,
+      "maxPanelGap": 23.298,
+      "torsoDepthSpan": 44.172,
+      "previousTorsoDepthSpan": 144.772,
+      "torsoDepthReductionPercent": 69.5
+    },
+    {
+      "id": "studio",
+      "openHemEdges": 68,
+      "openCuffEdges": 77,
+      "panelGapSamples": 89,
+      "maxPanelGap": 23.352,
+      "torsoDepthSpan": 44.175
+    },
+    {
+      "id": "portrait",
+      "openHemEdges": 42,
+      "openCuffEdges": 108,
+      "panelGapSamples": 84,
+      "maxPanelGap": 23.389,
+      "torsoDepthSpan": 45.034
+    },
+    {
+      "id": "washed",
+      "openHemEdges": 46,
+      "openCuffEdges": 26,
+      "panelGapSamples": 96,
+      "maxPanelGap": 23.298,
+      "torsoDepthSpan": 45.637
+    },
+    {
+      "id": "hoodie",
+      "openHemEdges": 24,
+      "openCuffEdges": 102,
+      "panelGapSamples": 152,
+      "maxPanelGap": 36.058,
+      "torsoDepthSpan": 51.502,
+      "previousTorsoDepthSpan": 221.561,
+      "torsoDepthReductionPercent": 76.8
+    }
+  ]
+}
