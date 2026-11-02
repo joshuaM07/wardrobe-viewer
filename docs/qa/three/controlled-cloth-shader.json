@@ -1,0 +1,45 @@
+{
+  "scope": "Full production garment vertex GLSL under EGL transform feedback. Actual GLB samples; CPU warp and numeric normal derivative comparison; not a browser FPS test.",
+  "shaderSha256": "2c39796e2c950c80cca2ddbe00cd861199d3796516d5cda061e8f74f09dc792e",
+  "checks": [
+    {
+      "state": [
+        0,
+        0,
+        0
+      ],
+      "vertices": 2178,
+      "maxPositionError": 0.0,
+      "maxNormalError": 1.084996593680998e-07,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        -10,
+        4,
+        0.06
+      ],
+      "vertices": 2178,
+      "maxPositionError": 4.1095646679423226e-05,
+      "maxNormalError": 8.146433285727284e-07,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    },
+    {
+      "state": [
+        10,
+        -4,
+        -0.06
+      ],
+      "vertices": 2178,
+      "maxPositionError": 3.876579131656399e-05,
+      "maxNormalError": 7.537998469864249e-07,
+      "restPrintCoordinatesUnchanged": true,
+      "uvUnchanged": true,
+      "supportAndHangerPinned": true
+    }
+  ]
+}

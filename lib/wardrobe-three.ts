@@ -9,6 +9,7 @@ import type { GarmentDesign, PrintSide } from './garment-design';
 import { garmentAssetUrl } from './garment-assets';
 import { clamp, spring, stepSpring, stepGlide, type Spring } from './motion';
 import { mobileRackView, mobileProductView } from './rack-view';
+import { clothMotion, stepCloth, separateRack, type ClothMotion, type Envelope } from './garment-motion';
 
 export type Garment = {
   id: string; name: string; type: string; pivot: number; mesh: string;
@@ -33,6 +34,8 @@ type Item = {
   backMap: THREE.Texture;
   sway: Spring; designVersion: number; released: boolean;
   prepared: boolean;
+  cloth: ClothMotion;
+  inDetail: boolean;
   designTextures: Set<THREE.Texture>;
   fabric?: Promise<THREE.Texture[]>;
   artwork: Partial<Record<PrintSide, { url: string; texture: Promise<THREE.Texture>; value?: THREE.Texture }>>;
@@ -55,7 +58,7 @@ void main(){
   #include <colorspace_fragment>
 }`;
 
-/** One WebGL renderer, immutable GLB geometry, and demand-driven rigid transforms. */
+/** Static GLBs, bounded cloth follow-through, and demand-driven rendering. */
 export class WardrobeRenderer {
   private renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
@@ -111,6 +114,34 @@ export class WardrobeRenderer {
   private dirty = true;
   private lastStamp = '';
   private onContextLost: (e: Event) => void;
+  private boundsMatrix = new THREE.Matrix4();
+  private boundsBox = new THREE.Box3();
+
+  private envelope(item: Item, yaw: number, roll=0, scale=1, padding=0): Envelope {
+    const box=item.body.geometry.boundingBox!;
+    // The current Euler order is also used by the render transform.
+    this.boundsMatrix.makeRotationFromEuler(new THREE.Euler(0,yaw,roll));
+    this.boundsBox.copy(box).applyMatrix4(this.boundsMatrix);
+    return {left:this.boundsBox.min.x*scale-padding,right:this.boundsBox.max.x*scale+padding};
+  }
+
+  private rackLayout(active: number, current=false) {
+    const positions=this.items.map((item,i)=>item.garment.pivot*W+
+      (active<0||i===active?0:Math.sign(i-active)*this.rackSpread*Math.pow(.6,Math.abs(i-active)-1)));
+    const envelopes=this.items.map((item,i)=>{
+      const target=this.envelope(item,i===active?0:item.garment.restYaw);
+      if(!current||(i===active&&this.state().mode==='product'))return target;
+      const occupied=this.envelope(item,item.root.rotation.y,item.root.rotation.z,item.scale.value,this.clothPadding(item));
+      return {left:Math.min(target.left,occupied.left),right:Math.max(target.right,occupied.right)};
+    });
+    return separateRack(positions,envelopes,active);
+  }
+
+  private clothPadding(item: Item) {
+    const box=item.body.geometry.boundingBox!;
+    const radius=Math.hypot(Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z)));
+    return (Math.abs(item.cloth.bend.value)+2*Math.sin(Math.abs(item.cloth.twist.value)/2)*radius)*item.scale.value;
+  }
 
   stopMomentum() { this.spinMomentum = 0; this.spinFollowing = false; }
 
@@ -169,7 +200,8 @@ export class WardrobeRenderer {
       roughness: .18, envMapIntensity: 1.15 });
     const mounting = new THREE.MeshStandardMaterial({ color: 0xb8b9b2, metalness: .7,
       roughness: .35 });
-    const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(19, 19, 2140, 32), chrome);
+    // Short overhangs beyond the wall brackets leave room for a moving hanger.
+    const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(19, 19, 2600, 32), chrome);
     cylinder.rotation.z = Math.PI/2;
     cylinder.position.set(1447-W/2, H/2-437, -5); this.rail.add(cylinder);
     for (const x of [377, 2517]) {
@@ -251,7 +283,7 @@ export class WardrobeRenderer {
     const x = garment.pivot*W;
     root.position.set(x-W/2, H/2-GARMENT_Y, restingZ);
     return { garment, root, body, focus: spring(), x: spring(x), y: spring(GARMENT_Y),
-      scale: spring(1), backMap:backTexture, sway: spring(), designVersion: 0,
+      scale: spring(1), backMap:backTexture, sway: spring(), cloth:clothMotion(), inDetail:false, designVersion: 0,
       released: false, prepared: true, designTextures: new Set(), artwork: {} };
   }
 
@@ -283,6 +315,17 @@ export class WardrobeRenderer {
     let gap=Infinity;
     for(let i=1;i<this.items.length;i++)gap=Math.min(gap,(this.items[i].garment.pivot-this.items[i-1].garment.pivot)*W);
     this.rackSpread=Math.max(182,360-gap);
+    if(this.rail){
+      // Added pieces need a longer physical rail; the viewport can browse a
+      // section of it without leaving any hangers floating past an end cap.
+      const reserve=this.items.reduce((sum,item)=>{
+        const side=this.envelope(item,item.garment.restYaw);return sum+side.right-side.left+10;
+      },0);
+      const length=garments.length>10?W*.66+2*(reserve+600):2140;
+      this.rail.scale.x=length/2140;
+      this.rail.position.x=(1447-W/2)*(1-this.rail.scale.x);
+      this.backgroundStamp='';
+    }
     this.invalidate();
   }
 
@@ -368,7 +411,7 @@ export class WardrobeRenderer {
     return -1;
   }
 
-  /** Hover volumes use intended poses, so animation cannot change the input. */
+  /** Retain the acquired surface and final front, so turning cannot drop hover. */
   hoverHit(clientX: number, clientY: number) {
     const r=this.canvas.getBoundingClientRect(),s=this.state();
     this.pointer.set((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1);
@@ -376,12 +419,12 @@ export class WardrobeRenderer {
     const proxy=this.hoverProxy;
     const intersects=(index:number,acquired=false)=>{
       const item=this.items[index];
-      if(!item?.prepared)return false;
+      if(!item?.prepared||item.inDetail)return false;
       proxy.geometry=item.body.geometry;proxy.material=item.body.material;
       if(acquired)proxy.matrixWorld.copy(this.hoverAcquired);
+      else if(index!==s.active)proxy.matrixWorld.copy(item.body.matrixWorld);
       else {
-        const shift=s.active<0||index===s.active?0:Math.sign(index-s.active)*this.rackSpread*Math.pow(.6,Math.abs(index-s.active)-1);
-        proxy.position.set(item.garment.pivot*W-W/2+shift,H/2-GARMENT_Y,restingZ);
+        proxy.position.set(item.garment.pivot*W-W/2,H/2-GARMENT_Y,restingZ);
         proxy.rotation.set(0,index===s.active?0:item.garment.restYaw,0);
         proxy.updateMatrixWorld(true);
       }
@@ -464,20 +507,29 @@ export class WardrobeRenderer {
     else if(!coasting)stepSpring(this.spin,spinTarget,dt,125,21);
     if(!s.dragging&&Math.abs(this.spinMomentum)<.015&&Math.abs(this.spin.value-spinTarget)<.0001&&Math.abs(this.spin.velocity)<.001)this.spinFollowing=false;
     if(Math.abs(this.spin.value-spinTarget)>.0001||Math.abs(this.spin.velocity)>.001)moving=true;
+    const otherOpen=this.items.reduce((sum,item,i)=>sum+(i===active?0:clamp(item.focus.value)),0);
     this.items.forEach((item, i) => {
-      const target = i === active ? 1 : 0;
+      // Make space as the outgoing piece folds back. Fast browsing must not
+      // accumulate a row of front-facing garments that pushes off the rail.
+      const target = i === active ? (modal||s.reduced?1:clamp(1.15-otherOpen)) : 0;
       if (s.reduced) { item.focus.value = target; item.focus.velocity = 0; }
       else {
-        const stiffness = item.garment.turnStiffness ?? 85;
-        stepSpring(item.focus, target, dt, stiffness, Math.min(item.garment.turnDamping ?? 18, 1.7 * Math.sqrt(stiffness)));
+        const stiffness = i===active?(item.garment.turnStiffness??85):95;
+        const damping=i===active?Math.min(item.garment.turnDamping??18,1.7*Math.sqrt(stiffness)):19.5;
+        stepSpring(item.focus,target,dt,stiffness,damping);
       }
     });
+    const rackTargets=this.rackLayout(active,dt>0);
     this.items.forEach((item, i) => {
       const g = item.garment;
-      let x = g.pivot*W;
-      // Move neighbors from the input target. Following another spring here
-      // added a second easing stage and made the rack lag behind every turn.
-      if (active >= 0 && i !== active) x += Math.sign(i-active)*this.rackSpread*Math.pow(.6, Math.abs(i-active)-1);
+      let x = rackTargets[i];
+      if(modal&&i!==s.selected&&item.inDetail){
+        // The outgoing detail becomes part of the dimmed background in place.
+        // It must not fly across, or share the new detail's depth lane.
+        item.x.value=x;item.x.velocity=0;item.y.value=GARMENT_Y;item.y.velocity=0;
+        item.scale.value=1;item.scale.velocity=0;item.focus.value=0;item.focus.velocity=0;
+        item.sway.value=0;item.sway.velocity=0;item.cloth=clothMotion();item.inDetail=false;
+      }
       const selected = i === s.selected;
       const detail = selected ? modal : 0;
       x += (W/2+(g.detailX||0)-x)*detail;
@@ -489,19 +541,42 @@ export class WardrobeRenderer {
         if (Math.abs(sp.value-value) > .0001 || Math.abs(sp.velocity) > .001) moving=true;
       }
       // Preserve the spring's small overshoot at both ends of the turn.
-      if(replaceProduct&&selected){item.focus.value=1;item.focus.velocity=0;item.sway.value=0;item.sway.velocity=0;}
+      if(replaceProduct&&selected){item.focus.value=1;item.focus.velocity=0;item.sway.value=0;item.sway.velocity=0;item.cloth=clothMotion();}
       const f = item.focus.value;
       item.root.rotation.y = g.restYaw*(1-f)+(selected ? this.spin.value*p : 0);
       const turnVelocity = -g.restYaw * item.focus.velocity + (selected ? this.spin.velocity * p : 0);
       // Inertia is driven by actual turn/rail velocity, including neighbors.
-      const swayTarget=s.reduced?0:clamp(-turnVelocity*.018-item.x.velocity*.000035,-.09,.09);
+      const swayTarget=s.reduced?0:clamp(-turnVelocity*.004-item.x.velocity*.000012,-.022,.022);
       if(s.reduced){item.sway.value=0;item.sway.velocity=0;}
-      else stepSpring(item.sway,swayTarget,dt,70,6);
+      else stepSpring(item.sway,swayTarget,dt,95,15);
       item.root.rotation.z=item.sway.value;
       if(Math.abs(item.sway.value-swayTarget)>.0001||Math.abs(item.sway.velocity)>.001)moving=true;
-      item.root.position.set(item.x.value-W/2,H/2-item.y.value,selected ? p*120 : restingZ);
+      if(stepCloth(item.cloth,turnVelocity,item.x.velocity,dt,g.type,s.reduced))moving=true;
+      const uniforms=item.body.material.fabricUniforms;
+      if(uniforms){
+        uniforms.clothBend.value.set(Math.cos(item.root.rotation.y)*item.cloth.bend.value,Math.sin(item.root.rotation.y)*item.cloth.bend.value);
+        uniforms.clothTwist.value=item.cloth.twist.value;
+      }
+      // Orthographic detail view uses a separate depth lane for its whole
+      // entrance and return, instead of travelling through the hanging rack.
+      if(selected&&(modal||p>.003))item.inDetail=true;
+      else if(Math.abs(item.x.value-rackTargets[i])<4&&Math.abs(item.scale.value-1)<.01)item.inDetail=false;
+      item.root.position.set(item.x.value-W/2,H/2-item.y.value,item.inDetail?1200:restingZ);
       item.root.scale.setScalar(item.scale.value);
       if (Math.abs(item.focus.value-(i===active?1:0)) > .0001 || Math.abs(item.focus.velocity) > .001) moving=true;
+    });
+    // Targets make room in advance. This final projection handles interrupted
+    // turns and overshoot using the geometry's current occupied envelope.
+    const onRail=this.items.filter(item=>item.root.position.z===restingZ);
+    const anchor=onRail.indexOf(this.items[active]);
+    const clear=separateRack(onRail.map(item=>item.x.value),onRail.map(item=>
+      this.envelope(item,item.root.rotation.y,item.root.rotation.z,item.scale.value,this.clothPadding(item))),anchor);
+    onRail.forEach((item,i)=>{
+      const delta=clear[i]-item.x.value;
+      if(Math.abs(delta)>1e-8){
+        if(delta*item.x.velocity<0)item.x.velocity=0;
+        item.x.value=clear[i];item.root.position.x=clear[i]-W/2;
+      }
     });
     const view=s.mobile&&!s.demo?mobileRackView(this.items.map(item=>item.garment.pivot),s.rackPosition,this.cssWidth,this.cssHeight):{x:0,y:0,zoom:1};
     const selectedItem=this.items[s.selected];
@@ -538,8 +613,8 @@ export class WardrobeRenderer {
     // background instead of rendering all ten garments on every drag frame.
     const stamp=[s.selected,p,this.textureRevision,width,height,
       this.camera.zoom,this.camera.position.x,this.camera.position.y,this.camera.top,this.camera.bottom,
-      ...this.items.flatMap((item,i)=>i===s.selected?[]:[Number(item.prepared),item.root.position.x,item.root.position.y,
-        item.root.scale.x,item.root.rotation.y,item.root.rotation.z])]
+      ...this.items.flatMap((item,i)=>i===s.selected?[]:[Number(item.prepared),item.root.position.x,item.root.position.y,item.root.position.z,
+        item.root.scale.x,item.root.rotation.y,item.root.rotation.z,item.cloth.bend.value,item.cloth.twist.value])]
       .map(value=>Math.round(value*10_000)/10_000).join(':');
     if(stamp!==this.backgroundStamp){
       this.items[s.selected].root.visible=false;

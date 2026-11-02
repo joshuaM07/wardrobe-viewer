@@ -1,5 +1,7 @@
 # Fluid garment motion verification
 
+Latest motion and clearance behavior: [controlled-cloth.md](controlled-cloth.md). The calibration and input measurements below record the earlier implementation.
+
 Reference: https://x.com/cambreedesigns/status/2104999693113766152
 
 The initial implementation review used a sampled contact sheet. That was insufficient to establish motion parity. The subsequent review decoded the original 3448 × 2160 clip without frame selection and inspected all 1,136 frames in 32 consecutive sheets, with larger consecutive crops for turns and product changes. `reference-frame-audit.json` retains every timestamp, JPEG hash, and adjacent-frame image-space diagnostic. Existing silhouette measurements also cover 341 frames of seven turns.

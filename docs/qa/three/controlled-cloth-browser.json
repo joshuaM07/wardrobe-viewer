@@ -1,0 +1,90 @@
+{
+  "scope": "Chromium using SwiftShader software WebGL; interaction verification only, not hardware FPS",
+  "checks": [
+    "WebGL renders",
+    "Mouse drag rotates and releases with momentum",
+    "Front button stops momentum and returns to the nearest front orientation",
+    "Rapid previous/next changes settle on the requested piece",
+    "Viewer returns to rack",
+    "Displaced neighbor retains hover through its turn and opens the same garment",
+    "Mobile swipe carries along the rack and suppresses the synthetic click",
+    "Touch product drag rotates with momentum",
+    "Reduced motion cancels momentum"
+  ],
+  "desktopDrag": {
+    "samples": 52,
+    "frames": 56,
+    "frameMsP50": 16.7,
+    "frameMsP95": 100,
+    "renderMsP95": 3.9,
+    "framesOver33ms": 11,
+    "drawCalls": 3,
+    "triangles": 5402,
+    "textures": 24,
+    "buffer": [
+      845,
+      470
+    ],
+    "display": [
+      845,
+      470
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": false,
+    "cameraZoom": 1,
+    "rotationRad": 2.16,
+    "coasting": false
+  },
+  "desktop": {
+    "samples": 98,
+    "frames": 104,
+    "frameMsP50": 33.4,
+    "frameMsP95": 183.3,
+    "renderMsP95": 6.1,
+    "framesOver33ms": 47,
+    "drawCalls": 35,
+    "triangles": 60836,
+    "textures": 24,
+    "buffer": [
+      608,
+      338
+    ],
+    "display": [
+      845,
+      470
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": false,
+    "cameraZoom": 1,
+    "rotationRad": 0,
+    "coasting": false
+  },
+  "mobile": {
+    "samples": 194,
+    "frames": 198,
+    "frameMsP50": 33.3,
+    "frameMsP95": 133.3,
+    "renderMsP95": 2.7,
+    "framesOver33ms": 78,
+    "drawCalls": 3,
+    "triangles": 5622,
+    "textures": 24,
+    "buffer": [
+      257,
+      333
+    ],
+    "display": [
+      367,
+      476
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": true,
+    "cameraZoom": 3.5,
+    "rotationRad": 2.5136,
+    "coasting": false
+  },
+  "pageErrors": []
+}

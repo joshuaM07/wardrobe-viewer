@@ -39,7 +39,7 @@ function rig(width,height,mobile=true,collection=garments){
   renderer.state=()=>state;renderer.cssWidth=width;renderer.cssHeight=height;renderer.mobileProfile=mobile;
   const worldHeight=2912*height/width;
   renderer.camera=new THREE.OrthographicCamera(-1456,1456,worldHeight/2,-worldHeight/2,.1,8000);
-  renderer.camera.position.z=3000;renderer.scene=new THREE.Scene();
+  renderer.boundsMatrix=new THREE.Matrix4();renderer.boundsBox=new THREE.Box3();renderer.camera.position.z=3000;renderer.scene=new THREE.Scene();
   renderer.expand=spring();renderer.viewX=spring();renderer.viewY=spring();renderer.viewZoom=spring(1);
   renderer.spin=spring();renderer.spinSelected=-1;
   renderer.previousMode='rack';renderer.productReveal=1;
@@ -47,7 +47,7 @@ function rig(width,height,mobile=true,collection=garments){
   renderer.items=collection.map(garment=>{
     const index=garments.findIndex(g=>g.id===(garment.sourceId??garment.id));
     const group=new THREE.Group(),body=new THREE.Mesh(geometries[index],material);group.add(body);renderer.scene.add(group);
-    return {garment,root:group,body,focus:spring(),sway:spring(),x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
+    return {garment,root:group,body,focus:spring(),sway:spring(),cloth:{bend:spring(),twist:spring()},x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
   });
   renderer.setGarments(collection);
   renderer.update(0);return {renderer,state};

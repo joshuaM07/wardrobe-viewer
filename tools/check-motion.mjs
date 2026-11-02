@@ -60,11 +60,11 @@ function rig(){
   Object.assign(renderer,{canvas:{getBoundingClientRect:()=>({left:0,top:0,width:1151,height:640})},
     pointer:new THREE.Vector2(),raycaster:new THREE.Raycaster(),hoverProxy:new THREE.Mesh(),hoverOwner:-1,hoverAcquired:new THREE.Matrix4(),hoverHits:[]});
   renderer.raycaster.firstHitOnly=true;
-  renderer.camera.position.z=3000;
+  renderer.boundsMatrix=new THREE.Matrix4();renderer.boundsBox=new THREE.Box3();renderer.camera.position.z=3000;
   renderer.items=garments.map(garment=>{
     const group=new THREE.Group(),geometry=new THREE.BoxGeometry(600,750,90);geometry.computeBoundingBox();
     const body=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial());group.add(body);renderer.scene.add(group);
-    return {garment,root:group,body,prepared:true,focus:spring(),sway:spring(),x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
+    return {garment,root:group,body,prepared:true,focus:spring(),sway:spring(),cloth:{bend:spring(),twist:spring()},x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
   });
   renderer.update(0);return {renderer,state};
 }
@@ -95,8 +95,8 @@ settle(renderer);assert(renderer.items.every(item=>Number.isFinite(item.root.rot
 
 const followThrough=rig();followThrough.state.active=6;
 advance(followThrough.renderer,.9);
-assert(Math.abs(followThrough.renderer.items[6].sway.value)>.003,'hanger roll must continue after the main turn');
-assert(Math.abs(followThrough.renderer.items[6].sway.value)<.12,'follow-through must remain restrained');
+assert(Math.abs(followThrough.renderer.items[6].cloth.twist.value)>.0005,'the hem must retain follow-through after the main turn');
+assert(Math.abs(followThrough.renderer.items[6].sway.value)<.025,'the hanger must stay restrained');
 settle(followThrough.renderer);
 
 state.mode='product';settle(renderer);
@@ -132,7 +132,7 @@ let calls=0;
 renderer.renderer={info:{reset:()=>{}},setRenderTarget:()=>{},clearDepth:()=>{},render:()=>calls++};
 renderer.draw();assert.equal(calls,4,'first product frame renders and blurs background');
 calls=0;state.spin+=.3;advance(renderer,.1);renderer.draw();assert.equal(calls,2,'selected-piece rotation must reuse the cached background');
-for(const mutate of [()=>{renderer.textureRevision++;},()=>{renderer.items[0].root.position.x+=1;renderer.scene.updateMatrixWorld(true);},()=>{renderer.camera.position.x+=1;renderer.camera.updateMatrixWorld();},()=>{renderer.canvas.width+=2;},()=>{state.selected=4;}]){
+for(const mutate of [()=>{renderer.textureRevision++;},()=>{renderer.items[0].root.position.x+=1;renderer.scene.updateMatrixWorld(true);},()=>{renderer.items[0].root.position.z+=1;},()=>{renderer.camera.position.x+=1;renderer.camera.updateMatrixWorld();},()=>{renderer.canvas.width+=2;},()=>{state.selected=4;}]){
   calls=0;mutate();renderer.draw();assert.equal(calls,4,'background change must invalidate the cache');
 }
 

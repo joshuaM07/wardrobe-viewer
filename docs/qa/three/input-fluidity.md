@@ -1,5 +1,7 @@
 # Input fluidity and rendering follow-up
 
+Latest motion and clearance behavior: [controlled-cloth.md](controlled-cloth.md). The calibration and input measurements below record the earlier implementation.
+
 The interaction fixes address sources of visible interruption in addition to the reference-fitted spring response:
 
 - Hover raycasts use intended rack poses, independent of the moving render meshes. The acquired surface is retained while its garment turns and returns from a displaced neighbor position. In 270 acquisitions on the production meshes, ownership remains stable throughout 45 consecutive animation frames. The previous animated-mesh policy loses ownership in 20 of those cases. `input-motion.json` includes examples.

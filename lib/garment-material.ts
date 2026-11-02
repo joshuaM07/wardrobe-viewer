@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { clothVertex } from './garment-motion';
 
 export type FabricUniforms = {
   backMap: { value: THREE.Texture }; fabricMap: { value: THREE.Texture };
@@ -8,6 +9,7 @@ export type FabricUniforms = {
   customized: { value: number }; keepOriginal: { value: number };
   frontEnabled: { value: number }; backEnabled: { value: number };
   fabricColor: { value: THREE.Color }; woodColor: { value: THREE.Color };
+  clothBend: { value: THREE.Vector2 }; clothTwist: { value: number };
 };
 export type FabricMaterial = THREE.MeshBasicMaterial & { fabricUniforms: FabricUniforms };
 
@@ -19,16 +21,19 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
     frontPlacement: {value: new THREE.Vector4(0,-300,240,240)}, backPlacement: {value: new THREE.Vector4(0,-300,240,240)},
     customized: {value: 0}, keepOriginal: {value: 1}, frontEnabled: {value: 0}, backEnabled: {value: 0},
     fabricColor: {value: new THREE.Color(fabricColor)}, woodColor: {value: new THREE.Color(0x563a2f)},
+    clothBend: {value:new THREE.Vector2()},clothTwist:{value:0},
   };
   material.fabricUniforms=uniforms;
   material.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,uniforms);
-    shader.vertexShader=`attribute float garmentSurface;
+    shader.vertexShader=`${clothVertex}\nattribute float garmentSurface;
       varying float vSurface; varying vec3 vFabricNormal; varying vec2 vFabricPoint;\n${shader.vertexShader}`
       .replace('#include <begin_vertex>',`#include <begin_vertex>
         vSurface=garmentSurface;
         vFabricPoint=position.xy;
-        vFabricNormal=normalize(mat3(modelMatrix)*normal);`);
+        vec3 clothNormal=normal;
+        if(garmentSurface<2.5)clothWarp(transformed,clothNormal);
+        vFabricNormal=normalize(mat3(modelMatrix)*clothNormal);`);
     shader.fragmentShader=`uniform sampler2D backMap, fabricMap, fabricBackMap, printMask, frontArtwork, backArtwork;
       uniform vec3 fabricColor, woodColor;
       uniform vec4 frontPlacement, backPlacement;
@@ -67,6 +72,6 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
         diffuseColor*=garmentColor;
         #endif`);
   };
-  material.customProgramCacheKey=()=> 'wardrobe-dynamic-fabric-v9';
+  material.customProgramCacheKey=()=> 'wardrobe-controlled-cloth-v10';
   return material;
 }

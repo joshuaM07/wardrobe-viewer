@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { garmentMaterial } from '../lib/garment-material.ts';
+import { moduleURL } from './import-typescript.mjs';
 import { acceleratedRaycast, computeBoundsTree } from 'three-mesh-bvh';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const out=process.argv[2]||'/workspace/scratch/wardrobe-shaders.json';
 const root=path.resolve(import.meta.dirname,'..');
+const {garmentMaterial}=await import(moduleURL(path.join(root,'lib/garment-material.ts')));
 const material=garmentMaterial(new THREE.Texture(),new THREE.Texture(),'#e2dce5');
 const shader={uniforms:{},vertexShader:THREE.ShaderLib.basic.vertexShader,fragmentShader:THREE.ShaderLib.basic.fragmentShader};
 material.onBeforeCompile(shader,null);
