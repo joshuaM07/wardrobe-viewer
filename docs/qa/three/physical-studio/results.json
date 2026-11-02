@@ -1,0 +1,190 @@
+{
+  "scope": "Real production Chromium/SwiftShader uploads, GPU-bound material state, PNG export and mobile layouts. Not hardware FPS.",
+  "checks": [
+    "Create a specified hoodie with an actual uploaded PNG on its 3D material",
+    "Switch all four garment types without losing either side or adding duplicate pieces",
+    "Switching to an existing template reuses its mesh and preserves both designs without network access",
+    "Active print-side tab restores the matching view after drag rotation",
+    "Download a nonempty 1200x1500 transparent PNG with the uploaded artwork",
+    "Invalid upload preserves existing artwork and reports an actionable error",
+    "Reload restores garment type, both uploaded designs, placement and colour",
+    "Editor and live preview fit small phones, tablets, landscape phones and desktop; all primary controls remain reachable",
+    "Native mobile touch creation applies the uploaded design to the specified T-shirt",
+    "Creation dialog fits small and short screens, keeps its action visible, traps focus and supports Escape",
+    "WebGL loss leaves a clear retry preview and disables unavailable customization"
+  ],
+  "layouts": [
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "editor": {
+        "x": 9.59375,
+        "y": 230.609375,
+        "width": 300.796875,
+        "height": 320.34375
+      },
+      "preview": {
+        "x": 9.59375,
+        "y": 38.390625,
+        "width": 300.796875,
+        "height": 181.515625
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "editor": {
+        "x": 10.796875,
+        "y": 259.84375,
+        "width": 338.390625,
+        "height": 360.953125
+      },
+      "preview": {
+        "x": 10.796875,
+        "y": 43.265625,
+        "width": 338.390625,
+        "height": 204.53125
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "editor": {
+        "x": 11.703125,
+        "y": 342.65625,
+        "width": 366.59375,
+        "height": 476.015625
+      },
+      "preview": {
+        "x": 11.703125,
+        "y": 57.046875,
+        "width": 366.59375,
+        "height": 269.734375
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        390,
+        400
+      ],
+      "editor": {
+        "x": 11.703125,
+        "y": 162.40625,
+        "width": 366.59375,
+        "height": 225.59375
+      },
+      "preview": {
+        "x": 11.703125,
+        "y": 27.03125,
+        "width": 366.59375,
+        "height": 127.828125
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        768,
+        1024
+      ],
+      "editor": {
+        "x": 23.046875,
+        "y": 426,
+        "width": 721.90625,
+        "height": 516
+      },
+      "preview": {
+        "x": 23.046875,
+        "y": 116.390625,
+        "width": 721.90625,
+        "height": 292.390625
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "editor": {
+        "x": 467.609375,
+        "y": 11.703125,
+        "width": 334.390625,
+        "height": 366.59375
+      },
+      "preview": {
+        "x": 42,
+        "y": 33.6875,
+        "width": 425.59375,
+        "height": 322.59375
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        568,
+        320
+      ],
+      "editor": {
+        "x": 316.046875,
+        "y": 9.59375,
+        "width": 234.90625,
+        "height": 300.796875
+      },
+      "preview": {
+        "x": 17.046875,
+        "y": 27.640625,
+        "width": 298.984375,
+        "height": 264.6875
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        1000,
+        400
+      ],
+      "editor": {
+        "x": 545.609375,
+        "y": 12,
+        "width": 334.390625,
+        "height": 376
+      },
+      "preview": {
+        "x": 120,
+        "y": 34.546875,
+        "width": 425.59375,
+        "height": 330.875
+      },
+      "mobile": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "editor": {
+        "x": 1006.65625,
+        "y": 112.5,
+        "width": 320,
+        "height": 674.984375
+      },
+      "preview": {
+        "x": 113.328125,
+        "y": 159.734375,
+        "width": 893.328125,
+        "height": 485.984375
+      },
+      "mobile": false
+    }
+  ],
+  "pageErrors": []
+}
