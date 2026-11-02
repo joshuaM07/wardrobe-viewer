@@ -1,6 +1,6 @@
 import { clamp } from './motion';
 
-export const MOBILE_RACK_QUERY = '(max-width:700px), (max-width:950px) and (max-height:500px)';
+export const MOBILE_RACK_QUERY = '(max-width:900px), (max-width:1100px) and (max-height:500px)';
 export const RACK_WIDTH = 2912;
 const RACK_HEIGHT = 756;
 const HANGER_Y = 1620 / 2 - 418;

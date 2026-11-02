@@ -96,6 +96,7 @@ export class WardrobeRenderer {
   private spinFollowing = false;
   private previousMode: Mode = 'rack';
   private productReveal = 1;
+  private exporting = false;
   private textureLoader = new THREE.TextureLoader();
   private raf = 0;
   private disposed = false;
@@ -295,6 +296,73 @@ export class WardrobeRenderer {
     this.invalidate();
   }
 
+  async replace(id: string, garment: Garment, design: GarmentDesign) {
+    const previous=this.items.find(item=>item.garment.id===id);
+    if(!previous)throw new Error('This garment is no longer on the rack.');
+    const next=await this.loadItem({...garment,id});
+    next.prepared=false;next.root.visible=false;
+    try{
+      await this.applyItemDesign(next,design);
+      if(this.disposed||!this.items.includes(previous))throw new Error('This garment is no longer on the rack.');
+      // Compile the new material before swapping. The current piece remains
+      // visible and editable until all replacement assets are ready.
+      await this.renderer.compileAsync(next.root,this.camera,this.scene);
+      const index=this.items.indexOf(previous);
+      if(this.disposed||index<0)throw new Error('This garment is no longer on the rack.');
+      for(const key of ['focus','x','y','scale','sway'] as const)next[key]={...previous[key]};
+      next.cloth={bend:{...previous.cloth.bend},twist:{...previous.cloth.twist}};
+      next.inDetail=previous.inDetail;next.root.position.copy(previous.root.position);
+      next.root.rotation.copy(previous.root.rotation);next.root.scale.copy(previous.root.scale);
+      if(next.inDetail){
+        // Keep the initial visible height while the new template's framing
+        // settles, so tall replacements do not flash outside a phone preview.
+        const oldHeight=previous.body.geometry.boundingBox!.getSize(new THREE.Vector3()).y;
+        const newHeight=next.body.geometry.boundingBox!.getSize(new THREE.Vector3()).y;
+        next.scale.value*=oldHeight/Math.max(1,newHeight);next.root.scale.setScalar(next.scale.value);
+      }
+      next.prepared=true;next.root.visible=true;
+      this.items[index]=next;this.scene.remove(previous.root);this.scene.add(next.root);
+      this.releaseItem(previous);
+      if(this.state().mode==='product'&&this.items[this.state().selected]===next)this.productReveal=0;
+      this.textureRevision++;this.backgroundStamp='';this.invalidate();
+    }catch(error){this.releaseItem(next);throw error;}
+  }
+
+  async exportPng() {
+    const item=this.items[this.state().selected];
+    if(!item?.prepared||this.disposed||this.exporting)throw new Error('The garment is still preparing.');
+    const width=1200,height=1500;
+    const target=new THREE.WebGLRenderTarget(width,height,{depthBuffer:true});
+    target.texture.colorSpace=THREE.SRGBColorSpace;
+    const photo=new THREE.Scene();photo.environment=this.scene.environment;
+    const model=item.root.clone(true);photo.add(model);
+    this.scene.children.forEach(child=>{if(child instanceof THREE.Light)photo.add(child.clone());});
+    const box=new THREE.Box3().setFromObject(model).expandByScalar(this.clothPadding(item)+40);
+    const center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
+    const h=Math.max(size.y,size.x*height/width),w=h*width/height;
+    const camera=new THREE.OrthographicCamera(-w/2,w/2,h/2,-h/2,.1,8000);
+    camera.position.set(center.x,center.y,3000);camera.lookAt(center.x,center.y,0);camera.updateMatrixWorld();
+    const r=this.renderer,previousTarget=r.getRenderTarget(),autoClear=r.autoClear;
+    const materials: {material:THREE.Material;opacity:number}[]=[];
+    model.traverse(object=>{if(object instanceof THREE.Mesh){const material=object.material as THREE.Material;materials.push({material,opacity:material.opacity});material.opacity=1;}});
+    this.exporting=true;
+    try{
+      try{
+        r.setRenderTarget(target);r.autoClear=true;r.render(photo,camera);
+      }finally{
+        r.setRenderTarget(previousTarget);r.autoClear=autoClear;
+        materials.forEach(({material,opacity})=>{material.opacity=opacity;});
+      }
+      const pixels=await r.readRenderTargetPixelsAsync(target,0,0,width,height,new Uint8Array(width*height*4));
+      const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+      const context=canvas.getContext('2d');if(!context)throw new Error('Image export is unavailable.');
+      const image=context.createImageData(width,height);
+      for(let y=0;y<height;y++)image.data.set(pixels.subarray((height-y-1)*width*4,(height-y)*width*4),y*width*4);
+      context.putImageData(image,0,0);
+      return await new Promise<Blob>((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Could not create the PNG.')),'image/png'));
+    }finally{target.dispose();this.exporting=false;this.slowFrames=0;}
+  }
+
   remove(id: string) {
     const item = this.items.find(i => i.garment.id === id);
     if (item) { this.scene.remove(item.root); this.releaseItem(item); }
@@ -327,6 +395,10 @@ export class WardrobeRenderer {
   async applyDesign(id: string, design: GarmentDesign) {
     const item=this.items.find(i=>i.garment.id===id);
     if(!item)return;
+    return this.applyItemDesign(item,design);
+  }
+
+  private async applyItemDesign(item: Item, design: GarmentDesign) {
     const version=++item.designVersion;
     const uniforms=item.body.material.fabricUniforms;
     const cleanTextures=()=>{
@@ -645,11 +717,13 @@ export class WardrobeRenderer {
       const start=performance.now(); this.draw(); const cost=performance.now()-start;
       this.drawn++;
       if(continuous){this.frames.push(delta);this.costs.push(cost);}
-      this.slowFrames=continuous&&delta>24?this.slowFrames+1:Math.max(0,this.slowFrames-2);
-      const minimumBudget=Math.min(450_000,Math.round(this.cssWidth*this.cssHeight*.49));
-      if(this.slowFrames>=18&&this.pixelBudget>minimumBudget){
-        this.pixelBudget=Math.max(minimumBudget,Math.round(Math.min(this.pixelBudget,this.canvas.width*this.canvas.height)*.72));
-        this.slowFrames=0;this.resize();
+      if(!this.exporting){
+        this.slowFrames=continuous&&delta>24?this.slowFrames+1:Math.max(0,this.slowFrames-2);
+        const minimumBudget=Math.min(450_000,Math.round(this.cssWidth*this.cssHeight*.49));
+        if(this.slowFrames>=18&&this.pixelBudget>minimumBudget){
+          this.pixelBudget=Math.max(minimumBudget,Math.round(Math.min(this.pixelBudget,this.canvas.width*this.canvas.height)*.72));
+          this.slowFrames=0;this.resize();
+        }
       }
       this.dirty=false;this.lastStamp=stamp;
     }
@@ -671,6 +745,12 @@ export class WardrobeRenderer {
       textures:this.renderer.info.memory.textures,buffer:[this.canvas.width,this.canvas.height],
       display:[Math.round(this.cssWidth),Math.round(this.cssHeight)],
       garmentMeshes:this.items.length,mode:this.state().mode,mobile:this.mobileProfile,cameraZoom:Math.round(this.camera.zoom*100)/100,
+      garmentId:this.items[this.state().selected]?.garment.id,garmentType:this.items[this.state().selected]?.garment.type,
+      frontArtwork:!!this.items[this.state().selected]?.body.material.fabricUniforms.frontEnabled.value,
+      backArtwork:!!this.items[this.state().selected]?.body.material.fabricUniforms.backEnabled.value,
+      fabricColor:this.items[this.state().selected]?.body.material.fabricUniforms.fabricColor.value.getHexString(),
+      frontPrint:this.items[this.state().selected]?.body.material.fabricUniforms.frontPlacement.value.toArray(),
+      backPrint:this.items[this.state().selected]?.body.material.fabricUniforms.backPlacement.value.toArray(),
       rotationRad:Math.round(this.spin.value*10000)/10000,coasting:Math.abs(this.spinMomentum)>.015 });
   }
 

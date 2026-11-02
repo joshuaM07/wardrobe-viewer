@@ -8,7 +8,8 @@ import { garmentAssetUrl } from '@/lib/garment-assets';
 import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three';
 import { MOBILE_RACK_QUERY, RACK_WIDTH, mobileRackView, mobileProductView } from '@/lib/rack-view';
 import GarmentStudio from './GarmentStudio';
-import { arrangeRack, blankDesign, CLOTHING_TYPES, defaultDesign, readSavedWardrobe, saveWardrobe, type GarmentDesign, type PrintSide } from '@/lib/garment-design';
+import CreatePiece from './CreatePiece';
+import { arrangeRack, blankDesign, CLOTHING_TYPES, defaultDesign, fitDesign, readSavedWardrobe, saveWardrobe, type GarmentDesign, type PrintSide } from '@/lib/garment-design';
 
 const W = 2912;
 const PRODUCTS = rawGarments as Garment[];
@@ -32,6 +33,9 @@ export default function Wardrobe() {
   const [loadError,setLoadError]=useState(false);
   const [availability,setAvailability]=useState(false);
   const [adding,setAdding]=useState(false);
+  const pendingPiece=useRef(false);
+  const [showCreator,setShowCreator]=useState(false);
+  const [downloading,setDownloading]=useState(false);
   const scene = useRef({ active: -1, selected: 6, mode: 'rack' as Mode, hoodie: false, demo: false, demoStart: 0, reduced: false, dragging: false, dragX: 0, dragStartSpin: 0, spin: 0, mobile:false,rackPosition:6,dragRackStart:6,studio:false });
   const gesture = useRef(dragMotion(0, 0));
   const pointerDown = useRef(false);
@@ -117,7 +121,10 @@ export default function Wardrobe() {
   const close = useCallback(() => {
     engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
     setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(-1);setMode('rack');
-    requestAnimationFrame(() => lastFocus.current?.focus());
+    requestAnimationFrame(() => {
+      if(lastFocus.current?.isConnected)lastFocus.current.focus();
+      else panel.current?.querySelector<HTMLButtonElement>('.create-piece-button')?.focus();
+    });
   }, [highlightRack,focusRack]);
 
   useEffect(()=>{
@@ -145,7 +152,7 @@ export default function Wardrobe() {
       if(t>18.9333){s.demo=false;setDemo(false);if(s.mobile)focusRack(s.active>=0?s.active:s.rackPosition,false);}
     };
     try {
-      const fail=()=>{setLoadError(true);engine.current?.dispose();engine.current=null;};
+      const fail=()=>{setLoadError(true);setShowStudio(false);setShowCreator(false);engine.current?.dispose();engine.current=null;};
       const renderer=new WardrobeRenderer(canvas.current!,()=>scene.current,tick,fail);
       engine.current=renderer;
       void Promise.all([renderer.load(PRODUCTS),readSavedWardrobe().catch(()=>undefined)]).then(async([,saved])=>{
@@ -161,7 +168,7 @@ export default function Wardrobe() {
           if(stopped||engine.current!==renderer)return;
         }
         loaded.current=arrangeRack([...PRODUCTS,...extras]);addedRef.current=extras;renderer.setGarments(loaded.current);
-        designsRef.current=saved?.designs??{};setDesigns(designsRef.current);
+        designsRef.current=Object.fromEntries(Object.entries(saved?.designs??{}).map(([id,design])=>{const g=loaded.current.find(piece=>piece.id===id);return [id,g?fitDesign(design,g.type):design];}));setDesigns(designsRef.current);
         await Promise.all(Object.entries(designsRef.current).map(([id,design])=>renderer.applyDesign(id,design).catch(()=>setDesignError('One saved design could not be restored.'))));
         if(stopped||engine.current!==renderer)return;
         setCollection(loaded.current);setHoodie(extras.some(g=>g.type==='hoodie'));saveHydrated.current=true;setReady(true);setLoadError(false);
@@ -179,9 +186,16 @@ export default function Wardrobe() {
 
   useEffect(()=>{engine.current?.invalidate();},[mode,hover,selected,hoodie,demo,mobile,rackPosition]);
   useEffect(()=>{scene.current.studio=showStudio;engine.current?.invalidate();},[showStudio]);
+  useEffect(()=>{
+    const viewport=window.visualViewport;
+    const resize=()=>panel.current?.parentElement?.style.setProperty('--view-height',`${viewport?.height??window.innerHeight}px`);
+    resize();viewport?.addEventListener('resize',resize);window.addEventListener('resize',resize);
+    return()=>{viewport?.removeEventListener('resize',resize);window.removeEventListener('resize',resize);};
+  },[]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if(showCreator)return;
       if (e.key === 'Escape') { if(availability){setAvailability(false);return;}if(showStudio){setShowStudio(false);return;}close(); scene.current.demo = false; setDemo(false); }
       if(e.key==='Tab'&&scene.current.mode==='product') {
         const selector=availability?'.availability-panel button':'.product-controls button,.product-controls input,.drawer-handle';
@@ -193,10 +207,10 @@ export default function Wardrobe() {
       const editing=(e.target as HTMLElement).closest('.garment-studio')||['INPUT','TEXTAREA','SELECT'].includes((e.target as HTMLElement).tagName);
       if (!editing&&scene.current.mode === 'product' && e.key === 'ArrowLeft') { e.preventDefault(); pick(scene.current.selected - 1); }
       if (!editing&&scene.current.mode === 'product' && e.key === 'ArrowRight') { e.preventDefault(); pick(scene.current.selected + 1); }
-      if (e.key.toLowerCase() === 'h' && !['INPUT','TEXTAREA'].includes((e.target as HTMLElement).tagName)) setShowTools(v => !v);
+      if (e.key.toLowerCase() === 'h' && !editing) setShowTools(v => !v);
     };
     window.addEventListener('keydown', handleKey); return () => window.removeEventListener('keydown', handleKey);
-  }, [close, pick,availability,showStudio]);
+  }, [close, pick,availability,showStudio,showCreator]);
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const hydration=requestAnimationFrame(()=>{
@@ -284,19 +298,49 @@ export default function Wardrobe() {
     const index=scene.current.mobile?targetAt(e):(engine.current?.hoverHit(e.clientX,e.clientY)??targetAt(e));
     if(index>=0)openProduct(index);
   };
-  const addPiece = async (type:string) => {
-    if(adding||!ready||!engine.current)return;
-    if(loaded.current.length>=20){setDesignError('The rack holds up to 20 pieces. Remove one to add another.');return;}
-    const choice=CLOTHING_TYPES.find(t=>t.type===type);if(!choice)return;
-    setAdding(true);setDesignError('');
+  const addPiece = async (type:string,design:GarmentDesign=blankDesign()) => {
+    if(pendingPiece.current||!ready||!engine.current)return false;
+    if(loaded.current.length>=20){setDesignError('The rack holds up to 20 pieces. Remove one to add another.');return false;}
+    const choice=CLOTHING_TYPES.find(t=>t.type===type);if(!choice)return false;
+    pendingPiece.current=true;setAdding(true);setDesignError('');
     try {
       const template=await getTemplate(choice.source);
       const g:Garment={...template,id:`custom-${crypto.randomUUID()}`,sourceId:choice.source,name:`My ${choice.label}`,reference:false};
-      await engine.current.add(g,blankDesign());addedRef.current=[...addedRef.current,g];
+      const fitted=fitDesign(design,type);
+      await engine.current.add(g,fitted);addedRef.current=[...addedRef.current,g];
       loaded.current=arrangeRack([...PRODUCTS,...addedRef.current]);engine.current.setGarments(loaded.current);
       setCollection(loaded.current);setHoodie(addedRef.current.some(g=>g.type==='hoodie'));
-      updateDesign(g.id,blankDesign());openProduct(loaded.current.length-1);setShowStudio(true);setShowTools(false);
-    }catch{setDesignError('Could not add this piece. Try again.');}finally{setAdding(false);}
+      updateDesign(g.id,fitted);openProduct(loaded.current.length-1);setShowStudio(true);setShowTools(false);
+      if(fitted.back&&!fitted.front)rotate('back');
+      return true;
+    }catch{setDesignError('Could not prepare this piece. Your artwork is still here. Try again.');return false;}
+    finally{pendingPiece.current=false;setAdding(false);}
+  };
+  const changeType=async(type:string)=>{
+    const piece=loaded.current[scene.current.selected],choice=CLOTHING_TYPES.find(t=>t.type===type);
+    if(!piece||!choice||piece.type===type||pendingPiece.current||!engine.current)return;
+    const design=fitDesign({... (designsRef.current[piece.id]??defaultDesign()),color:designsRef.current[piece.id]?.color??piece.fabricColor,originalPrint:false},type);
+    if(!piece.sourceId){await addPiece(type,design);return;}
+    pendingPiece.current=true;setAdding(true);setDesignError('');
+    try{
+      const template=await getTemplate(choice.source);
+      const next:Garment={...template,id:piece.id,pivot:piece.pivot,sourceId:choice.source,name:`My ${choice.label}`,reference:false};
+      await engine.current.replace(piece.id,next,design);
+      addedRef.current=addedRef.current.map(g=>g.id===piece.id?next:g);
+      loaded.current=arrangeRack([...PRODUCTS,...addedRef.current]);engine.current.setGarments(loaded.current);
+      setCollection(loaded.current);setHoodie(addedRef.current.some(g=>g.type==='hoodie'));updateDesign(piece.id,design);
+    }catch{setDesignError('Could not switch the garment. Your current piece and artwork are safe. Try again.');}
+    finally{pendingPiece.current=false;setAdding(false);}
+  };
+  const downloadPreview=async()=>{
+    if(downloading||!engine.current)return;setDownloading(true);setDesignError('');
+    const name=loaded.current[scene.current.selected]?.name??'my-garment';
+    try{
+      const blob=await engine.current.exportPng(),url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download=`${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.png`;link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }catch{setDesignError('Could not download the preview. Please try again.');}
+    finally{setDownloading(false);}
   };
   const removePiece=()=>{
     const g=loaded.current[scene.current.selected];if(!g?.sourceId)return;
@@ -336,6 +380,7 @@ export default function Wardrobe() {
         </nav>}
         {mode==='rack' && hover>=0 && <div className="hover-label" style={{left:`${(collection[hover]?.pivot || .5)*100}%`}}>{collection[hover]?.name}</div>}
         {mode==='rack'&&<button className="availability" disabled={!ready&&!loadError} onClick={() => openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>}
+        {mode==='rack'&&<button className="create-piece-button" disabled={!ready||loadError||adding} onClick={()=>{setShowCreator(true);setDesignError('');scene.current.demo=false;setDemo(false);setShowTools(false);}}><span aria-hidden="true">＋</span>Create your piece</button>}
         <div className="ticker" aria-label="New designs daily, subscribe to our newsletter" aria-hidden={mode!=='rack'}>
           <div className="ticker-track">{Array.from({length:8},(_,i)=><span key={i}>NEW DESIGNS DAILY <b>•</b> SUBSCRIBE TO OUR NEWSLETTER <b>•</b></span>)}</div>
         </div>
@@ -347,7 +392,7 @@ export default function Wardrobe() {
           <div className="product-caption" aria-live="polite"><span className="product-count">{String(selected+1).padStart(2,'0')} / {String(collection.length).padStart(2,'0')}</span><h1>{title}</h1></div>
           <div className="product-actions"><button className="customize-button" disabled={!ready||loadError} aria-expanded={showStudio} onClick={()=>{setShowStudio(v=>!v);setShowTools(false);}}>CUSTOMIZE</button><button disabled={!ready||loadError} aria-pressed={orientation==='front'} onClick={()=>rotate('front')}>FRONT</button><button disabled={!ready||loadError} aria-pressed={orientation==='back'} onClick={()=>rotate('back')}>BACK</button><button className="product-stock" onClick={()=>setAvailability(true)}>AVAILABILITY</button></div>
           {!showStudio&&ready&&<p className="rotation-hint">Drag to rotate · front and back</p>}
-          {showStudio&&<GarmentStudio key={collection[selected].id} garment={collection[selected]} design={designs[collection[selected].id]??defaultDesign()} onChange={design=>updateDesign(collection[selected].id,design)} onClose={()=>setShowStudio(false)} onRotate={rotate} onAdd={type=>void addPiece(type)} onRemove={collection[selected].sourceId?removePiece:undefined} busy={adding} error={designError} saveStatus={saveStatus} />}
+          {showStudio&&<GarmentStudio key={collection[selected].id} garment={collection[selected]} design={designs[collection[selected].id]??defaultDesign()} onChange={design=>updateDesign(collection[selected].id,design)} onClose={()=>setShowStudio(false)} onRotate={rotate} onTypeChange={type=>void changeType(type)} onRemove={collection[selected].sourceId?removePiece:undefined} onDownload={()=>void downloadPreview()} downloading={downloading} busy={adding} error={designError} saveStatus={saveStatus} />}
         </section>}
         {(mode==='about'||mode==='contact') && <section className="text-panel">
           <button className="close-button text-button" onClick={close} autoFocus>CLOSE</button>
@@ -356,6 +401,7 @@ export default function Wardrobe() {
         </section>}
         <button className="drawer-handle" disabled={!ready&&!loadError} aria-label="Garment options" aria-expanded={showTools} onClick={()=>setShowTools(v=>!v)} />
       </div>
+      {showCreator&&<CreatePiece busy={adding} error={designError} onClose={()=>setShowCreator(false)} onCreate={async(type,design)=>{if(await addPiece(type,design))setShowCreator(false);}}/>}
       {showTools && <div className="collection-tools"><span>Add a blank piece</span>{CLOTHING_TYPES.map(({type,label})=><button key={type} onClick={()=>void addPiece(type)} disabled={adding||!ready||loadError}>+ {label}</button>)}<button disabled={loadError||!ready} onClick={()=>{scene.current.demo=!demo;scene.current.demoStart=performance.now();setDemo(!demo);if(demo&&scene.current.mobile)focusRack(scene.current.active>=0?scene.current.active:scene.current.rackPosition,false);}}>{demo?'Stop replay':'Replay motion'}</button><button aria-label="Close garment options" onClick={()=>setShowTools(false)}>×</button></div>}
     </main>
   );

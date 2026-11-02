@@ -13,6 +13,24 @@ export const CLOTHING_TYPES = [
   { type: 'crewneck', label: 'Crewneck', source: 'republic' },
   { type: 'hoodie', label: 'Hoodie', source: 'hoodie' },
 ] as const;
+export type ClothingType = typeof CLOTHING_TYPES[number]['type'];
+
+/** Conservative torso print areas; keep front artwork above a hoodie's pocket. */
+export function printArea(type: string, side: PrintSide) {
+  if(type==='hoodie')return side==='front'?{width:280,top:185,bottom:445,center:310}:{width:300,top:235,bottom:620,center:380};
+  if(type==='long-sleeve')return {width:290,top:175,bottom:620,center:330};
+  if(type==='crewneck')return {width:300,top:175,bottom:625,center:330};
+  return {width:300,top:165,bottom:575,center:310};
+}
+export function fitArtwork(art: Artwork, type: string, side: PrintSide, center=false): Artwork {
+  const area=printArea(type,side),maxWidth=Math.min(area.width,(area.bottom-area.top)*art.aspect);
+  const width=Math.min(center?240:art.width,maxWidth),height=width/art.aspect;
+  return {...art,width,x:Math.max(-(area.width-width)/2,Math.min((area.width-width)/2,center?0:art.x)),
+    y:Math.max(area.top+height/2,Math.min(area.bottom-height/2,center?area.center:art.y))};
+}
+export function fitDesign(design: GarmentDesign, type: string): GarmentDesign {
+  return {...design,front:design.front?fitArtwork(design.front,type,'front'):undefined,back:design.back?fitArtwork(design.back,type,'back'):undefined};
+}
 
 export function arrangeRack(garments: Garment[]): Garment[] {
   if (garments.length <= 10) return garments;
@@ -29,8 +47,8 @@ export function sanitizeSavedWardrobe(value: unknown): SavedWardrobe | undefined
     for(const side of ['front','back'] as const){
       const art=design[side];
       if(!art||typeof art.dataUrl!=='string'||!/^data:image\/(png|jpeg|webp);base64,/.test(art.dataUrl)||art.dataUrl.length>16_000_000)continue;
-      if(![art.aspect,art.width,art.x,art.y].every(Number.isFinite)||art.aspect<=0||art.aspect>200)continue;
-      clean[side]={dataUrl:art.dataUrl,name:String(art.name??'Artwork').slice(0,200),aspect:art.aspect,width:Math.min(360,Math.max(1,art.width)),x:Math.min(100,Math.max(-100,art.x)),y:Math.min(600,Math.max(100,art.y))};
+      if(![art.aspect,art.width,art.x,art.y].every(Number.isFinite)||art.aspect<=0||art.aspect>1536)continue;
+      clean[side]={dataUrl:art.dataUrl,name:String(art.name??'Artwork').slice(0,200),aspect:art.aspect,width:Math.min(360,Math.max(.1,art.width)),x:Math.min(100,Math.max(-100,art.x)),y:Math.min(650,Math.max(100,art.y))};
     }
     designs[id]=clean;
   }

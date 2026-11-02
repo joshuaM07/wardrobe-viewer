@@ -1,0 +1,141 @@
+{
+  "scope": "Chromium using SwiftShader software WebGL; interaction verification only, not hardware FPS",
+  "checks": [
+    "WebGL renders",
+    "Mouse drag rotates and releases with momentum",
+    "Front button stops momentum and returns to the nearest front orientation",
+    "Rapid previous/next changes settle on the requested piece",
+    "Viewer returns to rack",
+    "Displaced neighbor retains hover through its turn and opens the same garment",
+    "Mobile swipe carries along the rack and suppresses the synthetic click",
+    "Touch product drag rotates with momentum",
+    "Reduced motion cancels momentum"
+  ],
+  "desktopDrag": {
+    "samples": 60,
+    "frames": 64,
+    "frameMsP50": 16.7,
+    "frameMsP95": 83.4,
+    "renderMsP95": 5,
+    "framesOver33ms": 14,
+    "drawCalls": 3,
+    "triangles": 5402,
+    "textures": 24,
+    "buffer": [
+      845,
+      470
+    ],
+    "display": [
+      845,
+      470
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": false,
+    "cameraZoom": 1,
+    "garmentId": "flowers",
+    "garmentType": "tee",
+    "frontArtwork": false,
+    "backArtwork": false,
+    "fabricColor": "e9e2ea",
+    "frontPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "backPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "rotationRad": 2.16,
+    "coasting": false
+  },
+  "desktop": {
+    "samples": 131,
+    "frames": 137,
+    "frameMsP50": 33.3,
+    "frameMsP95": 100,
+    "renderMsP95": 4.4,
+    "framesOver33ms": 52,
+    "drawCalls": 3,
+    "triangles": 5658,
+    "textures": 24,
+    "buffer": [
+      717,
+      399
+    ],
+    "display": [
+      845,
+      470
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": false,
+    "cameraZoom": 1,
+    "garmentId": "studio",
+    "garmentType": "tee",
+    "frontArtwork": false,
+    "backArtwork": false,
+    "fabricColor": "ddd6e5",
+    "frontPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "backPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "rotationRad": 0,
+    "coasting": false
+  },
+  "mobile": {
+    "samples": 175,
+    "frames": 179,
+    "frameMsP50": 16.7,
+    "frameMsP95": 116.7,
+    "renderMsP95": 2.5,
+    "framesOver33ms": 55,
+    "drawCalls": 3,
+    "triangles": 5622,
+    "textures": 24,
+    "buffer": [
+      292,
+      430
+    ],
+    "display": [
+      367,
+      539
+    ],
+    "garmentMeshes": 10,
+    "mode": "product",
+    "mobile": true,
+    "cameraZoom": 3.5,
+    "garmentId": "portrait",
+    "garmentType": "tee",
+    "frontArtwork": false,
+    "backArtwork": false,
+    "fabricColor": "ece6ed",
+    "frontPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "backPrint": [
+      0,
+      -300,
+      240,
+      240
+    ],
+    "rotationRad": 2.6173,
+    "coasting": false
+  },
+  "pageErrors": []
+}

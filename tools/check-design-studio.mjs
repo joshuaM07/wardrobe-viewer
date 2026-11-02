@@ -18,7 +18,7 @@ function moduleURL(file){
 }
 const {WardrobeRenderer}=await import(moduleURL(path.join(root,'lib/wardrobe-three.ts')));
 const {garmentMaterial}=await import(moduleURL(path.join(root,'lib/garment-material.ts')));
-const {prepareArtwork,sanitizeSavedWardrobe,blankDesign,defaultDesign,arrangeRack}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
+const {prepareArtwork,sanitizeSavedWardrobe,blankDesign,defaultDesign,arrangeRack,fitArtwork,fitDesign,printArea,CLOTHING_TYPES}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
 const source=JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'))).find(g=>g.id==='flowers');
 const fixture={...source,id:'custom-fixture',sourceId:'flowers'};
 function rig(){
@@ -72,6 +72,53 @@ assert.equal(sanitizeSavedWardrobe({version:99}),undefined);
 const rack=arrangeRack(Array.from({length:20},(_,i)=>({...fixture,id:`custom-${i}`})));
 assert(rack.every((g,i)=>g.pivot>=.17-1e-10&&g.pivot<=.83+1e-10&&(i===0||g.pivot>rack[i-1].pivot)));
 
+let placementChecks=0;
+for(const {type} of CLOTHING_TYPES)for(const side of ['front','back'])for(const aspect of [1/1536,.1,.5,1,2,10,1536])for(const x of [-100,100])for(const y of [100,650]){
+ const a={...artwork(A),aspect,width:360,x,y},fit=fitArtwork(a,type,side),area=printArea(type,side),height=fit.width/fit.aspect;
+ assert.equal(fit.dataUrl,A);assert.equal(fit.aspect,aspect);assert(fit.width>0);
+ assert(fit.x-fit.width/2>=-area.width/2-1e-7&&fit.x+fit.width/2<=area.width/2+1e-7);
+ assert(fit.y-height/2>=area.top-1e-7&&fit.y+height/2<=area.bottom+1e-7);placementChecks++;
+}
+const both=fitDesign({...blankDesign(),front:artwork(A),back:artwork(B)},'hoodie');
+assert.equal(both.front.dataUrl,A);assert.equal(both.back.dataUrl,B);
+function replacementRig(){
+ const r=rig();Object.assign(r.item,{prepared:true,inDetail:true,focus:{value:1,velocity:0},x:{value:1500,velocity:2},y:{value:280,velocity:0},scale:{value:1.2,velocity:0},sway:{value:.01,velocity:.001},cloth:{bend:{value:2,velocity:1},twist:{value:.01,velocity:.01}}});
+ r.engine.state=()=>({selected:0,mode:'product'});r.item.body.geometry.computeBoundingBox();r.engine.camera=new THREE.PerspectiveCamera();r.engine.renderer.compileAsync=async()=>{};
+ r.engine.loadItem=async garment=>{
+  const front=new THREE.Texture(),back=new THREE.Texture(),body=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),garmentMaterial(front,back,'#eee'));
+  body.geometry.computeBoundingBox();const group=new THREE.Group();group.add(body);
+  return {garment,root:group,body,backMap:back,designTextures:new Set(),artwork:{},designVersion:0,released:false,prepared:false};
+ };
+ return r;
+}
+const replacement=replacementRig(),target={...fixture,type:'hoodie',sourceId:'hoodie'};
+const switching=replacement.engine.replace(fixture.id,target,{...blankDesign('#263e62'),front:artwork(A)});
+await new Promise(resolve=>setTimeout(resolve,0));
+assert.equal(replacement.engine.items[0],replacement.item,'old mesh stays visible while assets prepare');
+assert.equal(replacement.item.released,false);assert.equal(replacement.engine.scene.children.length,1);
+replacement.pending.get(A)();await switching;
+const swapped=replacement.engine.items[0];assert.notEqual(swapped,replacement.item);
+assert.equal(swapped.garment.id,fixture.id);assert.equal(swapped.garment.type,'hoodie');
+assert.equal(swapped.x.value,1500);assert.equal(swapped.x.velocity,2);assert.equal(swapped.cloth.twist.value,.01);
+assert.equal(swapped.body.material.fabricUniforms.frontEnabled.value,1);assert.equal(swapped.body.material.fabricUniforms.fabricColor.value.getHexString(),'263e62');
+assert(replacement.calls.some(url=>url.includes('/models/hoodie-fabric.jpg')));assert(replacement.item.released);assert.equal(replacement.engine.scene.children.length,1);
+const resized=replacementRig(),originalLoader=resized.engine.loadItem;
+resized.engine.loadItem=async garment=>{const item=await originalLoader(garment);item.body.geometry.dispose();item.body.geometry=new THREE.BoxGeometry(1,2,1);item.body.geometry.computeBoundingBox();return item;};
+await resized.engine.replace(fixture.id,target,blankDesign());
+assert.equal(resized.engine.items[0].scale.value,.6,'type changes preserve the initial visible height');
+assert.equal(resized.engine.items[0].root.scale.y,.6);assert.equal(resized.engine.productReveal,0);
+const failed=replacementRig();failed.engine.renderer.compileAsync=async()=>{throw new Error('shader failure');};
+await assert.rejects(failed.engine.replace(fixture.id,target,blankDesign()),/shader failure/);
+assert.equal(failed.engine.items[0],failed.item);assert.equal(failed.item.released,false);assert.equal(failed.engine.scene.children.length,1);
+const removed=replacementRig(),pendingSwap=removed.engine.replace(fixture.id,target,{...blankDesign(),front:artwork(A)});
+await new Promise(resolve=>setTimeout(resolve,0));removed.engine.remove(fixture.id);removed.pending.get(A)();
+await assert.rejects(pendingSwap,/no longer/);assert.equal(removed.engine.items.length,0);assert.equal(removed.engine.scene.children.length,0);
+// A failed export must restore live material/target state and release its FBO.
+const photo=replacementRig();photo.engine.state=()=>({selected:0});photo.item.body.geometry.computeBoundingBox();photo.engine.clothPadding=()=>0;photo.item.body.material.opacity=.4;
+let currentTarget=null,disposedTargets=0;
+Object.assign(photo.engine.renderer,{autoClear:false,getRenderTarget:()=>null,setRenderTarget:target=>{currentTarget=target;if(target)target.addEventListener('dispose',()=>disposedTargets++);},render:()=>{throw new Error('export failure');}});
+await assert.rejects(photo.engine.exportPng(),/export failure/);assert.equal(currentTarget,null);assert.equal(photo.engine.renderer.autoClear,false);assert.equal(photo.item.body.material.opacity,.4);assert.equal(disposedTargets,1);
+
 let imageChecks=0;
 const require=createRequire(import.meta.url);
 let canvas;
@@ -97,5 +144,5 @@ if(canvas){
   await assert.rejects(prepareArtwork(new File([empty.toBuffer('image/png')],'empty.png',{type:'image/png'})),/completely transparent/);imageChecks++;
   assert.equal(closed,3,'decoded bitmaps must close even when processing fails');
 }
-const result={scope:'Production renderer/design integration and native-canvas image processor; no browser FPS claims',lazyFabricLoading:true,blackToWhiteColours:true,latestUploadWins:true,placementWithoutDecode:true,removalAndLateUploadDisposal:true,savedStateValidation:true,dynamicRack20Pieces:true,imageProcessingChecks:imageChecks};
+const result={scope:'Production renderer/design integration and native-canvas image processor; no browser FPS claims',lazyFabricLoading:true,blackToWhiteColours:true,latestUploadWins:true,placementWithoutDecode:true,removalAndLateUploadDisposal:true,savedStateValidation:true,dynamicRack20Pieces:true,imageProcessingChecks:imageChecks,placementChecks,atomicGarmentSwitch:true,replacementKeepsVisibleHeight:true,replacementFailureKeepsOriginal:true,removedReplacementDisposes:true,exportFailureRestoresRenderer:true};
 const out=process.argv[2]||path.join(root,'docs/qa/three/design-state.json');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
