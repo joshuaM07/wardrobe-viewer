@@ -1,0 +1,1855 @@
+{
+  "scope": "EGL production shader at 1 px/world unit, higher than normal displayed garment resolution. 24 poses per garment; includes fronts, backs, side silhouettes and hoodies. Not browser FPS.",
+  "checks": [
+    {
+      "id": "camo",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0673,
+      "colourP99": 1.0
+    },
+    {
+      "id": "camo",
+      "degrees": 15,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.1756,
+      "colourP99": 1.333
+    },
+    {
+      "id": "camo",
+      "degrees": 30,
+      "silhouetteIoU": 0.999989,
+      "colourMae255": 0.2816,
+      "colourP99": 2.667
+    },
+    {
+      "id": "camo",
+      "degrees": 45,
+      "silhouetteIoU": 0.999988,
+      "colourMae255": 0.3445,
+      "colourP99": 3.667
+    },
+    {
+      "id": "camo",
+      "degrees": 60,
+      "silhouetteIoU": 0.999906,
+      "colourMae255": 0.4305,
+      "colourP99": 5.0
+    },
+    {
+      "id": "camo",
+      "degrees": 75,
+      "silhouetteIoU": 0.999855,
+      "colourMae255": 0.4483,
+      "colourP99": 6.0
+    },
+    {
+      "id": "camo",
+      "degrees": 90,
+      "silhouetteIoU": 0.999278,
+      "colourMae255": 0.133,
+      "colourP99": 1.0
+    },
+    {
+      "id": "camo",
+      "degrees": 105,
+      "silhouetteIoU": 0.999772,
+      "colourMae255": 0.3609,
+      "colourP99": 5.667
+    },
+    {
+      "id": "camo",
+      "degrees": 120,
+      "silhouetteIoU": 0.999941,
+      "colourMae255": 0.343,
+      "colourP99": 5.0
+    },
+    {
+      "id": "camo",
+      "degrees": 135,
+      "silhouetteIoU": 0.99998,
+      "colourMae255": 0.2674,
+      "colourP99": 3.667
+    },
+    {
+      "id": "camo",
+      "degrees": 150,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.208,
+      "colourP99": 2.667
+    },
+    {
+      "id": "camo",
+      "degrees": 165,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1233,
+      "colourP99": 1.333
+    },
+    {
+      "id": "camo",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0539,
+      "colourP99": 0.667
+    },
+    {
+      "id": "camo",
+      "degrees": 195,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.1329,
+      "colourP99": 1.333
+    },
+    {
+      "id": "camo",
+      "degrees": 210,
+      "silhouetteIoU": 0.999989,
+      "colourMae255": 0.2063,
+      "colourP99": 2.667
+    },
+    {
+      "id": "camo",
+      "degrees": 225,
+      "silhouetteIoU": 0.999988,
+      "colourMae255": 0.2579,
+      "colourP99": 3.667
+    },
+    {
+      "id": "camo",
+      "degrees": 240,
+      "silhouetteIoU": 0.999906,
+      "colourMae255": 0.3254,
+      "colourP99": 4.667
+    },
+    {
+      "id": "camo",
+      "degrees": 255,
+      "silhouetteIoU": 0.999862,
+      "colourMae255": 0.3345,
+      "colourP99": 5.333
+    },
+    {
+      "id": "camo",
+      "degrees": 270,
+      "silhouetteIoU": 0.999291,
+      "colourMae255": 0.124,
+      "colourP99": 1.0
+    },
+    {
+      "id": "camo",
+      "degrees": 285,
+      "silhouetteIoU": 0.999772,
+      "colourMae255": 0.4732,
+      "colourP99": 6.0
+    },
+    {
+      "id": "camo",
+      "degrees": 300,
+      "silhouetteIoU": 0.999941,
+      "colourMae255": 0.4467,
+      "colourP99": 5.0
+    },
+    {
+      "id": "camo",
+      "degrees": 315,
+      "silhouetteIoU": 0.99998,
+      "colourMae255": 0.3543,
+      "colourP99": 3.667
+    },
+    {
+      "id": "camo",
+      "degrees": 330,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.2668,
+      "colourP99": 2.667
+    },
+    {
+      "id": "camo",
+      "degrees": 345,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1556,
+      "colourP99": 1.333
+    },
+    {
+      "id": "essential",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0454,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 15,
+      "silhouetteIoU": 0.999936,
+      "colourMae255": 0.0239,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 30,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0555,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 45,
+      "silhouetteIoU": 0.999963,
+      "colourMae255": 0.042,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 60,
+      "silhouetteIoU": 0.999796,
+      "colourMae255": 0.0683,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 75,
+      "silhouetteIoU": 0.999741,
+      "colourMae255": 0.0723,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 90,
+      "silhouetteIoU": 0.999488,
+      "colourMae255": 0.0784,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 105,
+      "silhouetteIoU": 0.999759,
+      "colourMae255": 0.0681,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 120,
+      "silhouetteIoU": 0.999854,
+      "colourMae255": 0.0477,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 135,
+      "silhouetteIoU": 0.999958,
+      "colourMae255": 0.056,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 150,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0229,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 165,
+      "silhouetteIoU": 0.999822,
+      "colourMae255": 0.023,
+      "colourP99": 0.333
+    },
+    {
+      "id": "essential",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0511,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 195,
+      "silhouetteIoU": 0.999941,
+      "colourMae255": 0.0205,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 210,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0476,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 225,
+      "silhouetteIoU": 0.999963,
+      "colourMae255": 0.034,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 240,
+      "silhouetteIoU": 0.999796,
+      "colourMae255": 0.0565,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 255,
+      "silhouetteIoU": 0.999741,
+      "colourMae255": 0.0617,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 270,
+      "silhouetteIoU": 0.999488,
+      "colourMae255": 0.0628,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 285,
+      "silhouetteIoU": 0.999759,
+      "colourMae255": 0.0812,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 300,
+      "silhouetteIoU": 0.999854,
+      "colourMae255": 0.0635,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 315,
+      "silhouetteIoU": 0.999963,
+      "colourMae255": 0.0532,
+      "colourP99": 1.0
+    },
+    {
+      "id": "essential",
+      "degrees": 330,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0295,
+      "colourP99": 0.667
+    },
+    {
+      "id": "essential",
+      "degrees": 345,
+      "silhouetteIoU": 0.999827,
+      "colourMae255": 0.0252,
+      "colourP99": 0.667
+    },
+    {
+      "id": "dollar",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1288,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 15,
+      "silhouetteIoU": 0.99988,
+      "colourMae255": 0.2215,
+      "colourP99": 2.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 30,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.2554,
+      "colourP99": 3.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 45,
+      "silhouetteIoU": 0.999973,
+      "colourMae255": 0.2936,
+      "colourP99": 4.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 60,
+      "silhouetteIoU": 0.999901,
+      "colourMae255": 0.3398,
+      "colourP99": 5.667
+    },
+    {
+      "id": "dollar",
+      "degrees": 75,
+      "silhouetteIoU": 0.99979,
+      "colourMae255": 0.2981,
+      "colourP99": 5.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 90,
+      "silhouetteIoU": 0.999498,
+      "colourMae255": 0.1588,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 105,
+      "silhouetteIoU": 0.999854,
+      "colourMae255": 0.1633,
+      "colourP99": 1.333
+    },
+    {
+      "id": "dollar",
+      "degrees": 120,
+      "silhouetteIoU": 0.999861,
+      "colourMae255": 0.1657,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 135,
+      "silhouetteIoU": 0.999957,
+      "colourMae255": 0.1421,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 150,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.1275,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 165,
+      "silhouetteIoU": 0.999903,
+      "colourMae255": 0.172,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1322,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 195,
+      "silhouetteIoU": 0.99988,
+      "colourMae255": 0.165,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 210,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.1488,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 225,
+      "silhouetteIoU": 0.999973,
+      "colourMae255": 0.1382,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 240,
+      "silhouetteIoU": 0.999908,
+      "colourMae255": 0.1517,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 255,
+      "silhouetteIoU": 0.99979,
+      "colourMae255": 0.138,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 270,
+      "silhouetteIoU": 0.999498,
+      "colourMae255": 0.1748,
+      "colourP99": 1.0
+    },
+    {
+      "id": "dollar",
+      "degrees": 285,
+      "silhouetteIoU": 0.999854,
+      "colourMae255": 0.3259,
+      "colourP99": 5.333
+    },
+    {
+      "id": "dollar",
+      "degrees": 300,
+      "silhouetteIoU": 0.999861,
+      "colourMae255": 0.357,
+      "colourP99": 5.667
+    },
+    {
+      "id": "dollar",
+      "degrees": 315,
+      "silhouetteIoU": 0.999957,
+      "colourMae255": 0.283,
+      "colourP99": 4.333
+    },
+    {
+      "id": "dollar",
+      "degrees": 330,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.2224,
+      "colourP99": 3.333
+    },
+    {
+      "id": "dollar",
+      "degrees": 345,
+      "silhouetteIoU": 0.999903,
+      "colourMae255": 0.1814,
+      "colourP99": 2.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0404,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 15,
+      "silhouetteIoU": 0.999977,
+      "colourMae255": 0.157,
+      "colourP99": 4.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 30,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.2992,
+      "colourP99": 8.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 45,
+      "silhouetteIoU": 0.999941,
+      "colourMae255": 0.3962,
+      "colourP99": 11.333
+    },
+    {
+      "id": "underclass",
+      "degrees": 60,
+      "silhouetteIoU": 0.999871,
+      "colourMae255": 0.5235,
+      "colourP99": 15.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 75,
+      "silhouetteIoU": 0.999851,
+      "colourMae255": 0.4829,
+      "colourP99": 13.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 90,
+      "silhouetteIoU": 0.999412,
+      "colourMae255": 0.0577,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 105,
+      "silhouetteIoU": 0.999834,
+      "colourMae255": 0.0517,
+      "colourP99": 1.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 120,
+      "silhouetteIoU": 0.999871,
+      "colourMae255": 0.0417,
+      "colourP99": 1.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 135,
+      "silhouetteIoU": 0.999946,
+      "colourMae255": 0.0294,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 150,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.0195,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 165,
+      "silhouetteIoU": 0.999972,
+      "colourMae255": 0.0131,
+      "colourP99": 0.333
+    },
+    {
+      "id": "underclass",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0288,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 195,
+      "silhouetteIoU": 0.999977,
+      "colourMae255": 0.0223,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 210,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.0289,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 225,
+      "silhouetteIoU": 0.999941,
+      "colourMae255": 0.0325,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 240,
+      "silhouetteIoU": 0.999871,
+      "colourMae255": 0.0407,
+      "colourP99": 0.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 255,
+      "silhouetteIoU": 0.999851,
+      "colourMae255": 0.0477,
+      "colourP99": 1.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 270,
+      "silhouetteIoU": 0.999412,
+      "colourMae255": 0.0505,
+      "colourP99": 0.333
+    },
+    {
+      "id": "underclass",
+      "degrees": 285,
+      "silhouetteIoU": 0.999834,
+      "colourMae255": 0.4981,
+      "colourP99": 14.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 300,
+      "silhouetteIoU": 0.999871,
+      "colourMae255": 0.5347,
+      "colourP99": 15.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 315,
+      "silhouetteIoU": 0.999946,
+      "colourMae255": 0.409,
+      "colourP99": 11.667
+    },
+    {
+      "id": "underclass",
+      "degrees": 330,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.2851,
+      "colourP99": 8.0
+    },
+    {
+      "id": "underclass",
+      "degrees": 345,
+      "silhouetteIoU": 0.999972,
+      "colourMae255": 0.1557,
+      "colourP99": 4.0
+    },
+    {
+      "id": "republic",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0256,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 15,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0682,
+      "colourP99": 1.0
+    },
+    {
+      "id": "republic",
+      "degrees": 30,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.1099,
+      "colourP99": 2.0
+    },
+    {
+      "id": "republic",
+      "degrees": 45,
+      "silhouetteIoU": 0.999983,
+      "colourMae255": 0.152,
+      "colourP99": 3.0
+    },
+    {
+      "id": "republic",
+      "degrees": 60,
+      "silhouetteIoU": 0.999932,
+      "colourMae255": 0.2038,
+      "colourP99": 4.0
+    },
+    {
+      "id": "republic",
+      "degrees": 75,
+      "silhouetteIoU": 0.999849,
+      "colourMae255": 0.2519,
+      "colourP99": 5.333
+    },
+    {
+      "id": "republic",
+      "degrees": 90,
+      "silhouetteIoU": 0.999055,
+      "colourMae255": 0.0951,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 105,
+      "silhouetteIoU": 0.999826,
+      "colourMae255": 0.1096,
+      "colourP99": 1.667
+    },
+    {
+      "id": "republic",
+      "degrees": 120,
+      "silhouetteIoU": 0.999901,
+      "colourMae255": 0.0838,
+      "colourP99": 1.0
+    },
+    {
+      "id": "republic",
+      "degrees": 135,
+      "silhouetteIoU": 0.999975,
+      "colourMae255": 0.0587,
+      "colourP99": 1.0
+    },
+    {
+      "id": "republic",
+      "degrees": 150,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.048,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 165,
+      "silhouetteIoU": 0.999986,
+      "colourMae255": 0.0384,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0366,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 195,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.04,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 210,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0526,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 225,
+      "silhouetteIoU": 0.999983,
+      "colourMae255": 0.0575,
+      "colourP99": 0.667
+    },
+    {
+      "id": "republic",
+      "degrees": 240,
+      "silhouetteIoU": 0.999932,
+      "colourMae255": 0.0758,
+      "colourP99": 1.0
+    },
+    {
+      "id": "republic",
+      "degrees": 255,
+      "silhouetteIoU": 0.999849,
+      "colourMae255": 0.098,
+      "colourP99": 1.333
+    },
+    {
+      "id": "republic",
+      "degrees": 270,
+      "silhouetteIoU": 0.999055,
+      "colourMae255": 0.1125,
+      "colourP99": 1.0
+    },
+    {
+      "id": "republic",
+      "degrees": 285,
+      "silhouetteIoU": 0.999826,
+      "colourMae255": 0.2699,
+      "colourP99": 5.353
+    },
+    {
+      "id": "republic",
+      "degrees": 300,
+      "silhouetteIoU": 0.999901,
+      "colourMae255": 0.2146,
+      "colourP99": 4.333
+    },
+    {
+      "id": "republic",
+      "degrees": 315,
+      "silhouetteIoU": 0.999975,
+      "colourMae255": 0.1485,
+      "colourP99": 3.0
+    },
+    {
+      "id": "republic",
+      "degrees": 330,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.106,
+      "colourP99": 2.0
+    },
+    {
+      "id": "republic",
+      "degrees": 345,
+      "silhouetteIoU": 0.999986,
+      "colourMae255": 0.067,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0395,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 15,
+      "silhouetteIoU": 0.999971,
+      "colourMae255": 0.0515,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 30,
+      "silhouetteIoU": 0.999992,
+      "colourMae255": 0.0835,
+      "colourP99": 2.0
+    },
+    {
+      "id": "world",
+      "degrees": 45,
+      "silhouetteIoU": 0.999924,
+      "colourMae255": 0.1105,
+      "colourP99": 3.0
+    },
+    {
+      "id": "world",
+      "degrees": 60,
+      "silhouetteIoU": 0.999892,
+      "colourMae255": 0.1488,
+      "colourP99": 4.0
+    },
+    {
+      "id": "world",
+      "degrees": 75,
+      "silhouetteIoU": 0.999815,
+      "colourMae255": 0.1774,
+      "colourP99": 5.0
+    },
+    {
+      "id": "world",
+      "degrees": 90,
+      "silhouetteIoU": 0.999478,
+      "colourMae255": 0.0541,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 105,
+      "silhouetteIoU": 0.999843,
+      "colourMae255": 0.0633,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 120,
+      "silhouetteIoU": 0.999943,
+      "colourMae255": 0.0498,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 135,
+      "silhouetteIoU": 0.999962,
+      "colourMae255": 0.0368,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 150,
+      "silhouetteIoU": 0.999977,
+      "colourMae255": 0.025,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 165,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0175,
+      "colourP99": 0.333
+    },
+    {
+      "id": "world",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0441,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 195,
+      "silhouetteIoU": 0.999971,
+      "colourMae255": 0.0252,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 210,
+      "silhouetteIoU": 0.999992,
+      "colourMae255": 0.0375,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 225,
+      "silhouetteIoU": 0.999924,
+      "colourMae255": 0.0407,
+      "colourP99": 0.667
+    },
+    {
+      "id": "world",
+      "degrees": 240,
+      "silhouetteIoU": 0.999892,
+      "colourMae255": 0.0482,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 255,
+      "silhouetteIoU": 0.999815,
+      "colourMae255": 0.059,
+      "colourP99": 1.0
+    },
+    {
+      "id": "world",
+      "degrees": 270,
+      "silhouetteIoU": 0.999478,
+      "colourMae255": 0.0584,
+      "colourP99": 0.333
+    },
+    {
+      "id": "world",
+      "degrees": 285,
+      "silhouetteIoU": 0.999843,
+      "colourMae255": 0.1867,
+      "colourP99": 5.0
+    },
+    {
+      "id": "world",
+      "degrees": 300,
+      "silhouetteIoU": 0.999943,
+      "colourMae255": 0.1585,
+      "colourP99": 4.0
+    },
+    {
+      "id": "world",
+      "degrees": 315,
+      "silhouetteIoU": 0.999962,
+      "colourMae255": 0.1152,
+      "colourP99": 3.0
+    },
+    {
+      "id": "world",
+      "degrees": 330,
+      "silhouetteIoU": 0.999977,
+      "colourMae255": 0.0771,
+      "colourP99": 2.0
+    },
+    {
+      "id": "world",
+      "degrees": 345,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0448,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0857,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 15,
+      "silhouetteIoU": 0.999886,
+      "colourMae255": 0.2327,
+      "colourP99": 2.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 30,
+      "silhouetteIoU": 0.99998,
+      "colourMae255": 0.2725,
+      "colourP99": 3.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 45,
+      "silhouetteIoU": 0.999927,
+      "colourMae255": 0.3042,
+      "colourP99": 4.333
+    },
+    {
+      "id": "flowers",
+      "degrees": 60,
+      "silhouetteIoU": 0.999857,
+      "colourMae255": 0.3679,
+      "colourP99": 5.667
+    },
+    {
+      "id": "flowers",
+      "degrees": 75,
+      "silhouetteIoU": 0.999812,
+      "colourMae255": 0.3392,
+      "colourP99": 5.667
+    },
+    {
+      "id": "flowers",
+      "degrees": 90,
+      "silhouetteIoU": 0.999701,
+      "colourMae255": 0.1188,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 105,
+      "silhouetteIoU": 0.999897,
+      "colourMae255": 0.1539,
+      "colourP99": 1.333
+    },
+    {
+      "id": "flowers",
+      "degrees": 120,
+      "silhouetteIoU": 0.999707,
+      "colourMae255": 0.1905,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 135,
+      "silhouetteIoU": 0.999944,
+      "colourMae255": 0.1253,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 150,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.0904,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 165,
+      "silhouetteIoU": 0.999919,
+      "colourMae255": 0.1068,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1158,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 195,
+      "silhouetteIoU": 0.999886,
+      "colourMae255": 0.1871,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 210,
+      "silhouetteIoU": 0.99998,
+      "colourMae255": 0.1606,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 225,
+      "silhouetteIoU": 0.999927,
+      "colourMae255": 0.1465,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 240,
+      "silhouetteIoU": 0.999857,
+      "colourMae255": 0.1669,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 255,
+      "silhouetteIoU": 0.999812,
+      "colourMae255": 0.1324,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 270,
+      "silhouetteIoU": 0.999701,
+      "colourMae255": 0.1268,
+      "colourP99": 1.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 285,
+      "silhouetteIoU": 0.999897,
+      "colourMae255": 0.3704,
+      "colourP99": 6.0
+    },
+    {
+      "id": "flowers",
+      "degrees": 300,
+      "silhouetteIoU": 0.999707,
+      "colourMae255": 0.4138,
+      "colourP99": 5.667
+    },
+    {
+      "id": "flowers",
+      "degrees": 315,
+      "silhouetteIoU": 0.999944,
+      "colourMae255": 0.2974,
+      "colourP99": 4.333
+    },
+    {
+      "id": "flowers",
+      "degrees": 330,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.2265,
+      "colourP99": 3.333
+    },
+    {
+      "id": "flowers",
+      "degrees": 345,
+      "silhouetteIoU": 0.999919,
+      "colourMae255": 0.1882,
+      "colourP99": 2.0
+    },
+    {
+      "id": "studio",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1323,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 15,
+      "silhouetteIoU": 0.999969,
+      "colourMae255": 0.1491,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 30,
+      "silhouetteIoU": 0.999991,
+      "colourMae255": 0.1642,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 45,
+      "silhouetteIoU": 0.999878,
+      "colourMae255": 0.1661,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 60,
+      "silhouetteIoU": 0.999714,
+      "colourMae255": 0.2018,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 75,
+      "silhouetteIoU": 0.9998,
+      "colourMae255": 0.16,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 90,
+      "silhouetteIoU": 0.999629,
+      "colourMae255": 0.1293,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 105,
+      "silhouetteIoU": 0.999799,
+      "colourMae255": 0.1667,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 120,
+      "silhouetteIoU": 0.999902,
+      "colourMae255": 0.1341,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 135,
+      "silhouetteIoU": 0.999926,
+      "colourMae255": 0.1146,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 150,
+      "silhouetteIoU": 0.999991,
+      "colourMae255": 0.0887,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 165,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0733,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1052,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 195,
+      "silhouetteIoU": 0.999969,
+      "colourMae255": 0.1322,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 210,
+      "silhouetteIoU": 0.999991,
+      "colourMae255": 0.1322,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 225,
+      "silhouetteIoU": 0.999878,
+      "colourMae255": 0.1494,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 240,
+      "silhouetteIoU": 0.999714,
+      "colourMae255": 0.1923,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 255,
+      "silhouetteIoU": 0.9998,
+      "colourMae255": 0.1415,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 270,
+      "silhouetteIoU": 0.999629,
+      "colourMae255": 0.1423,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 285,
+      "silhouetteIoU": 0.999799,
+      "colourMae255": 0.2061,
+      "colourP99": 1.667
+    },
+    {
+      "id": "studio",
+      "degrees": 300,
+      "silhouetteIoU": 0.999902,
+      "colourMae255": 0.1719,
+      "colourP99": 1.333
+    },
+    {
+      "id": "studio",
+      "degrees": 315,
+      "silhouetteIoU": 0.999926,
+      "colourMae255": 0.1416,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 330,
+      "silhouetteIoU": 0.999991,
+      "colourMae255": 0.1045,
+      "colourP99": 1.0
+    },
+    {
+      "id": "studio",
+      "degrees": 345,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.1004,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0929,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 15,
+      "silhouetteIoU": 0.999981,
+      "colourMae255": 0.1988,
+      "colourP99": 2.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 30,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.2658,
+      "colourP99": 3.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 45,
+      "silhouetteIoU": 0.99995,
+      "colourMae255": 0.3024,
+      "colourP99": 3.667
+    },
+    {
+      "id": "portrait",
+      "degrees": 60,
+      "silhouetteIoU": 0.999906,
+      "colourMae255": 0.3433,
+      "colourP99": 4.667
+    },
+    {
+      "id": "portrait",
+      "degrees": 75,
+      "silhouetteIoU": 0.999889,
+      "colourMae255": 0.2708,
+      "colourP99": 4.333
+    },
+    {
+      "id": "portrait",
+      "degrees": 90,
+      "silhouetteIoU": 0.999444,
+      "colourMae255": 0.1702,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 105,
+      "silhouetteIoU": 0.999805,
+      "colourMae255": 0.1919,
+      "colourP99": 2.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 120,
+      "silhouetteIoU": 0.999879,
+      "colourMae255": 0.1698,
+      "colourP99": 1.333
+    },
+    {
+      "id": "portrait",
+      "degrees": 135,
+      "silhouetteIoU": 0.999945,
+      "colourMae255": 0.1325,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 150,
+      "silhouetteIoU": 0.99999,
+      "colourMae255": 0.106,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 165,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.1074,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1134,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 195,
+      "silhouetteIoU": 0.999977,
+      "colourMae255": 0.1546,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 210,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.1394,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 225,
+      "silhouetteIoU": 0.99995,
+      "colourMae255": 0.1469,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 240,
+      "silhouetteIoU": 0.999906,
+      "colourMae255": 0.1684,
+      "colourP99": 1.333
+    },
+    {
+      "id": "portrait",
+      "degrees": 255,
+      "silhouetteIoU": 0.999889,
+      "colourMae255": 0.1329,
+      "colourP99": 1.667
+    },
+    {
+      "id": "portrait",
+      "degrees": 270,
+      "silhouetteIoU": 0.999444,
+      "colourMae255": 0.1691,
+      "colourP99": 1.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 285,
+      "silhouetteIoU": 0.999805,
+      "colourMae255": 0.3239,
+      "colourP99": 4.667
+    },
+    {
+      "id": "portrait",
+      "degrees": 300,
+      "silhouetteIoU": 0.999879,
+      "colourMae255": 0.3578,
+      "colourP99": 5.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 315,
+      "silhouetteIoU": 0.999945,
+      "colourMae255": 0.2924,
+      "colourP99": 4.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 330,
+      "silhouetteIoU": 0.99999,
+      "colourMae255": 0.2248,
+      "colourP99": 3.0
+    },
+    {
+      "id": "portrait",
+      "degrees": 345,
+      "silhouetteIoU": 0.999995,
+      "colourMae255": 0.1756,
+      "colourP99": 2.0
+    },
+    {
+      "id": "washed",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0398,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 15,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.1061,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 30,
+      "silhouetteIoU": 0.999988,
+      "colourMae255": 0.1578,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 45,
+      "silhouetteIoU": 0.999972,
+      "colourMae255": 0.1796,
+      "colourP99": 1.333
+    },
+    {
+      "id": "washed",
+      "degrees": 60,
+      "silhouetteIoU": 0.999944,
+      "colourMae255": 0.1941,
+      "colourP99": 1.667
+    },
+    {
+      "id": "washed",
+      "degrees": 75,
+      "silhouetteIoU": 0.999898,
+      "colourMae255": 0.2277,
+      "colourP99": 2.333
+    },
+    {
+      "id": "washed",
+      "degrees": 90,
+      "silhouetteIoU": 0.999321,
+      "colourMae255": 0.1083,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 105,
+      "silhouetteIoU": 0.999836,
+      "colourMae255": 0.1638,
+      "colourP99": 2.0
+    },
+    {
+      "id": "washed",
+      "degrees": 120,
+      "silhouetteIoU": 0.999921,
+      "colourMae255": 0.1332,
+      "colourP99": 1.333
+    },
+    {
+      "id": "washed",
+      "degrees": 135,
+      "silhouetteIoU": 0.999954,
+      "colourMae255": 0.1086,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 150,
+      "silhouetteIoU": 0.999988,
+      "colourMae255": 0.0819,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 165,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0781,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0336,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 195,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0686,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 210,
+      "silhouetteIoU": 0.999988,
+      "colourMae255": 0.1043,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 225,
+      "silhouetteIoU": 0.999972,
+      "colourMae255": 0.1117,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 240,
+      "silhouetteIoU": 0.999944,
+      "colourMae255": 0.1242,
+      "colourP99": 1.333
+    },
+    {
+      "id": "washed",
+      "degrees": 255,
+      "silhouetteIoU": 0.999898,
+      "colourMae255": 0.14,
+      "colourP99": 2.0
+    },
+    {
+      "id": "washed",
+      "degrees": 270,
+      "silhouetteIoU": 0.999321,
+      "colourMae255": 0.1081,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 285,
+      "silhouetteIoU": 0.999836,
+      "colourMae255": 0.2367,
+      "colourP99": 2.333
+    },
+    {
+      "id": "washed",
+      "degrees": 300,
+      "silhouetteIoU": 0.999921,
+      "colourMae255": 0.2052,
+      "colourP99": 2.0
+    },
+    {
+      "id": "washed",
+      "degrees": 315,
+      "silhouetteIoU": 0.999954,
+      "colourMae255": 0.1811,
+      "colourP99": 1.333
+    },
+    {
+      "id": "washed",
+      "degrees": 330,
+      "silhouetteIoU": 0.999983,
+      "colourMae255": 0.1478,
+      "colourP99": 1.0
+    },
+    {
+      "id": "washed",
+      "degrees": 345,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0928,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 0,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.0297,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 15,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0681,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 30,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0967,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 45,
+      "silhouetteIoU": 0.999942,
+      "colourMae255": 0.1123,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 60,
+      "silhouetteIoU": 0.999964,
+      "colourMae255": 0.1312,
+      "colourP99": 1.667
+    },
+    {
+      "id": "hoodie",
+      "degrees": 75,
+      "silhouetteIoU": 0.999965,
+      "colourMae255": 0.1302,
+      "colourP99": 2.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 90,
+      "silhouetteIoU": 0.999507,
+      "colourMae255": 0.072,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 105,
+      "silhouetteIoU": 0.999936,
+      "colourMae255": 0.1085,
+      "colourP99": 2.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 120,
+      "silhouetteIoU": 0.999914,
+      "colourMae255": 0.1059,
+      "colourP99": 1.667
+    },
+    {
+      "id": "hoodie",
+      "degrees": 135,
+      "silhouetteIoU": 0.999961,
+      "colourMae255": 0.0805,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 150,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0736,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 165,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0478,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 180,
+      "silhouetteIoU": 1.0,
+      "colourMae255": 0.041,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 195,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0491,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 210,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0704,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 225,
+      "silhouetteIoU": 0.999942,
+      "colourMae255": 0.0836,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 240,
+      "silhouetteIoU": 0.999964,
+      "colourMae255": 0.0972,
+      "colourP99": 1.667
+    },
+    {
+      "id": "hoodie",
+      "degrees": 255,
+      "silhouetteIoU": 0.999965,
+      "colourMae255": 0.1015,
+      "colourP99": 2.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 270,
+      "silhouetteIoU": 0.999498,
+      "colourMae255": 0.0617,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 285,
+      "silhouetteIoU": 0.999936,
+      "colourMae255": 0.1398,
+      "colourP99": 2.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 300,
+      "silhouetteIoU": 0.999914,
+      "colourMae255": 0.1393,
+      "colourP99": 1.667
+    },
+    {
+      "id": "hoodie",
+      "degrees": 315,
+      "silhouetteIoU": 0.999961,
+      "colourMae255": 0.1119,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 330,
+      "silhouetteIoU": 0.999993,
+      "colourMae255": 0.0835,
+      "colourP99": 1.0
+    },
+    {
+      "id": "hoodie",
+      "degrees": 345,
+      "silhouetteIoU": 0.999996,
+      "colourMae255": 0.0581,
+      "colourP99": 1.0
+    }
+  ],
+  "minSilhouetteIoU": 0.999055,
+  "maxColourMae255": 0.5347
+}

@@ -223,8 +223,8 @@ export default function Wardrobe() {
     });resize.observe(container);resize.observe(canvas.current!);return()=>resize.disconnect();
   },[]);
 
-  const targetAt = (e: React.PointerEvent) => {
-    if(engine.current)return engine.current.hit(e.clientX,e.clientY,e.pointerType==='touch');
+  const targetAt = (e: {clientX:number;clientY:number;pointerType?:string}) => {
+    if(engine.current)return engine.current.hit(e.clientX,e.clientY,e.pointerType==='touch'||scene.current.mobile);
     if(!loadError)return -1;
     const r=canvas.current!.getBoundingClientRect();
     const view=scene.current.mobile?mobileRackView(collection.map(g=>g.pivot),scene.current.rackPosition,r.width,r.height):{x:0,y:0,zoom:1};
@@ -251,7 +251,8 @@ export default function Wardrobe() {
       sampleDrag(gesture.current,s.rackPosition,e.timeStamp);return;
     }
     if(s.demo||s.mobile||e.pointerType==='touch'||mode!=='rack')return;
-    const i=targetAt(e);if(s.active!==i)highlightRack(i);
+    const i=engine.current?.hoverHit(e.clientX,e.clientY)??targetAt(e);
+    if(s.active!==i)highlightRack(i);
   };
   const startDrag = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if(e.button!==0||!ready)return;
@@ -277,6 +278,12 @@ export default function Wardrobe() {
     if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);
   };
   const leave = () => { if(!scene.current.demo&&!scene.current.mobile)highlightRack(-1); };
+  const selectAt = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if(suppressClick.current){suppressClick.current=false;return;}
+    if(mode!=='rack')return;
+    const index=scene.current.mobile?targetAt(e):(engine.current?.hoverHit(e.clientX,e.clientY)??targetAt(e));
+    if(index>=0)openProduct(index);
+  };
   const addPiece = async (type:string) => {
     if(adding||!ready||!engine.current)return;
     if(loaded.current.length>=20){setDesignError('The rack holds up to 20 pieces. Remove one to add another.');return;}
@@ -313,13 +320,13 @@ export default function Wardrobe() {
         </header>
         <canvas ref={canvas} className={`rack-canvas ${hover >= 0 ? 'has-hover' : ''}`} onPointerMove={move} onPointerLeave={leave} onPointerDown={startDrag}
           onPointerUp={e=>endDrag(e)} onPointerCancel={e=>endDrag(e,true)} onLostPointerCapture={e=>endDrag(e,true)}
-          onClick={(e) => { if(suppressClick.current){suppressClick.current=false;return;}if (mode === 'rack') { const i=targetAt(e as unknown as React.PointerEvent); if(i>=0)openProduct(i); } }}
+          onClick={selectAt}
           aria-label={mobile?'Interactive clothing rack. Swipe or use the slider to browse; tap a garment to inspect it.':'Interactive clothing rack. Hover or use the rack arrows to browse; click a garment to inspect it.'} />
         {loadError && <div className="poster-window"><NextImage className="static-poster" style={fallbackStyle} src={garmentAssetUrl(`/posters/${mode==='product'?(collection[selected]?.sourceId||collection[selected]?.id||'flowers'):hoodie?'rack-hoodie':'rack'}.webp`)} alt="Static garment preview" width={1456} height={810} unoptimized priority /></div>}
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
         {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">
-          {collection.map((g,i) => <button key={g.id} disabled={!ready&&!loadError} aria-label={`View ${g.name}`} onFocus={() => mobile?focusRack(i):highlightRack(i)} onBlur={leave} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
+          {collection.map((g,i) => <button key={g.id} disabled={!ready&&!loadError} aria-label={`View ${g.name}`} onFocus={() => mobile?focusRack(i):highlightRack(i)} onBlur={()=>{if(!canvas.current?.matches(':hover'))leave();}} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
         </div>
         {mode==='rack' && <nav className="rack-navigation" aria-label="Browse the clothing rack" onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();browseRack(e.key==='ArrowLeft'?-1:1);}}}>
           <button className="round-button rack-previous" aria-label="Previous garment on rack" disabled={(!ready&&!loadError)||(mobile&&hover<=0)} onClick={()=>browseRack(-1)}><span aria-hidden="true">←</span></button>

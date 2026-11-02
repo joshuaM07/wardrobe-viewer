@@ -1,7 +1,7 @@
 """Offscreen OpenGL visual checks of the production GLB geometry and projections.
 
-This is asset QA, not browser automation. It does not claim browser FPS: the cloud
-preview's Chrome has WebGL disabled. Mesa/EGL lets us still inspect every mesh,
+This is asset QA, not browser automation, and does not measure browser FPS.
+Mesa/EGL lets us inspect every mesh,
 front and side pose, and the continuous rigid rotation against reference pixels.
 """
 from pathlib import Path
@@ -41,8 +41,8 @@ gs=json.loads((ROOT/'lib/garments.json').read_text())
 hoodie=json.loads((ROOT/'public/garments/hoodie.json').read_text())
 
 
-def glb(g):
- raw=(ROOT/'public'/g['mesh'].lstrip('/')).read_bytes()
+def glb(g,model_dir=None):
+ raw=((Path(model_dir)/Path(g['mesh']).name) if model_dir else ROOT/'public'/g['mesh'].lstrip('/')).read_bytes()
  length,kind=struct.unpack_from('<II',raw,12)
  doc=json.loads(raw[20:20+length]);start=20+length
  bl,kind=struct.unpack_from('<II',raw,start);blob=raw[start+8:start+8+bl]

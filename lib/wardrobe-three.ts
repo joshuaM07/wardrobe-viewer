@@ -65,6 +65,10 @@ export class WardrobeRenderer {
   private rackSpread = 182;
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
+  private hoverProxy = new THREE.Mesh();
+  private hoverOwner = -1;
+  private hoverAcquired = new THREE.Matrix4();
+  private hoverHits: THREE.Intersection[] = [];
   private loader = new GLTFLoader(new THREE.LoadingManager().setURLModifier(garmentAssetUrl));
   private environment: THREE.WebGLRenderTarget;
   private backBuffer = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
@@ -133,6 +137,7 @@ export class WardrobeRenderer {
     private onFrame: (now: number) => void,
     onError: () => void,
   ) {
+    this.frame=this.frame.bind(this);
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true,
       powerPreference: 'high-performance', preserveDrawingBuffer: false });
     this.renderer.setClearColor(0x000000, 0);
@@ -363,6 +368,41 @@ export class WardrobeRenderer {
     return -1;
   }
 
+  /** Hover volumes use intended poses, so animation cannot change the input. */
+  hoverHit(clientX: number, clientY: number) {
+    const r=this.canvas.getBoundingClientRect(),s=this.state();
+    this.pointer.set((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1);
+    this.raycaster.setFromCamera(this.pointer,this.camera);
+    const proxy=this.hoverProxy;
+    const intersects=(index:number,acquired=false)=>{
+      const item=this.items[index];
+      if(!item?.prepared)return false;
+      proxy.geometry=item.body.geometry;proxy.material=item.body.material;
+      if(acquired)proxy.matrixWorld.copy(this.hoverAcquired);
+      else {
+        const shift=s.active<0||index===s.active?0:Math.sign(index-s.active)*this.rackSpread*Math.pow(.6,Math.abs(index-s.active)-1);
+        proxy.position.set(item.garment.pivot*W-W/2+shift,H/2-GARMENT_Y,restingZ);
+        proxy.rotation.set(0,index===s.active?0:item.garment.restYaw,0);
+        proxy.updateMatrixWorld(true);
+      }
+      this.hoverHits.length=0;
+      acceleratedRaycast.call(proxy,this.raycaster,this.hoverHits);
+      return this.hoverHits.length>0;
+    };
+    // Retain the surface where this hover began as well as the final front.
+    // A neighbor moves back to its anchor when selected; neither that move nor
+    // the turn should drop ownership beneath a stationary pointer.
+    if(s.active>=0&&(intersects(s.active)||(this.hoverOwner===s.active&&intersects(s.active,true))))return s.active;
+    let hit=-1,distance=Infinity;
+    for(let i=0;i<this.items.length;i++){
+      if(i===s.active||!intersects(i))continue;
+      const nearest=Math.min(...this.hoverHits.map(h=>h.distance));
+      if(nearest<distance){distance=nearest;hit=i;this.hoverAcquired.copy(proxy.matrixWorld);}
+    }
+    this.hoverOwner=hit;
+    return hit;
+  }
+
   invalidate = () => {
     this.dirty = true;
     if (!this.raf && !this.disposed && !document.hidden) {
@@ -415,7 +455,13 @@ export class WardrobeRenderer {
     } else this.spinMomentum = 0;
     const spinTarget=s.mode==='product'?s.spin:0;
     if(s.reduced){this.spin.value=spinTarget;this.spin.velocity=0;}
-    else if(!coasting)stepSpring(this.spin,spinTarget,dt,this.spinFollowing?900:125,this.spinFollowing?60:21);
+    else if(s.dragging&&this.spinFollowing){
+      // Direct manipulation stays attached to the hand. Only free release and
+      // button-driven rotation ease; filtering the pointer adds visible lag.
+      this.spin.velocity=dt>0?(spinTarget-this.spin.value)/dt:0;
+      this.spin.value=spinTarget;
+    }
+    else if(!coasting)stepSpring(this.spin,spinTarget,dt,125,21);
     if(!s.dragging&&Math.abs(this.spinMomentum)<.015&&Math.abs(this.spin.value-spinTarget)<.0001&&Math.abs(this.spin.velocity)<.001)this.spinFollowing=false;
     if(Math.abs(this.spin.value-spinTarget)>.0001||Math.abs(this.spin.velocity)>.001)moving=true;
     this.items.forEach((item, i) => {
@@ -513,14 +559,16 @@ export class WardrobeRenderer {
     this.items.forEach(item=>{item.root.visible=item.prepared;}); this.rail.visible=true;
   }
 
-  private frame = (now: number) => {
+  private frame(now: number) {
     this.raf=0;
     if (this.disposed || document.hidden) return;
     const delta=this.previous ? now-this.previous : 16.667;
     const continuous=!!this.previous;
     this.previous=now;
     this.onFrame(now);
-    const moving=this.update(Math.min(delta/1000,.1));
+    // Springs and momentum are analytic. Dropping elapsed time on a slow frame
+    // stretched turns and made the physical response depend on GPU speed.
+    const moving=this.update(delta/1000);
     const state=this.state();
     const stamp=[state.mode,state.active,state.selected,state.spin,state.rackPosition,state.mobile,this.items.length,this.canvas.width,this.canvas.height].join(':');
     if(moving||this.dirty||stamp!==this.lastStamp){
@@ -528,9 +576,9 @@ export class WardrobeRenderer {
       this.drawn++;
       if(continuous){this.frames.push(delta);this.costs.push(cost);}
       this.slowFrames=continuous&&delta>24?this.slowFrames+1:Math.max(0,this.slowFrames-2);
-      if(this.slowFrames>=18&&this.pixelBudget>450_000){
-        this.resolution=Math.max(1,this.resolution-.25);
-        this.pixelBudget=Math.max(450_000,Math.round(this.pixelBudget*.72));
+      const minimumBudget=Math.min(450_000,Math.round(this.cssWidth*this.cssHeight*.49));
+      if(this.slowFrames>=18&&this.pixelBudget>minimumBudget){
+        this.pixelBudget=Math.max(minimumBudget,Math.round(Math.min(this.pixelBudget,this.canvas.width*this.canvas.height)*.72));
         this.slowFrames=0;this.resize();
       }
       this.dirty=false;this.lastStamp=stamp;
@@ -539,7 +587,7 @@ export class WardrobeRenderer {
     if (now-this.reported > 500) { this.reported=now; this.report(); }
     if (moving || this.state().demo) this.raf=requestAnimationFrame(this.frame);
     else { this.previous=0; this.report(); }
-  };
+  }
 
   private report() {
     const percentile=(values:number[],p:number)=>{

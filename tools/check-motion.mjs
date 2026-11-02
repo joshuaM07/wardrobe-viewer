@@ -5,6 +5,8 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import ts from 'typescript';
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { acceleratedRaycast, computeBoundsTree } from 'three-mesh-bvh';
 
 const root=path.resolve(import.meta.dirname,'..'),cache=new Map();
 function moduleURL(file){
@@ -55,6 +57,9 @@ function rig(){
     scene:new THREE.Scene(),camera:new THREE.OrthographicCamera(-1456,1456,810,-810,.1,8000),
     expand:spring(),viewX:spring(),viewY:spring(),viewZoom:spring(1),spin:spring(),spinSelected:-1,
     spinMomentum:0,spinFollowing:false,previousMode:'rack',productReveal:1,invalidate:()=>{},textureRevision:0,backgroundStamp:''});
+  Object.assign(renderer,{canvas:{getBoundingClientRect:()=>({left:0,top:0,width:1151,height:640})},
+    pointer:new THREE.Vector2(),raycaster:new THREE.Raycaster(),hoverProxy:new THREE.Mesh(),hoverOwner:-1,hoverAcquired:new THREE.Matrix4(),hoverHits:[]});
+  renderer.raycaster.firstHitOnly=true;
   renderer.camera.position.z=3000;
   renderer.items=garments.map(garment=>{
     const group=new THREE.Group(),geometry=new THREE.BoxGeometry(600,750,90);geometry.computeBoundingBox();
@@ -102,7 +107,8 @@ close(renderer.items[4].root.rotation.y,0);
 advance(renderer,.1);assert(renderer.productReveal>0&&renderer.productReveal<1);
 advance(renderer,.2);assert.equal(renderer.productReveal,1);
 state.selected=6;settle(renderer);
-state.dragging=true;renderer.beginSpinDrag();state.spin=1.5;advance(renderer,.1);
+state.dragging=true;renderer.beginSpinDrag();state.spin=1.5;renderer.update(1/60);
+close(renderer.spin.value,1.5); // A rendered drag must be attached to the hand.
 const releaseAngle=renderer.spin.value;state.dragging=false;renderer.releaseSpin(6);
 close(renderer.spin.value,releaseAngle);advance(renderer,.25);
 assert(renderer.spin.value>releaseAngle+.7,'released piece must keep rotating');
@@ -152,6 +158,53 @@ for(const turn of reference.turns){
   referenceWidths.push({id:turn.id,frames:turn.widths.length,widthMaeSourcePixels:+(error/turn.widths.length).toFixed(2)});
   assert(error/turn.widths.length<40,'turn timing must remain close to the measured reference widths');
 }
-const result={scope:'Production CPU motion and cache regressions; reference width segmentation includes occlusions. No hardware FPS claim.',springCases,refreshRates:rates,jitteredFrames:true,gestureHoldCancelsFling:true,coastAndRegrab:true,rapidRetargets:true,reducedMotion:true,backgroundCacheInvalidation:true,neighborDisplacementAt250ms:+displacement.toFixed(2),response,referenceFrames:referenceWidths.reduce((n,t)=>n+t.frames,0),referenceWidths};
+
+// Real GLB picking through every intermediate pose. Input must not change when
+// its own selected garment rotates or returns from a neighbor's displaced slot.
+const hoverRig=rig();
+for(const item of hoverRig.renderer.items){
+  const raw=fs.readFileSync(path.join(root,'public',item.garment.mesh)),length=raw.readUInt32LE(12);
+  const doc=JSON.parse(raw.subarray(20,20+length)),binary=raw.subarray(28+length);
+  const read=index=>{
+    const a=doc.accessors[index],v=doc.bufferViews[a.bufferView],size={SCALAR:1,VEC2:2,VEC3:3}[a.type];
+    const Type=a.componentType===5125?Uint32Array:Float32Array;
+    return new THREE.BufferAttribute(new Type(binary.buffer,binary.byteOffset+(v.byteOffset??0)+(a.byteOffset??0),a.count*size),size);
+  };
+  item.body.geometry=mergeGeometries(doc.meshes[0].primitives.map(p=>{
+    const g=new THREE.BufferGeometry();g.setAttribute('position',read(p.attributes.POSITION));g.setIndex(read(p.indices));return g;
+  }));
+  item.body.geometry.computeBoundingBox();item.body.geometry.computeBoundingSphere();
+  computeBoundsTree.call(item.body.geometry,{indirect:true});
+  item.body.raycast=acceleratedRaycast;item.body.userData.garmentId=item.garment.id;
+}
+let stableHoverCases=0,animatedMeshDropouts=0;const dropoutExamples=[];
+for(const initial of [-1,3,6])for(const y of [270,330,400])for(let x=190;x<=1000;x+=15){
+  const {renderer,state}=hoverRig;state.active=initial;settle(renderer);renderer.hoverOwner=-1;
+  const selected=renderer.hoverHit(x,y);if(selected<0||selected===initial)continue;
+  state.active=selected;let dropped=false;
+  for(let n=0;n<45;n++){
+    renderer.update(1/60);
+    assert.equal(renderer.hoverHit(x,y),selected,`hover changed without pointer movement at ${x},${y}`);
+    if(renderer.hit(x,y)!==selected)dropped=true;
+  }
+  stableHoverCases++;if(dropped){animatedMeshDropouts++;if(dropoutExamples.length<6)dropoutExamples.push({initial,x,y,selected});}
+}
+assert(stableHoverCases>30,'exercise actual garment surfaces across the rack');
+assert(animatedMeshDropouts>0,'regression must cover picks lost by the old animated-mesh policy');
+
+// Exercise the real frame entry point: retain elapsed time after a stall, and
+// allow a DPR=1 canvas below the previous 450k floor to reduce its pixel load.
+const stalled=rig(),expected=rig();stalled.state.active=expected.state.active=6;
+expected.renderer.update(.3);
+Object.assign(stalled.renderer,{previous:1000,disposed:false,onFrame:()=>{},draw:()=>{},report:()=>{},
+  cssWidth:845,cssHeight:470,canvas:{width:845,height:470,getBoundingClientRect:()=>({width:845,height:470})},
+  frames:[],costs:[],drawn:0,reported:0,slowFrames:17,pixelBudget:450000,resolution:1.5,lastStamp:'',dirty:true});
+stalled.renderer.renderer={setSize:(width,height)=>{stalled.renderer.canvas.width=width;stalled.renderer.canvas.height=height;}};
+const originalGlobals={document:globalThis.document,requestAnimationFrame:globalThis.requestAnimationFrame,devicePixelRatio:globalThis.devicePixelRatio};
+Object.assign(globalThis,{document:{hidden:false},requestAnimationFrame:()=>1,devicePixelRatio:1});
+try{stalled.renderer.frame(1300);}finally{Object.assign(globalThis,originalGlobals);}
+close(stalled.renderer.items[6].focus.value,expected.renderer.items[6].focus.value);
+assert(stalled.renderer.canvas.width<845,'slow small canvases must be able to adapt');
+const result={scope:'Production CPU motion and cache regressions; reference width segmentation includes occlusions. No hardware FPS claim.',springCases,refreshRates:rates,jitteredFrames:true,gestureHoldCancelsFling:true,directDragFollowsPointer:true,coastAndRegrab:true,rapidRetargets:true,reducedMotion:true,backgroundCacheInvalidation:true,stableHoverCases,animatedMeshDropouts,dropoutExamples,slowFrameKeepsElapsedTime:true,smallCanvasAdapts:true,neighborDisplacementAt250ms:+displacement.toFixed(2),response,referenceFrames:referenceWidths.reduce((n,t)=>n+t.frames,0),referenceWidths};
 const output=process.argv[2];if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result));

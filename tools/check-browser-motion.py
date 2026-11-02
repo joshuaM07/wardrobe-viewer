@@ -53,6 +53,21 @@ with sync_playwright() as p:
  assert page.locator('.wardrobe.is-product').count()==0
  assert page.locator('.hover-label').count()==0,'closing must release desktop rack focus'
  results['checks'].append('Viewer returns to rack')
+ # Acquire a displaced neighbor near its edge, then keep the pointer there
+ # through its whole turn. Small real pointer movements must not restart it.
+ page.mouse.move(10,10)
+ page.locator('.garment-accessibility button').nth(3).focus()
+ page.wait_for_timeout(2200)
+ expected=page.locator('.garment-accessibility button').nth(4).inner_text()
+ box=page.locator('canvas').bounding_box()
+ x=box['x']+box['width']*610/1151;y=box['y']+box['height']*270/640
+ for n in range(24):
+  page.mouse.move(x+(.2 if n%2 else 0),y)
+  page.wait_for_timeout(50)
+  assert page.locator('.hover-label').inner_text()==expected,'animation must not change hover ownership'
+ page.mouse.click(x,y)
+ assert page.locator('.product-caption h1').inner_text()==expected,'click must open the hovered piece during its turn'
+ results['checks'].append('Displaced neighbor retains hover through its turn and opens the same garment')
  # Actual mobile touch events through Chromium, including generated clicks.
  mobile=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,device_scale_factor=1)
  page=mobile.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
