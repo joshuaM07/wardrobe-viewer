@@ -44,13 +44,12 @@ with sync_playwright() as p:
   applied(kind,True,True)
   assert stats()['garmentId']==piece_id and stats()['garmentMeshes']==11
  result['checks'].append('Switch all four garment types without losing either side or adding duplicate pieces')
- # Abort a replacement asset request: the existing garment and artwork survive.
+ # Templates already on the rack share their geometry and do not re-download.
  page.route('**/models/republic.glb*',lambda route:route.abort())
- page.get_by_role('combobox',name='Clothing type').select_option('crewneck')
- page.get_by_role('alert').filter(has_text='Could not switch').wait_for(timeout=30000)
- assert stats()['garmentType']=='hoodie' and stats()['frontArtwork'] and stats()['backArtwork']
+ page.get_by_role('combobox',name='Clothing type').select_option('crewneck');applied('crewneck',True,True)
+ page.get_by_role('combobox',name='Clothing type').select_option('hoodie');applied('hoodie',True,True)
  page.unroute('**/models/republic.glb*')
- result['checks'].append('Failed garment replacement retains the current 3D mesh and both designs')
+ result['checks'].append('Switching to an existing template reuses its mesh and preserves both designs without network access')
  page.get_by_role('tab',name='Fabric colour',exact=True).click()
  page.get_by_role('textbox',name='Hex colour').fill('#263e62')
  page.wait_for_function('()=>JSON.parse(document.querySelector("canvas.rack-canvas").dataset.performance).fabricColor==="263e62"')

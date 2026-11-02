@@ -1,11 +1,21 @@
 {
   "scope": "Production renderer/design integration and native-canvas image processor; no browser FPS claims",
   "lazyFabricLoading": true,
+  "sharedMeshOwnership": true,
+  "inflightResidencyCancellation": true,
+  "sharedAtlasResidency": true,
+  "restoreCapacity100": true,
   "blackToWhiteColours": true,
   "latestUploadWins": true,
   "placementWithoutDecode": true,
   "removalAndLateUploadDisposal": true,
   "savedStateValidation": true,
   "dynamicRack20Pieces": true,
-  "imageProcessingChecks": 6
+  "imageProcessingChecks": 6,
+  "placementChecks": 224,
+  "atomicGarmentSwitch": true,
+  "replacementKeepsVisibleHeight": true,
+  "replacementFailureKeepsOriginal": true,
+  "removedReplacementDisposes": true,
+  "exportFailureRestoresRenderer": true
 }

@@ -1,0 +1,214 @@
+{
+  "scope": "Production Chromium/SwiftShader behavior, not hardware frame rate",
+  "checks": [
+    "Restore 100 real 3D garments with 90 distinct designs and only 11 shared mesh assets",
+    "Scrollbar reaches both ends and the middle without compressing garment slots; artwork residency stays bounded",
+    "Keyboard selection, product wraparound and return retain the far-end garment and artwork",
+    "Trackpad and mouse wheel advance the long rail",
+    "Native touch swipe moves the rack and continues with damped release momentum",
+    "All 100 garments and uploaded designs survive reload on mobile"
+  ],
+  "snapshots": [
+    {
+      "name": "desktop-last",
+      "stats": {
+        "samples": 41,
+        "frames": 45,
+        "frameMsP50": 83.3,
+        "frameMsP95": 633.3,
+        "renderMsP95": 9,
+        "framesOver33ms": 25,
+        "drawCalls": 26,
+        "triangles": 66188,
+        "textures": 50,
+        "buffer": [
+          1029,
+          573
+        ],
+        "display": [
+          1213,
+          675
+        ],
+        "residentDesigns": 11,
+        "pendingDesigns": 0,
+        "sharedMeshes": 11,
+        "cameraX": 29680,
+        "failedDesigns": 0,
+        "garmentMeshes": 100,
+        "mode": "rack",
+        "mobile": false,
+        "cameraZoom": 1,
+        "garmentId": "flowers",
+        "garmentType": "tee",
+        "frontArtwork": false,
+        "backArtwork": false,
+        "fabricColor": "e9e2ea",
+        "frontPrint": [
+          0,
+          -300,
+          240,
+          240
+        ],
+        "backPrint": [
+          0,
+          -300,
+          240,
+          240
+        ],
+        "rotationRad": 0,
+        "coasting": false
+      }
+    },
+    {
+      "name": "mobile-320x568",
+      "stats": {
+        "samples": 105,
+        "frames": 111,
+        "frameMsP50": 66.7,
+        "frameMsP95": 500,
+        "renderMsP95": 7,
+        "framesOver33ms": 61,
+        "drawCalls": 6,
+        "triangles": 19752,
+        "textures": 43,
+        "buffer": [
+          301,
+          320
+        ],
+        "display": [
+          301,
+          320
+        ],
+        "residentDesigns": 4,
+        "pendingDesigns": 0,
+        "sharedMeshes": 11,
+        "cameraX": 30700,
+        "failedDesigns": 0,
+        "garmentMeshes": 100,
+        "mode": "rack",
+        "mobile": true,
+        "cameraZoom": 3.5,
+        "garmentId": "custom-stress-89",
+        "garmentType": "long-sleeve",
+        "frontArtwork": true,
+        "backArtwork": false,
+        "fabricColor": "eee9df",
+        "frontPrint": [
+          0,
+          -320,
+          220,
+          220
+        ],
+        "backPrint": [
+          0,
+          -300,
+          240,
+          240
+        ],
+        "rotationRad": 0,
+        "coasting": false
+      }
+    },
+    {
+      "name": "mobile-390x844",
+      "stats": {
+        "samples": 165,
+        "frames": 172,
+        "frameMsP50": 33.4,
+        "frameMsP95": 466.7,
+        "renderMsP95": 6.8,
+        "framesOver33ms": 86,
+        "drawCalls": 6,
+        "triangles": 19752,
+        "textures": 43,
+        "buffer": [
+          311,
+          404
+        ],
+        "display": [
+          367,
+          476
+        ],
+        "residentDesigns": 4,
+        "pendingDesigns": 0,
+        "sharedMeshes": 11,
+        "cameraX": 30700,
+        "failedDesigns": 0,
+        "garmentMeshes": 100,
+        "mode": "rack",
+        "mobile": true,
+        "cameraZoom": 3.5,
+        "garmentId": "custom-stress-89",
+        "garmentType": "long-sleeve",
+        "frontArtwork": true,
+        "backArtwork": false,
+        "fabricColor": "eee9df",
+        "frontPrint": [
+          0,
+          -320,
+          220,
+          220
+        ],
+        "backPrint": [
+          0,
+          -300,
+          240,
+          240
+        ],
+        "rotationRad": 0,
+        "coasting": false
+      }
+    },
+    {
+      "name": "mobile-844x390",
+      "stats": {
+        "samples": 215,
+        "frames": 223,
+        "frameMsP50": 33.4,
+        "frameMsP95": 449.9,
+        "renderMsP95": 6.4,
+        "framesOver33ms": 111,
+        "drawCalls": 8,
+        "triangles": 26402,
+        "textures": 44,
+        "buffer": [
+          372,
+          243
+        ],
+        "display": [
+          494,
+          323
+        ],
+        "residentDesigns": 5,
+        "pendingDesigns": 0,
+        "sharedMeshes": 11,
+        "cameraX": 30642,
+        "failedDesigns": 0,
+        "garmentMeshes": 100,
+        "mode": "rack",
+        "mobile": true,
+        "cameraZoom": 2.19,
+        "garmentId": "custom-stress-89",
+        "garmentType": "long-sleeve",
+        "frontArtwork": true,
+        "backArtwork": false,
+        "fabricColor": "eee9df",
+        "frontPrint": [
+          0,
+          -320,
+          220,
+          220
+        ],
+        "backPrint": [
+          0,
+          -300,
+          240,
+          240
+        ],
+        "rotationRad": 0,
+        "coasting": false
+      }
+    }
+  ],
+  "pageErrors": []
+}

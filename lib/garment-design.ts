@@ -4,6 +4,8 @@ export type PrintSide = 'front' | 'back';
 export type Artwork = { dataUrl: string; name: string; aspect: number; width: number; x: number; y: number };
 export type GarmentDesign = { color?: string; originalPrint: boolean; front?: Artwork; back?: Artwork };
 export type SavedWardrobe = { version: 1; designs: Record<string, GarmentDesign>; added: Garment[] };
+export const MAX_PIECES = 100;
+export const RACK_SLOT = 320;
 export const defaultDesign = (): GarmentDesign => ({ originalPrint: true });
 export const blankDesign = (color = '#e8e3d8'): GarmentDesign => ({ color, originalPrint: false });
 export const COLOR_SWATCHES = ['#f5f1e8','#17191c','#76746e','#5b4036','#3d5b48','#263e62','#8b3437','#cbb792','#d3b8c7','#b7cbd4'];
@@ -34,7 +36,7 @@ export function fitDesign(design: GarmentDesign, type: string): GarmentDesign {
 
 export function arrangeRack(garments: Garment[]): Garment[] {
   if (garments.length <= 10) return garments;
-  return garments.map((g, i) => ({ ...g, pivot: .17 + .66 * i / (garments.length-1) }));
+  return garments.map((g, i) => ({ ...g, pivot: (562+i*RACK_SLOT)/2912 }));
 }
 
 export function sanitizeSavedWardrobe(value: unknown): SavedWardrobe | undefined {
@@ -56,7 +58,7 @@ export function sanitizeSavedWardrobe(value: unknown): SavedWardrobe | undefined
   const added=Array.isArray(raw.added)?raw.added.filter(g=>{
     if(!g||typeof g.id!=='string'||!/^custom-[a-z0-9-]+$/i.test(g.id)||typeof g.name!=='string'||!CLOTHING_TYPES.some(t=>t.source===g.sourceId)||seen.has(g.id))return false;
     seen.add(g.id);return true;
-  }).slice(0,10).map(g=>({...g,name:g.name.slice(0,120)})):[];
+  }).slice(0,MAX_PIECES-10).map(g=>({...g,name:g.name.slice(0,120)})):[];
   return {version:1,designs,added};
 }
 

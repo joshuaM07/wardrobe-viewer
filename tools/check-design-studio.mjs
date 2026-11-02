@@ -26,7 +26,7 @@ function rig(){
   const body=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),material),group=new THREE.Group();group.add(body);
   const item={garment:fixture,body,root:group,backMap:back,designTextures:new Set(),artwork:{},designVersion:0,released:false};
   const engine=Object.create(WardrobeRenderer.prototype),calls=[],pending=new Map(),disposed=new Set();
-  engine.items=[item];engine.scene=new THREE.Scene();engine.scene.add(group);engine.invalidate=()=>{};engine.disposed=false;
+  engine.state=()=>({mode:'product',selected:0,active:-1});engine.items=[item];engine.scene=new THREE.Scene();engine.scene.add(group);engine.invalidate=()=>{};engine.disposed=false;
   engine.renderer={capabilities:{getMaxAnisotropy:()=>8},initTexture:()=>{}};
   const texture=url=>{const t=new THREE.Texture();t.name=url;t.addEventListener('dispose',()=>disposed.add(t));return t;};
   engine.textureLoader={loadAsync:url=>{
@@ -70,7 +70,27 @@ const saved=sanitizeSavedWardrobe({version:1,added:[added,added,{...added,id:'fl
 assert.equal(saved.added.length,1);assert.equal(saved.designs.valid.color,'#123456');assert(!saved.designs.invalid.color&&!saved.designs.invalid.front);
 assert.equal(sanitizeSavedWardrobe({version:99}),undefined);
 const rack=arrangeRack(Array.from({length:20},(_,i)=>({...fixture,id:`custom-${i}`})));
-assert(rack.every((g,i)=>g.pivot>=.17-1e-10&&g.pivot<=.83+1e-10&&(i===0||g.pivot>rack[i-1].pivot)));
+assert(rack.every((g,i)=>i===0||Math.abs((g.pivot-rack[i-1].pivot)*2912-320)<1e-7),'adding pieces must extend the rail without squeezing slots');
+
+// Eviction during an in-flight decode cannot resurrect an old GPU texture.
+const residency=rig();residency.item.prepared=true;
+residency.engine.sharedTextures=new Map();residency.engine.ownedTextures=new Set();
+const decoding=residency.engine.applyDesign(fixture.id,{...blankDesign(),front:artwork(A)});
+residency.engine.evictDesign(residency.item);residency.pending.get(A)();await decoding;
+assert(!residency.item.prepared);assert.equal(residency.item.designTextures.size,0);
+assert([...residency.disposed].some(t=>t.name===A));
+const restored=residency.engine.applyDesign(fixture.id,{...blankDesign(),front:artwork(B)});
+residency.pending.get(B)();await restored;
+assert(residency.item.prepared);assert.equal(residency.uniforms.frontEnabled.value,1);
+assert.equal(residency.calls.filter(url=>!url.startsWith('data:')).length,3,'shared fabric maps decode only once across residency changes');
+const ownership=rig();let geometryDisposed=false,materialDisposed=false;
+ownership.item.body.geometry.userData.sharedGarment=true;
+ownership.item.body.material.map.userData.sharedGarment=true;ownership.item.backMap.userData.sharedGarment=true;
+ownership.item.body.geometry.addEventListener('dispose',()=>geometryDisposed=true);
+ownership.item.body.material.addEventListener('dispose',()=>materialDisposed=true);
+ownership.engine.remove(fixture.id);assert(!geometryDisposed);assert(materialDisposed);assert.equal(ownership.disposed.size,0);
+const hundredSaved=sanitizeSavedWardrobe({version:1,added:Array.from({length:110},(_,i)=>({...added,id:`custom-${i}`})),designs:{}});
+assert.equal(hundredSaved.added.length,90,'restore preserves 100 total pieces within capacity');
 
 let placementChecks=0;
 for(const {type} of CLOTHING_TYPES)for(const side of ['front','back'])for(const aspect of [1/1536,.1,.5,1,2,10,1536])for(const x of [-100,100])for(const y of [100,650]){
@@ -144,5 +164,5 @@ if(canvas){
   await assert.rejects(prepareArtwork(new File([empty.toBuffer('image/png')],'empty.png',{type:'image/png'})),/completely transparent/);imageChecks++;
   assert.equal(closed,3,'decoded bitmaps must close even when processing fails');
 }
-const result={scope:'Production renderer/design integration and native-canvas image processor; no browser FPS claims',lazyFabricLoading:true,blackToWhiteColours:true,latestUploadWins:true,placementWithoutDecode:true,removalAndLateUploadDisposal:true,savedStateValidation:true,dynamicRack20Pieces:true,imageProcessingChecks:imageChecks,placementChecks,atomicGarmentSwitch:true,replacementKeepsVisibleHeight:true,replacementFailureKeepsOriginal:true,removedReplacementDisposes:true,exportFailureRestoresRenderer:true};
+const result={scope:'Production renderer/design integration and native-canvas image processor; no browser FPS claims',lazyFabricLoading:true,sharedMeshOwnership:true,inflightResidencyCancellation:true,sharedAtlasResidency:true,restoreCapacity100:true,blackToWhiteColours:true,latestUploadWins:true,placementWithoutDecode:true,removalAndLateUploadDisposal:true,savedStateValidation:true,dynamicRack20Pieces:true,imageProcessingChecks:imageChecks,placementChecks,atomicGarmentSwitch:true,replacementKeepsVisibleHeight:true,replacementFailureKeepsOriginal:true,removedReplacementDisposes:true,exportFailureRestoresRenderer:true};
 const out=process.argv[2]||path.join(root,'docs/qa/three/design-state.json');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

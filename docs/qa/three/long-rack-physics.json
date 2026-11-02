@@ -1,0 +1,48 @@
+{
+  "scope": "Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.",
+  "checkedFrames": 9648,
+  "checkedPairs": 16623200,
+  "hangerSpan": {
+    "10": [
+      288.955964588663,
+      2571.5224774231697
+    ],
+    "11": [
+      358.11717100108797,
+      2707.8212220122887
+    ],
+    "20": [
+      413.9243534642966,
+      6750.95671025598
+    ],
+    "100": [
+      379.324814448711,
+      32424.675802092217
+    ]
+  },
+  "intersections": 0,
+  "collections": [
+    10,
+    11,
+    20,
+    100
+  ],
+  "massWeightedMomentumTransfer": true,
+  "inelasticContacts": true,
+  "rates": [
+    30,
+    60,
+    120
+  ],
+  "referenceReplayFrames": 1136,
+  "rapidRetargets": true,
+  "interruptedDetailTransitions": true,
+  "pinnedShoulders": true,
+  "hangersRemainOnRail": true,
+  "catalogueInsideFrame": true,
+  "heavierHoodies": true,
+  "reducedMotion": true,
+  "maxHangerRollDegrees": 1.2519584293379695,
+  "maxHemTwistDegrees": 2.551575413732414,
+  "maxHemBendWorldUnits": 9.505963980385644
+}

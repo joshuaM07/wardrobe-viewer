@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import NextImage from 'next/image';
 import rawGarments from '@/lib/garments.json';
-import { clamp, dragMotion, sampleDrag, releaseVelocity } from '@/lib/motion';
+import { clamp, dragMotion, sampleDrag, releaseVelocity, stepGlide } from '@/lib/motion';
 import { garmentAssetUrl } from '@/lib/garment-assets';
 import { WardrobeRenderer, type Garment, type Mode } from '@/lib/wardrobe-three';
 import { MOBILE_RACK_QUERY, RACK_WIDTH, mobileRackView, mobileProductView } from '@/lib/rack-view';
 import GarmentStudio from './GarmentStudio';
 import CreatePiece from './CreatePiece';
-import { arrangeRack, blankDesign, CLOTHING_TYPES, defaultDesign, fitDesign, readSavedWardrobe, saveWardrobe, type GarmentDesign, type PrintSide } from '@/lib/garment-design';
+import { arrangeRack, blankDesign, CLOTHING_TYPES, defaultDesign, fitDesign, readSavedWardrobe, saveWardrobe, MAX_PIECES, type GarmentDesign, type PrintSide } from '@/lib/garment-design';
 
 const W = 2912;
 const PRODUCTS = rawGarments as Garment[];
@@ -40,6 +40,7 @@ export default function Wardrobe() {
   const gesture = useRef(dragMotion(0, 0));
   const pointerDown = useRef(false);
   const suppressClick = useRef(false);
+  const rackGlide=useRef(0);
   const [mode, setMode] = useState<Mode>('rack');
   const [hover, setHover] = useState(-1);
   const [selected, setSelected] = useState(6);
@@ -102,12 +103,11 @@ export default function Wardrobe() {
     const s=scene.current;
     if(s.mode!=='rack'||(!ready&&!loadError))return;
     const count=loaded.current.length;
-    const current=Math.min(s.active>=0?s.active:rackCursor.current,count-1);
-    if(s.mobile){focusRack(clamp(current+direction,0,count-1));return;}
-    s.demo=false;setDemo(false);
-    highlightRack((current+direction+count)%count);
-  }, [highlightRack,focusRack,ready,loadError]);
+    const current=Math.min(count>10||s.mobile?Math.round(s.rackPosition):s.active>=0?s.active:rackCursor.current,count-1);
+    cancelAnimationFrame(rackGlide.current);focusRack(clamp(current+direction,0,count-1));
+  }, [focusRack,ready,loadError]);
   const pick = useCallback((i: number) => {
+    cancelAnimationFrame(rackGlide.current);
     engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
     const count = loaded.current.length || 10;
     i = (i + count) % count;
@@ -120,9 +120,10 @@ export default function Wardrobe() {
   }, [pick]);
   const close = useCallback(() => {
     engine.current?.stopMomentum();scene.current.dragging=false;pointerDown.current=false;
-    setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(-1);setMode('rack');
+    setShowStudio(false);setAvailability(false);scene.current.spin=0;const active=scene.current.mode==='product'&&scene.current.selected<loaded.current.length?scene.current.selected:-1;scene.current.mode='rack';if(scene.current.mobile||loaded.current.length>10)focusRack(active>=0?active:scene.current.rackPosition,false);else highlightRack(-1);setMode('rack');
     requestAnimationFrame(() => {
-      if(lastFocus.current?.isConnected)lastFocus.current.focus();
+      if(lastFocus.current?.closest('.garment-accessibility'))panel.current?.querySelectorAll<HTMLButtonElement>('.garment-accessibility button')[scene.current.selected]?.focus();
+      else if(lastFocus.current?.isConnected)lastFocus.current.focus();
       else panel.current?.querySelector<HTMLButtonElement>('.create-piece-button')?.focus();
     });
   }, [highlightRack,focusRack]);
@@ -158,16 +159,18 @@ export default function Wardrobe() {
       void Promise.all([renderer.load(PRODUCTS),readSavedWardrobe().catch(()=>undefined)]).then(async([,saved])=>{
         if(stopped||engine.current!==renderer)return;
         const extras:Garment[]=[];
-        for(const stored of (saved?.added??[]).slice(0,10)){
+        for(const stored of (saved?.added??[]).slice(0,MAX_PIECES-PRODUCTS.length)){
           try{
             const type=CLOTHING_TYPES.find(t=>t.source===stored.sourceId);if(!type)continue;
             const template=await getTemplate(type.source);
             const g={...template,id:stored.id,name:stored.name,sourceId:type.source,reference:false};
-            await renderer.add(g,saved?.designs[g.id]??blankDesign());extras.push(g);
+            extras.push(g);
           }catch{setDesignError('One saved piece could not be restored.');}
           if(stopped||engine.current!==renderer)return;
         }
-        loaded.current=arrangeRack([...PRODUCTS,...extras]);addedRef.current=extras;renderer.setGarments(loaded.current);
+        loaded.current=arrangeRack([...PRODUCTS,...extras]);addedRef.current=loaded.current.slice(PRODUCTS.length);
+        for(const g of addedRef.current){await renderer.add(g,saved?.designs[g.id]??blankDesign(),true);if(stopped)return;}
+        renderer.setGarments(loaded.current,true);
         designsRef.current=Object.fromEntries(Object.entries(saved?.designs??{}).map(([id,design])=>{const g=loaded.current.find(piece=>piece.id===id);return [id,g?fitDesign(design,g.type):design];}));setDesigns(designsRef.current);
         await Promise.all(Object.entries(designsRef.current).map(([id,design])=>renderer.applyDesign(id,design).catch(()=>setDesignError('One saved design could not be restored.'))));
         if(stopped||engine.current!==renderer)return;
@@ -237,6 +240,21 @@ export default function Wardrobe() {
     });resize.observe(container);resize.observe(canvas.current!);return()=>resize.disconnect();
   },[]);
 
+  useEffect(()=>{
+    const element=canvas.current;if(!element)return;
+    const wheel=(event:WheelEvent)=>{
+      if(scene.current.mode!=='rack'||!ready)return;
+      event.preventDefault();cancelAnimationFrame(rackGlide.current);
+      const bounds=element.getBoundingClientRect(),s=scene.current;
+      const zoom=s.mobile?mobileRackView(loaded.current.map(g=>g.pivot),s.rackPosition,bounds.width,bounds.height).zoom:1;
+      const gap=(loaded.current.at(-1)!.pivot-loaded.current[0].pivot)*W/Math.max(1,loaded.current.length-1);
+      const pixels=(event.deltaX||event.deltaY)*(event.deltaMode===1?16:event.deltaMode===2?bounds.width:1);
+      focusRack(s.rackPosition+pixels*W/(bounds.width*zoom*gap));
+    };
+    element.addEventListener('wheel',wheel,{passive:false});
+    return()=>{element.removeEventListener('wheel',wheel);cancelAnimationFrame(rackGlide.current);};
+  },[focusRack,ready]);
+
   const targetAt = (e: {clientX:number;clientY:number;pointerType?:string}) => {
     if(engine.current)return engine.current.hit(e.clientX,e.clientY,e.pointerType==='touch'||scene.current.mobile);
     if(!loadError)return -1;
@@ -257,9 +275,9 @@ export default function Wardrobe() {
       sampleDrag(gesture.current,s.spin,e.timeStamp);
       engine.current?.invalidate();return;
     }
-    if(mode==='rack'&&s.mobile&&pointerDown.current&&s.dragging){
+    if(mode==='rack'&&pointerDown.current&&s.dragging){
       const bounds=e.currentTarget.getBoundingClientRect();
-      const view=mobileRackView(collection.map(g=>g.pivot),s.rackPosition,bounds.width,bounds.height);
+      const view=s.mobile?mobileRackView(collection.map(g=>g.pivot),s.rackPosition,bounds.width,bounds.height):{zoom:1};
       const gap=(collection.at(-1)!.pivot-collection[0].pivot)*RACK_WIDTH/(collection.length-1);
       focusRack(s.dragRackStart-(e.clientX-s.dragX)*RACK_WIDTH/(bounds.width*view.zoom*gap));
       sampleDrag(gesture.current,s.rackPosition,e.timeStamp);return;
@@ -271,27 +289,36 @@ export default function Wardrobe() {
   const startDrag = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if(e.button!==0||!ready)return;
     const s=scene.current;
-    engine.current?.stopMomentum();
+    cancelAnimationFrame(rackGlide.current);engine.current?.stopMomentum();
     s.dragX=e.clientX;s.dragRackStart=s.rackPosition;s.dragging=false;
     s.dragStartSpin=mode==='product'?(engine.current?.beginSpinDrag()??s.spin):s.spin;
     gesture.current=dragMotion(mode==='product'?s.dragStartSpin:s.rackPosition,e.timeStamp);
     pointerDown.current=true;suppressClick.current=false;
     e.currentTarget.setPointerCapture(e.pointerId);
   };
+  const glideRack=(velocity:number)=>{
+    cancelAnimationFrame(rackGlide.current);
+    if(scene.current.reduced||Math.abs(velocity)<.05){focusRack(Math.round(scene.current.rackPosition));return;}
+    let previous=performance.now(),speed=clamp(velocity,-30,30);
+    const tick=(now:number)=>{
+      const next=stepGlide(speed,Math.max(0,(now-previous)/1000),4.8);previous=now;speed=next.velocity;
+      const position=clamp(scene.current.rackPosition+next.distance,0,loaded.current.length-1);focusRack(position);
+      if(Math.abs(speed)>.04&&position>0&&position<loaded.current.length-1)rackGlide.current=requestAnimationFrame(tick);
+      else focusRack(Math.round(position));
+    };
+    rackGlide.current=requestAnimationFrame(tick);
+  };
   const endDrag = (e: React.PointerEvent<HTMLCanvasElement>, cancelled=false) => {
     if(!pointerDown.current)return;
     const s=scene.current,wasDragging=s.dragging;
     const velocity=cancelled||s.reduced?0:releaseVelocity(gesture.current,e.timeStamp);
     pointerDown.current=false;s.dragging=false;suppressClick.current=wasDragging;
-    if(wasDragging&&s.mobile&&mode==='rack'){
-      // A short throw carries to the next piece; long throws stay bounded.
-      focusRack(Math.round(s.rackPosition+clamp(velocity*.16,-2,2)));
-    }
+    if(wasDragging&&mode==='rack')glideRack(velocity);
     if(wasDragging&&mode==='product')engine.current?.releaseSpin(velocity);
     engine.current?.invalidate();
     if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);
   };
-  const leave = () => { if(!scene.current.demo&&!scene.current.mobile)highlightRack(-1); };
+  const leave = () => { if(!pointerDown.current&&!scene.current.demo&&!scene.current.mobile)highlightRack(-1); };
   const selectAt = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if(suppressClick.current){suppressClick.current=false;return;}
     if(mode!=='rack')return;
@@ -300,15 +327,16 @@ export default function Wardrobe() {
   };
   const addPiece = async (type:string,design:GarmentDesign=blankDesign()) => {
     if(pendingPiece.current||!ready||!engine.current)return false;
-    if(loaded.current.length>=20){setDesignError('The rack holds up to 20 pieces. Remove one to add another.');return false;}
+    if(loaded.current.length>=MAX_PIECES){setDesignError('The rack holds up to 100 pieces. Remove one to add another.');return false;}
     const choice=CLOTHING_TYPES.find(t=>t.type===type);if(!choice)return false;
     pendingPiece.current=true;setAdding(true);setDesignError('');
     try {
       const template=await getTemplate(choice.source);
       const g:Garment={...template,id:`custom-${crypto.randomUUID()}`,sourceId:choice.source,name:`My ${choice.label}`,reference:false};
       const fitted=fitDesign(design,type);
-      await engine.current.add(g,fitted);addedRef.current=[...addedRef.current,g];
-      loaded.current=arrangeRack([...PRODUCTS,...addedRef.current]);engine.current.setGarments(loaded.current);
+      const planned=arrangeRack([...PRODUCTS,...addedRef.current,g]);
+      await engine.current.add(planned.at(-1)!,fitted);addedRef.current=planned.slice(PRODUCTS.length);
+      loaded.current=planned;engine.current.setGarments(loaded.current);
       setCollection(loaded.current);setHoodie(addedRef.current.some(g=>g.type==='hoodie'));
       updateDesign(g.id,fitted);openProduct(loaded.current.length-1);setShowStudio(true);setShowTools(false);
       if(fitted.back&&!fitted.front)rotate('back');
@@ -370,15 +398,16 @@ export default function Wardrobe() {
         {!ready&&!loadError && <div className="loading-garments" aria-live="polite"><span />Preparing the collection</div>}
         {loadError && <div className="renderer-note" role="status">3D unavailable · showing static preview <button onClick={()=>location.reload()}>RETRY 3D</button></div>}
         <div className="garment-accessibility" aria-label="Collection">
-          {collection.map((g,i) => <button key={g.id} disabled={!ready&&!loadError} aria-label={`View ${g.name}`} onFocus={() => mobile?focusRack(i):highlightRack(i)} onBlur={()=>{if(!canvas.current?.matches(':hover'))leave();}} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
+          {collection.map((g,i) => <button key={g.id} disabled={!ready&&!loadError} aria-label={`View ${g.name}`} onFocus={() => mobile||collection.length>10?focusRack(i):highlightRack(i)} onBlur={()=>{if(!canvas.current?.matches(':hover'))leave();}} onClick={() => openProduct(i)} style={{left:`${g.pivot*100}%`}}>{g.name}</button>)}
         </div>
         {mode==='rack' && <nav className="rack-navigation" aria-label="Browse the clothing rack" onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();browseRack(e.key==='ArrowLeft'?-1:1);}}}>
-          <button className="round-button rack-previous" aria-label="Previous garment on rack" disabled={(!ready&&!loadError)||(mobile&&hover<=0)} onClick={()=>browseRack(-1)}><span aria-hidden="true">←</span></button>
-          {mobile&&<input className="rack-slider" type="range" aria-label="Rack position" aria-valuetext={`${Math.round(rackPosition)+1} of ${collection.length}: ${collection[Math.round(rackPosition)]?.name}`} min={0} max={collection.length-1} step={.01} value={rackPosition} disabled={!ready&&!loadError} onChange={e=>focusRack(Number(e.currentTarget.value))} onPointerUp={()=>focusRack(Math.round(scene.current.rackPosition))} onPointerCancel={()=>focusRack(Math.round(scene.current.rackPosition))} />}
-          <button className="round-button rack-next" aria-label="Next garment on rack" disabled={(!ready&&!loadError)||(mobile&&hover>=collection.length-1)} onClick={()=>browseRack(1)}><span aria-hidden="true">→</span></button>
+          <button className="round-button rack-previous" aria-label="Previous garment on rack" disabled={(!ready&&!loadError)||rackPosition<=0} onClick={()=>browseRack(-1)}><span aria-hidden="true">←</span></button>
+          <input className="rack-slider" type="range" aria-label="Rack position" aria-valuetext={`${Math.round(rackPosition)+1} of ${collection.length}: ${collection[Math.round(rackPosition)]?.name}`} min={0} max={collection.length-1} step={.01} value={rackPosition} disabled={!ready&&!loadError} onChange={e=>{cancelAnimationFrame(rackGlide.current);focusRack(Number(e.currentTarget.value));}} onPointerUp={()=>focusRack(Math.round(scene.current.rackPosition))} onPointerCancel={()=>focusRack(Math.round(scene.current.rackPosition))} />
+          <button className="round-button rack-next" aria-label="Next garment on rack" disabled={(!ready&&!loadError)||rackPosition>=collection.length-1} onClick={()=>browseRack(1)}><span aria-hidden="true">→</span></button>
+          <output className="rack-position-label" aria-label="Collection position">{Math.round(rackPosition)+1} / {collection.length}</output>
           <output className="sr-only" aria-live="polite" aria-atomic="true">{hover>=0?`${hover+1} of ${collection.length}: ${collection[hover]?.name}`:''}</output>
         </nav>}
-        {mode==='rack' && hover>=0 && <div className="hover-label" style={{left:`${(collection[hover]?.pivot || .5)*100}%`}}>{collection[hover]?.name}</div>}
+        {mode==='rack' && hover>=0 && <div className="hover-label" style={{left:`${collection.length>10?50:(collection[hover]?.pivot||.5)*100}%`}}>{collection[hover]?.name}</div>}
         {mode==='rack'&&<button className="availability" disabled={!ready&&!loadError} onClick={() => openProduct(hover>=0?hover:selected)}>SEE AVAILABILITY</button>}
         {mode==='rack'&&<button className="create-piece-button" disabled={!ready||loadError||adding} onClick={()=>{setShowCreator(true);setDesignError('');scene.current.demo=false;setDemo(false);setShowTools(false);}}><span aria-hidden="true">＋</span>Create your piece</button>}
         <div className="ticker" aria-label="New designs daily, subscribe to our newsletter" aria-hidden={mode!=='rack'}>

@@ -89,7 +89,7 @@ for(const viewport of viewports){
   assert.equal(renderer.items[2].focus.value,1,'reduced motion must turn the active garment directly');
   assert(renderer.camera.zoom>0&&before>0);
 }
-const desktop=rig(1151,1151*1620/2912,false);
+const desktop=rig(1151,1151*1620/2912,false,garments.slice(0,10));
 for(const mode of ['rack','product']){desktop.state.mode=mode;settle(desktop.renderer);assert.equal(desktop.renderer.camera.zoom,1);assert.equal(desktop.renderer.camera.position.x,0);assert.equal(desktop.renderer.camera.position.y,0);}
 const expanded=arrangeRack([...garments.slice(0,10),...Array.from({length:10},(_,i)=>{const g=garments[[6,5,4,10][i%4]];return {...g,id:`custom-${i}`,sourceId:g.id};})]);
 let studioChecks=0,dynamicChecks=0;

@@ -8,7 +8,7 @@ import { moduleURL } from './import-typescript.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const {WardrobeRenderer}=await import(moduleURL(path.join(root,'lib/wardrobe-three.ts')));
 const {spring}=await import(moduleURL(path.join(root,'lib/motion.ts')));
-const {clothMotion,clothPoint,stepCloth}=await import(moduleURL(path.join(root,'lib/garment-motion.ts')));
+const {clothMotion,clothPoint,stepCloth,solveRailContacts}=await import(moduleURL(path.join(root,'lib/garment-motion.ts')));
 const {garmentMaterial}=await import(moduleURL(path.join(root,'lib/garment-material.ts')));
 const {arrangeRack}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
 const originals=[...JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'))),JSON.parse(fs.readFileSync(path.join(root,'public/garments/hoodie.json')))];
@@ -33,7 +33,7 @@ function rig(collection){
 }
 const expanded=arrangeRack([...originals.slice(0,10),...Array.from({length:10},(_,i)=>({...originals[i%3===0?10:[6,4][i%2]],id:`extra-${i}`,sourceId:originals[i%3===0?10:[6,4][i%2]].id}))]);
 let checkedFrames=0,checkedPairs=0,maxHangerRoll=0,maxHemTwist=0,maxBend=0;
-const worst=[];const hangerSpan={10:[Infinity,-Infinity],11:[Infinity,-Infinity],20:[Infinity,-Infinity]};
+const worst=[];const hangerSpan={10:[Infinity,-Infinity],11:[Infinity,-Infinity],20:[Infinity,-Infinity],100:[Infinity,-Infinity]};
 function check(engine,label){
  for(const item of engine.items)if(!item.inDetail){const span=hangerSpan[engine.items.length];span[0]=Math.min(span[0],item.x.value);span[1]=Math.max(span[1],item.x.value);}
  const railBounds=new THREE.Box3().setFromObject(engine.rail);
@@ -55,7 +55,8 @@ function check(engine,label){
  checkedFrames++;
 }
 const sequence=[['rack',1,.14],['rack',2,.09],['rack',1,.11],['rack',8,.18],['rack',0,.1],['rack',9,.2],['product',2,.12],['rack',-1,.08],['product',8,.05],['product',4,.06],['product',0,.1],['product',9,.13],['rack',-1,.08],['rack',1,.18],['rack',8,.13],['rack',2,.2],['rack',-1,6]];
-for(const collection of [originals.slice(0,10),originals,expanded])for(const hz of [30,60,120]){
+const hundred=arrangeRack([...originals.slice(0,10),...Array.from({length:90},(_,i)=>{const g=originals[[6,4,5,10][i%4]];return {...g,id:`personal-${i}`,sourceId:g.id};})]);
+for(const collection of [originals.slice(0,10),originals,expanded,hundred])for(const hz of [30,60,120]){
  const {engine,state}=rig(collection);
  for(const [mode,index,seconds] of sequence){
   state.mode=mode;if(mode==='product'){state.selected=index;state.spin=0;}else state.active=index;
@@ -63,6 +64,14 @@ for(const collection of [originals.slice(0,10),originals,expanded])for(const hz 
  }
  assert.equal(engine.update(1/60),false,'secondary motion and clearance must settle to sleep');
  if(collection.length===20){for(const i of [19,18,0,11,10]){state.active=i;for(let n=0;n<hz*.2;n++){engine.update(1/hz);check(engine,`20/${hz}/hoodie/${i}`);}}}
+ if(collection.length===100){
+  for(const index of [99,0,49,98,1,75,20])for(const mode of ['rack','product','rack']){
+   state.mode=mode;state.active=index;state.selected=index;state.rackPosition=index;
+   for(let n=0;n<hz*.35;n++){state.spin=n/hz*15;engine.update(1/hz);check(engine,`100/${hz}/${mode}/${index}`);}
+  }
+  state.mode='rack';state.active=-1;for(let n=0;n<hz*6;n++)engine.update(1/hz);
+  assert.equal(engine.update(1/hz),false,'100-piece rack must settle');
+ }
  state.reduced=true;state.mode='rack';state.active=3;engine.update(1/60);check(engine,'reduced');
  assert(engine.items.every(i=>i.cloth.bend.value===0&&i.cloth.twist.value===0));
 }
@@ -82,7 +91,12 @@ assert(maxHangerRoll<.025);assert(maxHemTwist<.07);assert(maxBend<12);
 for(const y of [0,-40,-100,-130])assert.deepEqual(clothPoint(100,y,30,10,7,.06),[100,y,30]);
 const light=clothMotion(),heavy=clothMotion();stepCloth(light,8,900,.18,'tee',false);stepCloth(heavy,8,900,.18,'hoodie',false);
 assert(Math.abs(heavy.bend.value)<Math.abs(light.bend.value)*.6);assert(Math.abs(heavy.twist.value)<Math.abs(light.twist.value)*.6);
-const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20],rates:[30,60,120],referenceReplayFrames:1136,rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,catalogueInsideFrame:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend};
+// A collision transfers momentum according to mass and dissipates energy.
+const pair=[{position:0,velocity:120,mass:1,envelope:{left:-30,right:30}},{position:50,velocity:-20,mass:2.1,envelope:{left:-30,right:30}}];
+const momentum=pair.reduce((v,b)=>v+b.velocity*b.mass,0),energy=pair.reduce((v,b)=>v+b.mass*b.velocity**2/2,0);solveRailContacts(pair);
+assert(Math.abs(pair.reduce((v,b)=>v+b.velocity*b.mass,0)-momentum)<1e-9);
+assert(pair.reduce((v,b)=>v+b.mass*b.velocity**2/2,0)<energy);assert(pair[1].position-pair[0].position>=72-1e-7);
+const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20,100],massWeightedMomentumTransfer:true,inelasticContacts:true,rates:[30,60,120],referenceReplayFrames:1136,rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,catalogueInsideFrame:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend};
 const output=process.argv[2];if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
 if(process.argv[3]){
  const samples=[];

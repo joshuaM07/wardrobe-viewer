@@ -6,6 +6,14 @@ const RACK_HEIGHT = 756;
 const HANGER_Y = 1620 / 2 - 418;
 export type RackView = { x: number; y: number; zoom: number };
 
+export function desktopRackView(pivots: number[], position: number): RackView {
+  if(!pivots.length)return {x:0,y:0,zoom:1};
+  const index=clamp(position,0,pivots.length-1),left=Math.floor(index),right=Math.min(left+1,pivots.length-1);
+  const center=(pivots[left]+(pivots[right]-pivots[left])*(index-left))*RACK_WIDTH;
+  const start=pivots[0]*RACK_WIDTH-350+RACK_WIDTH/2,end=pivots.at(-1)!*RACK_WIDTH+350-RACK_WIDTH/2;
+  return {x:(start>end?(start+end)/2:clamp(center,start,end))-RACK_WIDTH/2,y:0,zoom:1};
+}
+
 /** Fit a complete garment, including the hook and a little breathing room. */
 export function garmentZoom(width: number, height: number, garmentHeight = RACK_HEIGHT) {
   if(width<=0||height<=0)return 1;
