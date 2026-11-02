@@ -17,7 +17,7 @@ let hoodieTemplate: Promise<Garment> | undefined;
 async function getTemplate(source:string):Promise<Garment> {
   const existing=PRODUCTS.find(g=>g.id===source);if(existing)return existing;
   if(source!=='hoodie')throw new Error('Unknown garment type');
-  hoodieTemplate??=fetch('/garments/hoodie.json').then(async response=>{
+  hoodieTemplate??=fetch(garmentAssetUrl('/garments/hoodie.json')).then(async response=>{
     if(!response.ok)throw new Error('Hoodie unavailable');
     return await response.json() as Garment;
   }).catch(error=>{hoodieTemplate=undefined;throw error;});

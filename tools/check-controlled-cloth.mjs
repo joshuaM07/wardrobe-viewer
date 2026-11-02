@@ -32,20 +32,27 @@ function rig(collection){
  });engine.rail=new THREE.Group();engine.makeRail();engine.scene.add(engine.rail);engine.setGarments(collection);engine.update(0);return {engine,state};
 }
 const expanded=arrangeRack([...originals.slice(0,10),...Array.from({length:10},(_,i)=>({...originals[i%3===0?10:[6,4][i%2]],id:`extra-${i}`,sourceId:originals[i%3===0?10:[6,4][i%2]].id}))]);
-let checkedFrames=0,checkedPairs=0,maxHangerRoll=0,maxHemTwist=0,maxBend=0;
+let checkedFrames=0,checkedPairs=0,maxHangerRoll=0,maxHemTwist=0,maxBend=0,maxSleeves=0,maxHem=0;
 const worst=[];const hangerSpan={10:[Infinity,-Infinity],11:[Infinity,-Infinity],20:[Infinity,-Infinity],100:[Infinity,-Infinity]};
 function check(engine,label){
  for(const item of engine.items)if(!item.inDetail){const span=hangerSpan[engine.items.length];span[0]=Math.min(span[0],item.x.value);span[1]=Math.max(span[1],item.x.value);}
  const railBounds=new THREE.Box3().setFromObject(engine.rail);
- for(const item of engine.items)if(!item.inDetail)assert(item.root.position.x>railBounds.min.x&&item.root.position.x<railBounds.max.x,`hanger left rail: ${label}`);
+ for(const item of engine.items)if(!item.inDetail)assert(item.root.position.x>railBounds.min.x&&item.root.position.x<railBounds.max.x,`hanger left rail: ${label}: ${item.garment.id} x=${item.root.position.x} rail=${railBounds.min.x},${railBounds.max.x} cloth=${JSON.stringify(item.cloth)}`);
  const boxes=engine.items.map(item=>{
-  maxHangerRoll=Math.max(maxHangerRoll,Math.abs(item.sway.value));maxHemTwist=Math.max(maxHemTwist,Math.abs(item.cloth.twist.value));maxBend=Math.max(maxBend,Math.abs(item.cloth.bend.value));
-  // Independent bound: rotate all rest-space box corners at the possible warp
-  // limits, and bound the warp's maximum displacement in world coordinates.
-  const box=item.body.geometry.boundingBox;
-  const radius=Math.hypot(Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z)));
-  const padding=(Math.abs(item.cloth.bend.value)+Math.abs(item.cloth.twist.value)*radius)*item.root.scale.x;
-  return box.clone().applyMatrix4(item.root.matrixWorld).expandByScalar(padding);
+  maxHangerRoll=Math.max(maxHangerRoll,Math.abs(item.sway.value));maxHemTwist=Math.max(maxHemTwist,Math.abs(item.cloth.twist.value));maxBend=Math.max(maxBend,Math.abs(item.cloth.bend.value));maxSleeves=Math.max(maxSleeves,Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0));maxHem=Math.max(maxHem,Math.abs(item.cloth.hem?.value??0));
+  // Independent bound over transformed box corners, all intermediate twists,
+  // and extremal cuff/hem offsets. It is intentionally separate from the
+  // renderer's analytic projection. The interval error is bounded by 0.1 mm.
+  const box=item.body.geometry.boundingBox,matrix=item.root.matrixWorld;
+  const bounds=new THREE.Box3(),yaw=item.root.rotation.y,bend=item.cloth.bend.value;
+  for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])for(let n=0;n<=8;n++)for(const w of [0,1]){
+    const a=item.cloth.twist.value*n/8,c=Math.cos(a),s=Math.sin(a);
+    bounds.expandByPoint(new THREE.Vector3(c*x+s*z+Math.cos(yaw)*bend*w,y,-s*x+c*z+Math.sin(yaw)*bend*w).applyMatrix4(matrix));
+  }
+  const sleeves=Math.max(Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0)),hem=Math.abs(item.cloth.hem?.value??0);
+  const dy=.1*sleeves+.08*hem,dz=sleeves+1.25*hem,e=matrix.elements;
+  bounds.expandByVector(new THREE.Vector3(Math.abs(e[4])*dy+Math.abs(e[8])*dz+.1,Math.abs(e[5])*dy+Math.abs(e[9])*dz+.1,Math.abs(e[6])*dy+Math.abs(e[10])*dz+.1));
+  return bounds;
  });
  if(engine.items.length===10)for(const box of boxes)assert(box.min.x>=-1456&&box.max.x<=1456,`catalogue clipped: ${label}`);
  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
@@ -85,18 +92,27 @@ const timeline=[[0,-1,'rack'],[.970017,1,'rack'],[2.5,2,'rack'],[3.583333,3,'rac
  }
 }
 assert.equal(worst.length,0,JSON.stringify(worst.slice(0,8)));
-assert(maxHangerRoll<.025);assert(maxHemTwist<.07);assert(maxBend<12);
+assert(maxHangerRoll<.025);assert(maxHemTwist<.14);assert(maxBend<30);assert(maxSleeves<42);assert(maxHem<27);
 // The support is pinned; every material, original UV and rest-space print point
 // uses the same warp, so there is no independent artwork animation.
-for(const y of [0,-40,-100,-130])assert.deepEqual(clothPoint(100,y,30,10,7,.06),[100,y,30]);
+for(const y of [0,-40,-100,-130])assert.deepEqual(clothPoint(280,y,30,24,15,.115,32,-32,20),[280,y,30]);
 const light=clothMotion(),heavy=clothMotion();stepCloth(light,8,900,.18,'tee',false);stepCloth(heavy,8,900,.18,'hoodie',false);
 assert(Math.abs(heavy.bend.value)<Math.abs(light.bend.value)*.6);assert(Math.abs(heavy.twist.value)<Math.abs(light.twist.value)*.6);
+// Three non-collinear support points stay fixed while both cuffs and the hem
+// move relative to them. This rules out a rigid-body rotation as the effect.
+const flexible=clothMotion();for(let i=0;i<30;i++)stepCloth(flexible,6,0,1/60,'tee',false);
+const deflect=(x,y)=>clothPoint(x,y,0,flexible.bend.value,0,flexible.twist.value,flexible.left.value,flexible.right.value,flexible.hem.value);
+for(const [x,y] of [[-170,-120],[170,-120],[0,-60]])assert.deepEqual(deflect(x,y),[x,y,0]);
+assert(Math.abs(deflect(-240,-300)[2])>4);assert(Math.abs(deflect(240,-300)[2])>4);assert(Math.abs(deflect(100,-700)[2])>5);
+assert(Math.abs(flexible.left.value+flexible.right.value)>.05,'sleeves must have different response times');
+for(let i=0;i<360;i++)stepCloth(flexible,0,0,1/60,'tee',false);
+assert(Object.values(flexible).every(mode=>Math.abs(mode.value)<1e-6&&Math.abs(mode.velocity)<1e-6),'loose parts settle without idle noise');
 // A collision transfers momentum according to mass and dissipates energy.
 const pair=[{position:0,velocity:120,mass:1,envelope:{left:-30,right:30}},{position:50,velocity:-20,mass:2.1,envelope:{left:-30,right:30}}];
 const momentum=pair.reduce((v,b)=>v+b.velocity*b.mass,0),energy=pair.reduce((v,b)=>v+b.mass*b.velocity**2/2,0);solveRailContacts(pair);
 assert(Math.abs(pair.reduce((v,b)=>v+b.velocity*b.mass,0)-momentum)<1e-9);
 assert(pair.reduce((v,b)=>v+b.mass*b.velocity**2/2,0)<energy);assert(pair[1].position-pair[0].position>=72-1e-7);
-const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20,100],massWeightedMomentumTransfer:true,inelasticContacts:true,rates:[30,60,120],referenceReplayFrames:1136,rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,catalogueInsideFrame:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend};
+const result={scope:'Actual production GLBs and transforms at every simulation step; conservative 3D bounds include the controlled shader warp. No cloth simulation, no GPU frame-rate claim.',checkedFrames,checkedPairs,hangerSpan,intersections:worst.length,collections:[10,11,20,100],massWeightedMomentumTransfer:true,inelasticContacts:true,rates:[30,60,120],referenceReplayFrames:1136,rapidRetargets:true,interruptedDetailTransitions:true,pinnedShoulders:true,hangersRemainOnRail:true,catalogueInsideFrame:true,heavierHoodies:true,reducedMotion:true,maxHangerRollDegrees:maxHangerRoll*180/Math.PI,maxHemTwistDegrees:maxHemTwist*180/Math.PI,maxHemBendWorldUnits:maxBend,maxSleeveDeflectionWorldUnits:maxSleeves,maxHemRippleWorldUnits:maxHem,independentSleeveAndHemModes:true,nonRigidCuffAndHemMotion:true,loosePartsSettle:true};
 const output=process.argv[2];if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
 if(process.argv[3]){
  const samples=[];
@@ -104,9 +120,9 @@ if(process.argv[3]){
   const p=geometry.attributes.position,n=geometry.attributes.normal,uv=geometry.attributes.uv,s=geometry.attributes.garmentSurface;
   for(let i=0;i<p.count;i+=23)samples.push([p.getX(i),p.getY(i),p.getZ(i),n.getX(i),n.getY(i),n.getZ(i),uv.getX(i),uv.getY(i),s.getX(i)]);
  }
- const expected=([bx,bz,twist])=>samples.map(sample=>{
+ const expected=([bx,bz,twist,left=0,right=0,hem=0])=>samples.map(sample=>{
   const [x,y,z,nx,ny,nz,,,surface]=sample;
-  const warp=(x,y,z)=>surface<2.5?clothPoint(x,y,z,bx,bz,twist):[x,y,z];
+  const warp=(x,y,z)=>surface<2.5?clothPoint(x,y,z,bx,bz,twist,left,right,hem):[x,y,z];
   const p=warp(x,y,z),epsilon=.02,columns=[];
   for(let axis=0;axis<3;axis++){
    const a=[x,y,z],b=[x,y,z];a[axis]+=epsilon;b[axis]-=epsilon;
@@ -116,6 +132,6 @@ if(process.argv[3]){
   const normal=new THREE.Vector3(nx,ny,nz).applyMatrix3(j.invert().transpose()).normalize();
   return [...p,1,x,y,...normal.toArray(),sample[6],sample[7]];
  });
- const states=[[0,0,0],[-10,4,.06],[10,-4,-.06]];
+ const states=[[0,0,0,0,0,0],[-24,15,.115,-32,32,20],[24,-15,-.115,32,-32,-20],[0,0,0,32,0,0],[0,0,0,0,-32,20]];
  fs.writeFileSync(process.argv[3],JSON.stringify({samples,states:states.map(state=>({state,expected:expected(state)}))}));
 }

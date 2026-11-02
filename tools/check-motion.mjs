@@ -147,16 +147,22 @@ for(const turn of reference.turns){
     const a=doc.accessors[primitive.attributes.POSITION],v=doc.bufferViews[a.bufferView];
     positions.push(new Float32Array(binary.buffer,binary.byteOffset+(v.byteOffset??0)+(a.byteOffset??0),a.count*3));
   }
-  const {renderer,state}=rig(),index=garments.indexOf(garment);let error=0;
+  const {renderer,state}=rig(),index=garments.indexOf(garment);let error=0,progressError=0;
+  const rest=garment.restYaw,side=positions.flatMap(mesh=>Array.from({length:mesh.length/3},(_,i)=>mesh[i*3]*Math.cos(rest)+mesh[i*3+2]*Math.sin(rest))),front=positions.flatMap(mesh=>Array.from({length:mesh.length/3},(_,i)=>mesh[i*3]));
+  const sideWidth=Math.max(...side)-Math.min(...side),frontWidth=Math.max(...front)-Math.min(...front),sourceSide=turn.widths[0],sourceFront=turn.widths.at(-1);
   for(let frame=0;frame<turn.widths.length;frame++){
     const started=garment.referenceTurnStart===undefined?frame>=turn.calibrated.delayFrames:(turn.startFrame+frame)/60>=garment.referenceTurnStart;
     state.active=started?index:-1;renderer.update(1/60);
     const angle=renderer.items[index].root.rotation.y,c=Math.cos(angle),s=Math.sin(angle);let lo=Infinity,hi=-Infinity;
     for(const mesh of positions)for(let p=0;p<mesh.length;p+=3){const x=mesh[p]*c+mesh[p+2]*s;lo=Math.min(lo,x);hi=Math.max(hi,x);}
     error+=Math.abs(hi-lo-turn.widths[frame]);
+    progressError+=Math.abs((hi-lo-sideWidth)/(frontWidth-sideWidth)-(turn.widths[frame]-sourceSide)/(sourceFront-sourceSide));
   }
-  referenceWidths.push({id:turn.id,frames:turn.widths.length,widthMaeSourcePixels:+(error/turn.widths.length).toFixed(2)});
-  assert(error/turn.widths.length<40,'turn timing must remain close to the measured reference widths');
+  referenceWidths.push({id:turn.id,frames:turn.widths.length,widthMaeSourcePixels:+(error/turn.widths.length).toFixed(2),normalizedTurnProgressMae:+(progressError/turn.widths.length).toFixed(4)});
+  // Thin panels intentionally change the side silhouette. Compare normalized
+  // opening progress for timing, and keep raw width error visible in evidence.
+  assert(error/turn.widths.length<40,`turn width differs: ${turn.id} ${error/turn.widths.length}`);
+  assert(progressError/turn.widths.length<.1,`turn progress differs: ${turn.id} ${progressError/turn.widths.length}`);
 }
 
 // Real GLB picking through every intermediate pose. Input must not change when

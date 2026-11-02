@@ -17,7 +17,7 @@ vertices=ctx.buffer(samples.tobytes());output=ctx.buffer(reserve=len(samples)*11
 vao=ctx.vertex_array(program,[(vertices,'3f 3f 2f 1f','position','normal','uv','garmentSurface')])
 checks=[]
 for test in fixture['states']:
- bx,bz,twist=test['state'];program['clothBend'].value=(bx,bz);program['clothTwist'].value=twist
+ bx,bz,twist,left,right,hem=test['state'];program['clothBend'].value=(bx,bz);program['clothTwist'].value=twist;program['clothSleeves'].value=(left,right);program['clothHem'].value=hem
  vao.transform(output,vertices=len(samples))
  actual=np.frombuffer(output.read(),dtype='f4').reshape(-1,11);expected=np.array(test['expected'])
  position=float(np.abs(actual[:,:4]-expected[:,:4]).max());normal=float(np.abs(actual[:,6:9]-expected[:,6:9]).max())

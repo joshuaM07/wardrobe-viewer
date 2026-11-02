@@ -9,21 +9,21 @@ export type FabricUniforms = {
   customized: { value: number }; keepOriginal: { value: number };
   frontEnabled: { value: number }; backEnabled: { value: number };
   fabricColor: { value: THREE.Color }; woodColor: { value: THREE.Color };
-  clothBend: { value: THREE.Vector2 }; clothTwist: { value: number };
+  clothBend: { value: THREE.Vector2 }; clothTwist: { value: number }; clothSleeves:{value:THREE.Vector2}; clothHem:{value:number};
 };
 export type FabricMaterial = THREE.MeshBasicMaterial & { fabricUniforms: FabricUniforms };
 
 export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture, fabricColor: string) {
-  const material = new THREE.MeshBasicMaterial({ map: frontMap }) as FabricMaterial;
+  const material = new THREE.MeshBasicMaterial({ map: frontMap,side:THREE.DoubleSide }) as FabricMaterial;
   const uniforms: FabricUniforms = {
     backMap: {value: backMap}, fabricMap: {value: frontMap}, fabricBackMap: {value: backMap},
     printMask: {value: frontMap}, frontArtwork: {value: frontMap}, backArtwork: {value: frontMap},
     frontPlacement: {value: new THREE.Vector4(0,-300,240,240)}, backPlacement: {value: new THREE.Vector4(0,-300,240,240)},
     customized: {value: 0}, keepOriginal: {value: 1}, frontEnabled: {value: 0}, backEnabled: {value: 0},
     fabricColor: {value: new THREE.Color(fabricColor)}, woodColor: {value: new THREE.Color(0x563a2f)},
-    clothBend: {value:new THREE.Vector2()},clothTwist:{value:0},
+    clothBend: {value:new THREE.Vector2()},clothTwist:{value:0},clothSleeves:{value:new THREE.Vector2()},clothHem:{value:0},
   };
-  material.fabricUniforms=uniforms;
+  material.fabricUniforms=uniforms;material.forceSinglePass=true;
   material.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,uniforms);
     shader.vertexShader=`${clothVertex}\nattribute float garmentSurface;
@@ -64,14 +64,14 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
             if(vSurface>.5&&vSurface<1.5&&backEnabled>.5)ink=placedArtwork(backArtwork,backPlacement,1.);
             garmentColor.rgb=mix(garmentColor.rgb,ink.rgb*clamp(shade,.45,1.1),ink.a);
           }
-          vec3 n=normalize(vFabricNormal);
+          vec3 n=normalize(vFabricNormal)*(gl_FrontFacing?1.:-1.);
           float key=max(dot(n,normalize(vec3(-.45,.6,1.))),0.);
           float fill=max(dot(n,normalize(vec3(.8,.15,-.5))),0.);
-          garmentColor.rgb*=.83+.19*key+.075*fill;
+          garmentColor.rgb*=.72+.31*key+.12*fill;
         }
         diffuseColor*=garmentColor;
         #endif`);
   };
-  material.customProgramCacheKey=()=> 'wardrobe-controlled-cloth-v10';
+  material.customProgramCacheKey=()=> 'wardrobe-draped-panels-v11';
   return material;
 }

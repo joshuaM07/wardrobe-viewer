@@ -145,7 +145,20 @@ export class WardrobeRenderer {
   private clothPadding(item: Item) {
     const box=item.body.geometry.boundingBox!;
     const radius=Math.hypot(Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z)));
-    return (Math.abs(item.cloth.bend.value)+2*Math.sin(Math.abs(item.cloth.twist.value)/2)*radius)*item.scale.value;
+    return (Math.abs(item.cloth.bend.value)+2*Math.sin(Math.abs(item.cloth.twist.value)/2)*radius+
+      1.01*Math.max(Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0))+1.33*Math.abs(item.cloth.hem?.value??0))*item.scale.value;
+  }
+
+  private railPadding(item:Item){
+    const box=item.body.geometry.boundingBox!,t=Math.abs(item.cloth.twist.value);
+    const ax=Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),az=Math.max(Math.abs(box.min.z),Math.abs(box.max.z));
+    const cy=Math.abs(Math.cos(item.root.rotation.y)*Math.cos(item.root.rotation.z)),sy=Math.abs(Math.sin(item.root.rotation.y));
+    const vertical=Math.abs(Math.cos(item.root.rotation.y)*Math.sin(item.root.rotation.z));
+    const sleeves=Math.max(Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0)),hem=Math.abs(item.cloth.hem?.value??0);
+    // Project local depth/vertical flex onto the rail axis. Front-facing loose
+    // cuffs do not occupy their full depth as extra horizontal garment width.
+    const twist=(cy*(1-Math.cos(t))+sy*Math.sin(t))*ax+(cy*Math.sin(t)+sy*(1-Math.cos(t)))*az;
+    return (Math.abs(item.cloth.bend.value)+twist+sy*(sleeves+1.25*hem)+vertical*(.1*sleeves+.08*hem))*item.scale.value;
   }
 
   stopMomentum() { this.spinMomentum = 0; this.spinFollowing = false; }
@@ -333,7 +346,7 @@ export class WardrobeRenderer {
       const index=this.items.indexOf(previous);
       if(this.disposed||index<0)throw new Error('This garment is no longer on the rack.');
       for(const key of ['focus','x','y','scale','sway'] as const)next[key]={...previous[key]};
-      next.cloth={bend:{...previous.cloth.bend},twist:{...previous.cloth.twist}};
+      next.cloth=Object.fromEntries(Object.entries(previous.cloth).map(([key,value])=>[key,{...value}])) as ClothMotion;
       next.inDetail=previous.inDetail;next.root.position.copy(previous.root.position);
       next.root.rotation.copy(previous.root.rotation);next.root.scale.copy(previous.root.scale);
       if(next.inDetail){
@@ -405,8 +418,8 @@ export class WardrobeRenderer {
       // Added pieces need a longer physical rail; the viewport can browse a
       // section of it without leaving any hangers floating past an end cap.
       const first=(this.items[0]?.garment.pivot??562/W)*W,last=(this.items.at(-1)?.garment.pivot??2306/W)*W;
-      const left=this.items.length>10?Math.min(147,first-900):147;
-      const right=this.items.length>10?Math.max(2747,last+900):2747;
+      const left=this.items.length>10?Math.min(47,first-900):47;
+      const right=this.items.length>10?Math.max(2847,last+900):2847;
       const cylinder=this.rail.children[0],template=this.rail.children[1];
       if(cylinder&&template){
         cylinder.scale.y=(right-left)/2600;cylinder.position.x=(left+right)/2-W/2;
@@ -704,6 +717,8 @@ export class WardrobeRenderer {
       if(uniforms){
         uniforms.clothBend.value.set(Math.cos(item.root.rotation.y)*item.cloth.bend.value,Math.sin(item.root.rotation.y)*item.cloth.bend.value);
         uniforms.clothTwist.value=item.cloth.twist.value;
+        uniforms.clothSleeves.value.set(item.cloth.left?.value??0,item.cloth.right?.value??0);
+        uniforms.clothHem.value=item.cloth.hem?.value??0;
       }
       // Orthographic detail view uses a separate depth lane for its whole
       // entrance and return, instead of travelling through the hanging rack.
@@ -716,7 +731,7 @@ export class WardrobeRenderer {
     // Targets make room in advance. This final projection handles interrupted
     // turns and overshoot using the geometry's current occupied envelope.
     const onRail=this.items.filter(item=>item.root.position.z===restingZ);
-    const bodies=solveRailContacts(onRail.map(item=>({position:item.x.value,velocity:item.x.velocity,mass:garmentMass(item.garment.type),envelope:this.envelope(item,item.root.rotation.y,item.root.rotation.z,item.scale.value,this.clothPadding(item))})));
+    const bodies=solveRailContacts(onRail.map(item=>({position:item.x.value,velocity:item.x.velocity,mass:garmentMass(item.garment.type),envelope:this.envelope(item,item.root.rotation.y,item.root.rotation.z,item.scale.value,this.railPadding(item))})));
     onRail.forEach((item,i)=>{item.x.value=bodies[i].position;item.x.velocity=bodies[i].velocity;item.root.position.x=item.x.value-W/2;});
     const view=!s.demo?(s.mobile?mobileRackView(this.items.map(item=>item.garment.pivot),s.rackPosition,this.cssWidth,this.cssHeight):this.items.length>10?desktopRackView(this.items.map(item=>item.garment.pivot),s.rackPosition):{x:0,y:0,zoom:1}):{x:0,y:0,zoom:1};
     const selectedItem=this.items[s.selected];
@@ -756,7 +771,7 @@ export class WardrobeRenderer {
     const stamp=[s.selected,p,this.textureRevision,width,height,
       this.camera.zoom,this.camera.position.x,this.camera.position.y,this.camera.top,this.camera.bottom,
       ...this.items.flatMap((item,i)=>i===s.selected?[]:[Number(item.prepared),item.root.position.x,item.root.position.y,item.root.position.z,
-        item.root.scale.x,item.root.rotation.y,item.root.rotation.z,item.cloth.bend.value,item.cloth.twist.value])]
+        item.root.scale.x,item.root.rotation.y,item.root.rotation.z,item.cloth.bend.value,item.cloth.twist.value,item.cloth.left?.value??0,item.cloth.right?.value??0,item.cloth.hem?.value??0])]
       .map(value=>Math.round(value*10_000)/10_000).join(':');
     if(stamp!==this.backgroundStamp){
       this.items[s.selected].root.visible=false;

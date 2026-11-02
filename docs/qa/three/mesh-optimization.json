@@ -4,113 +4,113 @@
   "models": [
     {
       "file": "camo.glb",
-      "trianglesBefore": 21740,
-      "trianglesAfter": 6788,
-      "verticesBefore": 13273,
-      "verticesAfter": 5797,
-      "maxSimplifierError": 0.298324,
-      "bytesBefore": 691356,
-      "bytesAfter": 271856
+      "trianglesBefore": 21596,
+      "trianglesAfter": 6614,
+      "verticesBefore": 12426,
+      "verticesAfter": 4935,
+      "maxSimplifierError": 0.299582,
+      "bytesBefore": 662564,
+      "bytesAfter": 242268
     },
     {
       "file": "dollar.glb",
-      "trianglesBefore": 16392,
-      "trianglesAfter": 4880,
-      "verticesBefore": 9691,
-      "verticesAfter": 3935,
-      "maxSimplifierError": 0.299594,
-      "bytesBefore": 512600,
-      "bytesAfter": 189364
+      "trianglesBefore": 16200,
+      "trianglesAfter": 4630,
+      "verticesBefore": 8998,
+      "verticesAfter": 3213,
+      "maxSimplifierError": 0.298522,
+      "bytesBefore": 488172,
+      "bytesAfter": 163340
     },
     {
       "file": "essential.glb",
-      "trianglesBefore": 16620,
-      "trianglesAfter": 4776,
-      "verticesBefore": 9990,
-      "verticesAfter": 4068,
-      "maxSimplifierError": 0.298107,
-      "bytesBefore": 524916,
-      "bytesAfter": 192380
+      "trianglesBefore": 16406,
+      "trianglesAfter": 4814,
+      "verticesBefore": 9212,
+      "verticesAfter": 3416,
+      "maxSimplifierError": 0.299227,
+      "bytesBefore": 497480,
+      "bytesAfter": 172064
     },
     {
       "file": "flowers.glb",
-      "trianglesBefore": 15916,
-      "trianglesAfter": 4824,
-      "verticesBefore": 9614,
-      "verticesAfter": 4068,
-      "maxSimplifierError": 0.29858,
-      "bytesBefore": 504412,
-      "bytesAfter": 192956
+      "trianglesBefore": 15658,
+      "trianglesAfter": 4496,
+      "verticesBefore": 8710,
+      "verticesAfter": 3129,
+      "maxSimplifierError": 0.299914,
+      "bytesBefore": 472448,
+      "bytesAfter": 159044
     },
     {
       "file": "hoodie.glb",
-      "trianglesBefore": 20828,
-      "trianglesAfter": 7476,
-      "verticesBefore": 12525,
-      "verticesAfter": 5849,
-      "maxSimplifierError": 0.298292,
-      "bytesBefore": 656480,
-      "bytesAfter": 281776
+      "trianglesBefore": 20550,
+      "trianglesAfter": 7248,
+      "verticesBefore": 11400,
+      "verticesAfter": 4749,
+      "maxSimplifierError": 0.298106,
+      "bytesBefore": 617208,
+      "bytesAfter": 243916
     },
     {
       "file": "portrait.glb",
-      "trianglesBefore": 16220,
-      "trianglesAfter": 5044,
-      "verticesBefore": 9754,
-      "verticesAfter": 4166,
-      "maxSimplifierError": 0.299623,
-      "bytesBefore": 512512,
-      "bytesAfter": 198732
+      "trianglesBefore": 16006,
+      "trianglesAfter": 4706,
+      "verticesBefore": 8958,
+      "verticesAfter": 3308,
+      "maxSimplifierError": 0.298666,
+      "bytesBefore": 484536,
+      "bytesAfter": 167300
     },
     {
       "file": "republic.glb",
-      "trianglesBefore": 21648,
-      "trianglesAfter": 6074,
-      "verticesBefore": 12538,
-      "verticesAfter": 4751,
-      "maxSimplifierError": 0.299376,
-      "bytesBefore": 666760,
-      "bytesAfter": 229816
+      "trianglesBefore": 21470,
+      "trianglesAfter": 6452,
+      "verticesBefore": 11620,
+      "verticesAfter": 4111,
+      "maxSimplifierError": 0.298951,
+      "bytesBefore": 635296,
+      "bytesAfter": 213952
     },
     {
       "file": "studio.glb",
-      "trianglesBefore": 16952,
-      "trianglesAfter": 5080,
-      "verticesBefore": 10007,
-      "verticesAfter": 4071,
-      "maxSimplifierError": 0.299126,
-      "bytesBefore": 529404,
-      "bytesAfter": 196120
+      "trianglesBefore": 16752,
+      "trianglesAfter": 4818,
+      "verticesBefore": 9256,
+      "verticesAfter": 3289,
+      "maxSimplifierError": 0.29998,
+      "bytesBefore": 503004,
+      "bytesAfter": 168028
     },
     {
       "file": "underclass.glb",
-      "trianglesBefore": 16180,
-      "trianglesAfter": 4518,
-      "verticesBefore": 9794,
-      "verticesAfter": 3963,
-      "maxSimplifierError": 0.299407,
-      "bytesBefore": 513352,
-      "bytesAfter": 185928
+      "trianglesBefore": 15962,
+      "trianglesAfter": 4598,
+      "verticesBefore": 9046,
+      "verticesAfter": 3364,
+      "maxSimplifierError": 0.299312,
+      "bytesBefore": 486844,
+      "bytesAfter": 167812
     },
     {
       "file": "washed.glb",
-      "trianglesBefore": 19032,
-      "trianglesAfter": 5212,
-      "verticesBefore": 11094,
-      "verticesAfter": 4184,
-      "maxSimplifierError": 0.297744,
-      "bytesBefore": 589164,
-      "bytesAfter": 201320
+      "trianglesBefore": 18906,
+      "trianglesAfter": 5240,
+      "verticesBefore": 10420,
+      "verticesAfter": 3587,
+      "maxSimplifierError": 0.299476,
+      "bytesBefore": 566100,
+      "bytesAfter": 182628
     },
     {
       "file": "world.glb",
-      "trianglesBefore": 20648,
-      "trianglesAfter": 6172,
-      "verticesBefore": 12362,
-      "verticesAfter": 5124,
-      "maxSimplifierError": 0.298027,
-      "bytesBefore": 649164,
-      "bytesAfter": 242916
+      "trianglesBefore": 20486,
+      "trianglesAfter": 6502,
+      "verticesBefore": 11476,
+      "verticesAfter": 4484,
+      "maxSimplifierError": 0.298196,
+      "bytesBefore": 618904,
+      "bytesAfter": 226484
     }
   ]
 }

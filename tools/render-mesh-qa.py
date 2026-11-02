@@ -53,7 +53,7 @@ def glb(g,model_dir=None):
   return np.frombuffer(blob,dtype=dtype,count=a['count']*size,offset=v.get('byteOffset',0)+a.get('byteOffset',0)).reshape(a['count'],size)
  textures=[]
  for image in doc['images']:
-  im=Image.open(ROOT/'public/models'/image['uri']).convert('RGB')
+  im=Image.open((Path(model_dir) if model_dir else ROOT/'public/models')/image['uri']).convert('RGB')
   tex=ctx.texture(im.size,3,im.tobytes(),internal_format=0x8c41);tex.build_mipmaps();textures.append(tex)
  vertices=[];indices=[];offset=0
  for p in doc['meshes'][0]['primitives']:
