@@ -59,7 +59,13 @@ if args.canonical_input:
                 t=(j+1)/(len(ring)-1);moved[vertex]+=((moved[a]-target[a])*(1-t)+(moved[b]-target[b])*t)
                 for field in fields:field[vertex]=field[a]*(1-t)+field[b]*t
         moved[d['pins']]=target[d['pins']];rest=moved;modes=fields
-for mode in modes:mode[d['pins']]=0
+# Keep the moderate physical response; reject violent free-simulation tails.
+# A uniform scale preserves each pose's actual differential cloth shape.
+for i,mode in enumerate(modes):
+    mode[d['pins']]=0
+    displacement=float(np.linalg.norm(mode,axis=1).max())
+    upward=float(mode[:,1].max())
+    mode*=min(1.,(45. if i<2 else 20.)/max(displacement,1e-9),8./max(upward,1e-9))
 # Reduce the visible seam bight; the simulation keeps its collision-safe gap.
 # The same linear operation is applied to rest and every deformation field.
 if args.pattern or d.get('seamRings'):

@@ -1,5 +1,5 @@
 // Keep cached GLBs, their atlases and fallback posters on the same mesh revision.
-const GARMENT_ASSET_REVISION = 'draped-panels-v11';
+const GARMENT_ASSET_REVISION = 'physical-cloth-v13';
 
 export function garmentAssetUrl(url: string) {
   if (/^(data|blob):/.test(url) || url.includes('garmentRevision=')) return url;

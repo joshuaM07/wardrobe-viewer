@@ -1,0 +1,9 @@
+{
+  "blender": "4.3.2",
+  "template": "hoodie",
+  "units": "millimeters",
+  "steps": 420,
+  "drive": "30-degree turn, return and60-mm rail translation",
+  "runtimeSolver": false,
+  "bend": 0.18000000715255737
+}

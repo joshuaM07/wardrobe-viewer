@@ -13,7 +13,7 @@ white=ctx.texture((1,1),4,bytes([255,255,255,255]),internal_format=0x8c43)
 pink=ctx.texture((1,1),4,bytes([255,0,255,255]),internal_format=0x8c43)
 for name,slot in [('map',0),('backMap',1),('fabricMap',2),('fabricBackMap',3),('printMask',4),('frontArtwork',5),('backArtwork',6)]:p[name].value=slot;white.use(slot)
 pink.use(5)
-for name,value in [('diffuse',(1,1,1)),('opacity',1),('fabricColor',(1,1,1)),('woodColor',(.2,.1,.05)),('customized',1),('keepOriginal',0),('frontEnabled',1),('backEnabled',0),('frontPlacement',(0,0,4,4)),('backPlacement',(0,0,4,4))]:p[name].value=value
+for name,value in [('diffuse',(1,1,1)),('opacity',1),('fabricColor',(1,1,1)),('woodColor',(.2,.1,.05)),('customized',1),('keepOriginal',0),('frontEnabled',1),('backEnabled',0),('frontPlacement',(0,-405,4,4)),('backPlacement',(0,-405,4,4))]:p[name].value=value
 data=np.array([[-.9,-.9,0,0,0,1,.25,.5,0],[.9,-.9,0,0,0,1,.25,.5,0],[0,.9,0,0,0,1,.25,.5,0]],dtype='f4')
 v=ctx.buffer(data.tobytes());target=ctx.simple_framebuffer((16,16),components=4);target.use()
 def render(indices):

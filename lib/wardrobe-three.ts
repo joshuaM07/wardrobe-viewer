@@ -9,7 +9,7 @@ import type { GarmentDesign, PrintSide } from './garment-design';
 import { garmentAssetUrl } from './garment-assets';
 import { clamp, spring, stepSpring, stepGlide, type Spring } from './motion';
 import { mobileRackView, mobileProductView, desktopRackView } from './rack-view';
-import { clothMotion, stepCloth, separateRack, garmentMass, solveRailContacts, type ClothMotion, type Envelope } from './garment-motion';
+import { clothMotion, clothValues, stepCloth, separateRack, garmentMass, solveRailContacts, type ClothMotion, type Envelope } from './garment-motion';
 
 export type Garment = {
   id: string; name: string; type: string; pivot: number; mesh: string;
@@ -142,23 +142,17 @@ export class WardrobeRenderer {
     return separateRack(positions,envelopes,active,14);
   }
 
-  private clothPadding(item: Item) {
-    const box=item.body.geometry.boundingBox!;
-    const radius=Math.hypot(Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z)));
-    return (Math.abs(item.cloth.bend.value)+2*Math.sin(Math.abs(item.cloth.twist.value)/2)*radius+
-      1.01*Math.max(Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0))+1.33*Math.abs(item.cloth.hem?.value??0))*item.scale.value;
+  private clothPadding(item:Item){
+    const radii=(item.body.geometry.userData.clothRadii??[]) as number[];
+    return clothValues(item.cloth).reduce((sum,q,i)=>sum+q*(radii[i]??0),0)*item.scale.value;
   }
 
   private railPadding(item:Item){
-    const box=item.body.geometry.boundingBox!,t=Math.abs(item.cloth.twist.value);
-    const ax=Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),az=Math.max(Math.abs(box.min.z),Math.abs(box.max.z));
-    const cy=Math.abs(Math.cos(item.root.rotation.y)*Math.cos(item.root.rotation.z)),sy=Math.abs(Math.sin(item.root.rotation.y));
-    const vertical=Math.abs(Math.cos(item.root.rotation.y)*Math.sin(item.root.rotation.z));
-    const sleeves=Math.max(Math.abs(item.cloth.left?.value??0),Math.abs(item.cloth.right?.value??0)),hem=Math.abs(item.cloth.hem?.value??0);
-    // Project local depth/vertical flex onto the rail axis. Front-facing loose
-    // cuffs do not occupy their full depth as extra horizontal garment width.
-    const twist=(cy*(1-Math.cos(t))+sy*Math.sin(t))*ax+(cy*Math.sin(t)+sy*(1-Math.cos(t)))*az;
-    return (Math.abs(item.cloth.bend.value)+twist+sy*(sleeves+1.25*hem)+vertical*(.1*sleeves+.08*hem))*item.scale.value;
+    const extents=(item.body.geometry.userData.clothExtents??[]) as number[][];
+    this.boundsMatrix.makeRotationFromEuler(item.root.rotation);const e=this.boundsMatrix.elements;
+    return clothValues(item.cloth).reduce((sum,q,i)=>{
+      const a=extents[i];return sum+(a?q*(Math.abs(e[0])*a[0]+Math.abs(e[4])*a[1]+Math.abs(e[8])*a[2]):0);
+    },0)*item.scale.value;
   }
 
   stopMomentum() { this.spinMomentum = 0; this.spinFollowing = false; }
@@ -274,8 +268,9 @@ export class WardrobeRenderer {
       if(original.name==='ClothFront')frontMap=original.map;
       if(original.name==='ClothBack')backMap=original.map;
       const geometry=object.geometry.clone();
+      const kind=kinds[original.name]??0;
       geometry.setAttribute('garmentSurface',new THREE.Float32BufferAttribute(
-        new Float32Array(geometry.getAttribute('position').count).fill(kinds[original.name]??0),1));
+        new Float32Array(geometry.getAttribute('position').count).fill(kind),1));
       geometries.push(geometry);object.geometry.dispose();original.dispose();
     });
     if(!frontMap||!backMap)throw new Error(`Missing garment materials: ${garment.id}`);
@@ -285,7 +280,20 @@ export class WardrobeRenderer {
     const geometry=mergeGeometries(geometries,false);
     geometries.forEach(g=>g.dispose());
     if(!geometry)throw new Error(`Incompatible garment surfaces: ${garment.id}`);
-    geometry.computeBoundingBox(); geometry.computeBoundingSphere();
+    // mergeGeometries does not retain this glTF flag. Treating deltas as
+    // absolute targets shrinks the entire shirt as an influence approaches1.
+    geometry.morphTargetsRelative=geometries[0].morphTargetsRelative;
+    geometry.computeBoundingBox();geometry.computeBoundingSphere();
+    // The automatic sphere includes morph poses for safe frustum culling. Rail
+    // layout uses the settled surface plus the current pose's projected extent.
+    geometry.boundingBox=new THREE.Box3().setFromBufferAttribute(geometry.getAttribute('position') as THREE.BufferAttribute);
+    geometry.userData.clothExtents=(geometry.morphAttributes.position??[]).map(attribute=>{
+      const box=new THREE.Box3().setFromBufferAttribute(attribute as THREE.BufferAttribute);
+      return [Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.y),Math.abs(box.max.y)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z))];
+    });
+    geometry.userData.clothRadii=(geometry.morphAttributes.position??[]).map(attribute=>{
+      let max=0;for(let i=0;i<attribute.count;i++)max=Math.max(max,Math.hypot(attribute.getX(i),attribute.getY(i),attribute.getZ(i)));return max;
+    });
     // Build once while loading. Hover only traverses this static spatial index.
     computeBoundsTree.call(geometry, { indirect: true });
       geometry.userData.sharedGarment=true;frontTexture.userData.sharedGarment=backTexture.userData.sharedGarment=true;
@@ -346,7 +354,7 @@ export class WardrobeRenderer {
       const index=this.items.indexOf(previous);
       if(this.disposed||index<0)throw new Error('This garment is no longer on the rack.');
       for(const key of ['focus','x','y','scale','sway'] as const)next[key]={...previous[key]};
-      next.cloth=Object.fromEntries(Object.entries(previous.cloth).map(([key,value])=>[key,{...value}])) as ClothMotion;
+      next.cloth=Object.fromEntries(Object.entries(previous.cloth).map(([key,value])=>[key,typeof value==='object'?{...value}:value])) as ClothMotion;
       next.inDetail=previous.inDetail;next.root.position.copy(previous.root.position);
       next.root.rotation.copy(previous.root.rotation);next.root.scale.copy(previous.root.scale);
       if(next.inDetail){
@@ -713,13 +721,8 @@ export class WardrobeRenderer {
       item.root.rotation.z=item.sway.value;
       if(Math.abs(item.sway.value-swayTarget)>.0001||Math.abs(item.sway.velocity)>.001)moving=true;
       if(stepCloth(item.cloth,turnVelocity,item.x.velocity,dt,g.type,s.reduced))moving=true;
-      const uniforms=item.body.material.fabricUniforms;
-      if(uniforms){
-        uniforms.clothBend.value.set(Math.cos(item.root.rotation.y)*item.cloth.bend.value,Math.sin(item.root.rotation.y)*item.cloth.bend.value);
-        uniforms.clothTwist.value=item.cloth.twist.value;
-        uniforms.clothSleeves.value.set(item.cloth.left?.value??0,item.cloth.right?.value??0);
-        uniforms.clothHem.value=item.cloth.hem?.value??0;
-      }
+      const weights=clothValues(item.cloth);
+      if(item.body.morphTargetInfluences)weights.forEach((value,index)=>{item.body.morphTargetInfluences![index]=value;});
       // Orthographic detail view uses a separate depth lane for its whole
       // entrance and return, instead of travelling through the hanging rack.
       if(selected&&(modal||p>.003))item.inDetail=true;
@@ -771,7 +774,7 @@ export class WardrobeRenderer {
     const stamp=[s.selected,p,this.textureRevision,width,height,
       this.camera.zoom,this.camera.position.x,this.camera.position.y,this.camera.top,this.camera.bottom,
       ...this.items.flatMap((item,i)=>i===s.selected?[]:[Number(item.prepared),item.root.position.x,item.root.position.y,item.root.position.z,
-        item.root.scale.x,item.root.rotation.y,item.root.rotation.z,item.cloth.bend.value,item.cloth.twist.value,item.cloth.left?.value??0,item.cloth.right?.value??0,item.cloth.hem?.value??0])]
+        item.root.scale.x,item.root.rotation.y,item.root.rotation.z,...clothValues(item.cloth)])]
       .map(value=>Math.round(value*10_000)/10_000).join(':');
     if(stamp!==this.backgroundStamp){
       this.items[s.selected].root.visible=false;
@@ -846,6 +849,8 @@ export class WardrobeRenderer {
       fabricColor:this.items[this.state().selected]?.body.material.fabricUniforms.fabricColor.value.getHexString(),
       frontPrint:this.items[this.state().selected]?.body.material.fabricUniforms.frontPlacement.value.toArray(),
       backPrint:this.items[this.state().selected]?.body.material.fabricUniforms.backPlacement.value.toArray(),
+      morphRelative:this.items[this.state().selected]?.body.geometry.morphTargetsRelative??false,
+      clothWeights:this.items[this.state().selected]?.body.morphTargetInfluences?.map(v=>Math.round(v*10000)/10000)??[],
       rotationRad:Math.round(this.spin.value*10000)/10000,coasting:Math.abs(this.spinMomentum)>.015 });
   }
 

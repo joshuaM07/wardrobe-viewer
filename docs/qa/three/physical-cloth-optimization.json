@@ -1,0 +1,116 @@
+{
+  "scope": "Offline GLB optimization, all material borders locked; retained vertices, normals, UVs and native cloth targets copied exactly. Simplifier error is a metric, not a pixel-quality guarantee.",
+  "errorLimitWorldUnits": 0.3,
+  "models": [
+    {
+      "file": "camo.glb",
+      "trianglesBefore": 75828,
+      "trianglesAfter": 17222,
+      "verticesBefore": 39101,
+      "verticesAfter": 9798,
+      "maxSimplifierError": 0.299027,
+      "bytesBefore": 6388376,
+      "bytesAfter": 1476712
+    },
+    {
+      "file": "dollar.glb",
+      "trianglesBefore": 56188,
+      "trianglesAfter": 7628,
+      "verticesBefore": 28734,
+      "verticesAfter": 4454,
+      "maxSimplifierError": 0.296255,
+      "bytesBefore": 4709120,
+      "bytesAfter": 677516
+    },
+    {
+      "file": "essential.glb",
+      "trianglesBefore": 56848,
+      "trianglesAfter": 8696,
+      "verticesBefore": 29161,
+      "verticesAfter": 5085,
+      "maxSimplifierError": 0.29841,
+      "bytesBefore": 4775744,
+      "bytesAfter": 771072
+    },
+    {
+      "file": "flowers.glb",
+      "trianglesBefore": 54320,
+      "trianglesAfter": 7780,
+      "verticesBefore": 27792,
+      "verticesAfter": 4522,
+      "maxSimplifierError": 0.299901,
+      "bytesBefore": 4554924,
+      "bytesAfter": 688040
+    },
+    {
+      "file": "hoodie.glb",
+      "trianglesBefore": 72652,
+      "trianglesAfter": 6124,
+      "verticesBefore": 37194,
+      "verticesAfter": 3930,
+      "maxSimplifierError": 0.298046,
+      "bytesBefore": 6090364,
+      "bytesAfter": 592420
+    },
+    {
+      "file": "portrait.glb",
+      "trianglesBefore": 55768,
+      "trianglesAfter": 7622,
+      "verticesBefore": 28575,
+      "verticesAfter": 4502,
+      "maxSimplifierError": 0.299488,
+      "bytesBefore": 4681232,
+      "bytesAfter": 683532
+    },
+    {
+      "file": "republic.glb",
+      "trianglesBefore": 75040,
+      "trianglesAfter": 5916,
+      "verticesBefore": 38228,
+      "verticesAfter": 3666,
+      "maxSimplifierError": 0.298944,
+      "bytesBefore": 6263164,
+      "bytesAfter": 556104
+    },
+    {
+      "file": "studio.glb",
+      "trianglesBefore": 58840,
+      "trianglesAfter": 8640,
+      "verticesBefore": 30147,
+      "verticesAfter": 5047,
+      "maxSimplifierError": 0.298018,
+      "bytesBefore": 4937352,
+      "bytesAfter": 765536
+    },
+    {
+      "file": "underclass.glb",
+      "trianglesBefore": 55200,
+      "trianglesAfter": 7860,
+      "verticesBefore": 28341,
+      "verticesAfter": 4671,
+      "maxSimplifierError": 0.299929,
+      "bytesBefore": 4641288,
+      "bytesAfter": 708044
+    },
+    {
+      "file": "washed.glb",
+      "trianglesBefore": 67276,
+      "trianglesAfter": 10112,
+      "verticesBefore": 34428,
+      "verticesAfter": 5846,
+      "maxSimplifierError": 0.299853,
+      "bytesBefore": 5637932,
+      "bytesAfter": 885444
+    },
+    {
+      "file": "world.glb",
+      "trianglesBefore": 71644,
+      "trianglesAfter": 16666,
+      "verticesBefore": 36650,
+      "verticesAfter": 9161,
+      "maxSimplifierError": 0.29941,
+      "bytesBefore": 6001872,
+      "bytesAfter": 1388520
+    }
+  ]
+}

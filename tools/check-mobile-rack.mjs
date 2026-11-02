@@ -18,6 +18,7 @@ function moduleURL(file){
   const url='data:text/javascript;base64,'+Buffer.from(resolved).toString('base64');cache.set(file,url);return url;
 }
 const {WardrobeRenderer}=await import(moduleURL(path.join(root,'lib/wardrobe-three.ts')));
+const {clothMotion}=await import(moduleURL(path.join(root,'lib/garment-motion.ts')));
 const {spring}=await import(moduleURL(path.join(root,'lib/motion.ts')));
 const {arrangeRack}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
 const garments=[...JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'))),JSON.parse(fs.readFileSync(path.join(root,'public/garments/hoodie.json')))];
@@ -47,7 +48,7 @@ function rig(width,height,mobile=true,collection=garments){
   renderer.items=collection.map(garment=>{
     const index=garments.findIndex(g=>g.id===(garment.sourceId??garment.id));
     const group=new THREE.Group(),body=new THREE.Mesh(geometries[index],material);group.add(body);renderer.scene.add(group);
-    return {garment,root:group,body,focus:spring(),sway:spring(),cloth:{bend:spring(),twist:spring()},x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
+    return {garment,root:group,body,focus:spring(),sway:spring(),cloth:clothMotion(),x:spring(garment.pivot*2912),y:spring(418),scale:spring(1)};
   });
   renderer.setGarments(collection);
   renderer.update(0);return {renderer,state};

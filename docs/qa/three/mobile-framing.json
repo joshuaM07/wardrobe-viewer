@@ -19,10 +19,10 @@
       "id": "camo",
       "zoom": 3.261,
       "bounds": {
-        "left": 32.91,
-        "right": 214.83,
+        "left": 50.1,
+        "right": 206.06,
         "top": 19.2,
-        "bottom": 273.21
+        "bottom": 267.73
       },
       "centerNdc": -0.1764
     },
@@ -39,10 +39,10 @@
       "id": "essential",
       "zoom": 3.261,
       "bounds": {
-        "left": 53.04,
-        "right": 244.39,
+        "left": 57.1,
+        "right": 237.56,
         "top": 19.2,
-        "bottom": 254.35
+        "bottom": 254.43
       },
       "centerNdc": 0
     },
@@ -59,10 +59,10 @@
       "id": "dollar",
       "zoom": 3.261,
       "bounds": {
-        "left": 59.1,
-        "right": 240.35,
+        "left": 62.43,
+        "right": 229.32,
         "top": 19.2,
-        "bottom": 249.97
+        "bottom": 249.98
       },
       "centerNdc": 0
     },
@@ -79,10 +79,10 @@
       "id": "underclass",
       "zoom": 3.261,
       "bounds": {
-        "left": 60.45,
-        "right": 240.68,
+        "left": 64.03,
+        "right": 228.4,
         "top": 19.2,
-        "bottom": 249.97
+        "bottom": 249.65
       },
       "centerNdc": 0
     },
@@ -99,10 +99,10 @@
       "id": "republic",
       "zoom": 3.261,
       "bounds": {
-        "left": 58.09,
-        "right": 241.02,
+        "left": 61.18,
+        "right": 239.48,
         "top": 19.2,
-        "bottom": 273.89
+        "bottom": 273.84
       },
       "centerNdc": 0
     },
@@ -119,10 +119,10 @@
       "id": "world",
       "zoom": 3.261,
       "bounds": {
-        "left": 60.79,
-        "right": 236.64,
+        "left": 77.78,
+        "right": 227.67,
         "top": 19.2,
-        "bottom": 262.77
+        "bottom": 257.04
       },
       "centerNdc": 0
     },
@@ -139,10 +139,10 @@
       "id": "flowers",
       "zoom": 3.261,
       "bounds": {
-        "left": 61.13,
-        "right": 238.66,
+        "left": 64.56,
+        "right": 227.96,
         "top": 19.2,
-        "bottom": 248.62
+        "bottom": 248.65
       },
       "centerNdc": 0
     },
@@ -159,10 +159,10 @@
       "id": "studio",
       "zoom": 3.261,
       "bounds": {
-        "left": 59.78,
-        "right": 241.7,
+        "left": 64.14,
+        "right": 235.74,
         "top": 19.2,
-        "bottom": 250.3
+        "bottom": 250.49
       },
       "centerNdc": 0
     },
@@ -179,8 +179,8 @@
       "id": "portrait",
       "zoom": 3.261,
       "bounds": {
-        "left": 62.14,
-        "right": 240.01,
+        "left": 65.58,
+        "right": 229.57,
         "top": 19.2,
         "bottom": 251.99
       },
@@ -199,10 +199,10 @@
       "id": "washed",
       "zoom": 3.261,
       "bounds": {
-        "left": 59.44,
-        "right": 241.02,
+        "left": 63.65,
+        "right": 237.84,
         "top": 19.2,
-        "bottom": 273.89
+        "bottom": 273.9
       },
       "centerNdc": 0
     },
@@ -219,10 +219,10 @@
       "id": "hoodie",
       "zoom": 3.261,
       "bounds": {
-        "left": 78.9,
-        "right": 275.98,
+        "left": 82.36,
+        "right": 274,
         "top": 19.2,
-        "bottom": 259.06
+        "bottom": 259.25
       },
       "centerNdc": 0.1764
     },
@@ -237,12 +237,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 2.883,
+      "zoom": 2.94,
       "bounds": {
-        "left": 57.61,
-        "right": 243.19,
-        "top": 16.98,
-        "bottom": 276.11
+        "left": 73.68,
+        "right": 235.89,
+        "top": 17.31,
+        "bottom": 275.78
       },
       "centerNdc": 0
     },
@@ -259,10 +259,10 @@
       "id": "essential",
       "zoom": 2.883,
       "bounds": {
-        "left": 43.11,
-        "right": 253.98,
-        "top": 16.98,
-        "bottom": 276.11
+        "left": 47.61,
+        "right": 246.42,
+        "top": 16.97,
+        "bottom": 276.12
       },
       "centerNdc": 0
     },
@@ -279,8 +279,8 @@
       "id": "dollar",
       "zoom": 3.026,
       "bounds": {
-        "left": 47.92,
-        "right": 250.12,
+        "left": 51.64,
+        "right": 237.82,
         "top": 17.82,
         "bottom": 275.27
       },
@@ -297,12 +297,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 2.936,
+      "zoom": 2.94,
       "bounds": {
-        "left": 49.94,
-        "right": 251.84,
-        "top": 17.29,
-        "bottom": 275.8
+        "left": 53.83,
+        "right": 238.19,
+        "top": 17.31,
+        "bottom": 275.78
       },
       "centerNdc": 0.002
     },
@@ -317,10 +317,10 @@
       ],
       "mode": "product",
       "id": "republic",
-      "zoom": 3.024,
+      "zoom": 3.025,
       "bounds": {
-        "left": 56.46,
-        "right": 241.39,
+        "left": 59.57,
+        "right": 239.85,
         "top": 17.81,
         "bottom": 275.28
       },
@@ -337,14 +337,14 @@
       ],
       "mode": "product",
       "id": "world",
-      "zoom": 3.066,
+      "zoom": 3.13,
       "bounds": {
-        "left": 56.8,
-        "right": 242.34,
-        "top": 18.05,
-        "bottom": 275.04
+        "left": 73.14,
+        "right": 234.61,
+        "top": 18.43,
+        "bottom": 274.66
       },
-      "centerNdc": 0.0063
+      "centerNdc": 0.0064
     },
     {
       "screen": [
@@ -359,8 +359,8 @@
       "id": "flowers",
       "zoom": 2.836,
       "bounds": {
-        "left": 47.29,
-        "right": 248.26,
+        "left": 51.19,
+        "right": 236.14,
         "top": 16.7,
         "bottom": 276.39
       },
@@ -377,12 +377,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 2.883,
+      "zoom": 2.881,
       "bounds": {
-        "left": 48.79,
-        "right": 252.77,
-        "top": 16.98,
-        "bottom": 276.11
+        "left": 53.75,
+        "right": 246.02,
+        "top": 16.97,
+        "bottom": 276.12
       },
       "centerNdc": 0
     },
@@ -399,8 +399,8 @@
       "id": "portrait",
       "zoom": 2.887,
       "bounds": {
-        "left": 52.16,
-        "right": 250.14,
+        "left": 56,
+        "right": 238.51,
         "top": 17,
         "bottom": 276.09
       },
@@ -419,8 +419,8 @@
       "id": "washed",
       "zoom": 2.883,
       "bounds": {
-        "left": 57.85,
-        "right": 242.6,
+        "left": 62.14,
+        "right": 239.36,
         "top": 16.98,
         "bottom": 276.11
       },
@@ -437,12 +437,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 2.883,
+      "zoom": 2.882,
       "bounds": {
-        "left": 44.49,
-        "right": 257.4,
-        "top": 16.98,
-        "bottom": 276.11
+        "left": 48.3,
+        "right": 255.2,
+        "top": 16.97,
+        "bottom": 276.12
       },
       "centerNdc": 0
     },
@@ -459,10 +459,10 @@
       "id": "camo",
       "zoom": 3.5,
       "bounds": {
-        "left": 27.35,
-        "right": 246.98,
+        "left": 48.1,
+        "right": 236.4,
         "top": 42.34,
-        "bottom": 349.01
+        "bottom": 342.39
       },
       "centerNdc": -0.1893
     },
@@ -479,10 +479,10 @@
       "id": "essential",
       "zoom": 3.5,
       "bounds": {
-        "left": 51.65,
-        "right": 282.68,
+        "left": 56.56,
+        "right": 274.43,
         "top": 42.34,
-        "bottom": 326.23
+        "bottom": 326.33
       },
       "centerNdc": 0
     },
@@ -499,10 +499,10 @@
       "id": "dollar",
       "zoom": 3.5,
       "bounds": {
-        "left": 58.98,
-        "right": 277.8,
+        "left": 62.99,
+        "right": 264.49,
         "top": 42.34,
-        "bottom": 320.95
+        "bottom": 320.96
       },
       "centerNdc": 0
     },
@@ -519,10 +519,10 @@
       "id": "underclass",
       "zoom": 3.5,
       "bounds": {
-        "left": 60.6,
-        "right": 278.2,
+        "left": 64.92,
+        "right": 263.37,
         "top": 42.34,
-        "bottom": 320.95
+        "bottom": 320.56
       },
       "centerNdc": 0
     },
@@ -539,10 +539,10 @@
       "id": "republic",
       "zoom": 3.5,
       "bounds": {
-        "left": 57.76,
-        "right": 278.61,
+        "left": 61.49,
+        "right": 276.75,
         "top": 42.34,
-        "bottom": 349.82
+        "bottom": 349.77
       },
       "centerNdc": 0
     },
@@ -559,10 +559,10 @@
       "id": "world",
       "zoom": 3.5,
       "bounds": {
-        "left": 61.01,
-        "right": 273.32,
+        "left": 81.52,
+        "right": 262.49,
         "top": 42.34,
-        "bottom": 336.4
+        "bottom": 329.49
       },
       "centerNdc": 0
     },
@@ -579,10 +579,10 @@
       "id": "flowers",
       "zoom": 3.5,
       "bounds": {
-        "left": 61.42,
-        "right": 275.76,
+        "left": 65.56,
+        "right": 262.85,
         "top": 42.34,
-        "bottom": 319.32
+        "bottom": 319.35
       },
       "centerNdc": 0
     },
@@ -599,10 +599,10 @@
       "id": "studio",
       "zoom": 3.5,
       "bounds": {
-        "left": 59.79,
-        "right": 279.42,
+        "left": 65.06,
+        "right": 272.23,
         "top": 42.34,
-        "bottom": 321.35
+        "bottom": 321.57
       },
       "centerNdc": 0
     },
@@ -619,8 +619,8 @@
       "id": "portrait",
       "zoom": 3.5,
       "bounds": {
-        "left": 62.64,
-        "right": 277.39,
+        "left": 66.79,
+        "right": 264.78,
         "top": 42.34,
         "bottom": 323.39
       },
@@ -639,10 +639,10 @@
       "id": "washed",
       "zoom": 3.5,
       "bounds": {
-        "left": 59.38,
-        "right": 278.61,
+        "left": 64.47,
+        "right": 274.77,
         "top": 42.34,
-        "bottom": 349.82
+        "bottom": 349.85
       },
       "centerNdc": 0
     },
@@ -659,10 +659,10 @@
       "id": "hoodie",
       "zoom": 3.5,
       "bounds": {
-        "left": 82.88,
-        "right": 320.81,
+        "left": 87.06,
+        "right": 318.43,
         "top": 42.34,
-        "bottom": 331.93
+        "bottom": 332.15
       },
       "centerNdc": 0.1893
     },
@@ -677,12 +677,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 3.429,
+      "zoom": 3.496,
       "bounds": {
-        "left": 45.04,
-        "right": 293.36,
-        "top": 22.72,
-        "bottom": 369.44
+        "left": 66.54,
+        "right": 283.58,
+        "top": 23.16,
+        "bottom": 369
       },
       "centerNdc": 0
     },
@@ -697,12 +697,12 @@
       ],
       "mode": "product",
       "id": "essential",
-      "zoom": 3.429,
+      "zoom": 3.428,
       "bounds": {
-        "left": 25.64,
-        "right": 307.79,
-        "top": 22.72,
-        "bottom": 369.44
+        "left": 31.67,
+        "right": 297.68,
+        "top": 22.71,
+        "bottom": 369.45
       },
       "centerNdc": 0
     },
@@ -719,8 +719,8 @@
       "id": "dollar",
       "zoom": 3.5,
       "bounds": {
-        "left": 35.87,
-        "right": 298.94,
+        "left": 40.7,
+        "right": 282.94,
         "top": 28.6,
         "bottom": 363.56
       },
@@ -737,12 +737,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 3.492,
+      "zoom": 3.496,
       "bounds": {
-        "left": 34.78,
-        "right": 304.94,
-        "top": 23.13,
-        "bottom": 369.03
+        "left": 39.98,
+        "right": 286.66,
+        "top": 23.16,
+        "bottom": 369
       },
       "centerNdc": 0.0024
     },
@@ -759,10 +759,10 @@
       "id": "republic",
       "zoom": 3.5,
       "bounds": {
-        "left": 46.89,
-        "right": 287.67,
-        "top": 28.46,
-        "bottom": 363.7
+        "left": 50.95,
+        "right": 285.64,
+        "top": 28.49,
+        "bottom": 363.67
       },
       "centerNdc": -0.0048
     },
@@ -779,10 +779,10 @@
       "id": "world",
       "zoom": 3.5,
       "bounds": {
-        "left": 48.99,
-        "right": 287.28,
-        "top": 31.05,
-        "bottom": 361.11
+        "left": 72.01,
+        "right": 275.12,
+        "top": 34.93,
+        "bottom": 357.23
       },
       "centerNdc": 0.0072
     },
@@ -799,8 +799,8 @@
       "id": "flowers",
       "zoom": 3.373,
       "bounds": {
-        "left": 31.24,
-        "right": 300.14,
+        "left": 36.46,
+        "right": 283.92,
         "top": 22.34,
         "bottom": 369.82
       },
@@ -817,12 +817,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 3.429,
+      "zoom": 3.427,
       "bounds": {
-        "left": 33.24,
-        "right": 306.17,
-        "top": 22.72,
-        "bottom": 369.44
+        "left": 39.88,
+        "right": 297.15,
+        "top": 22.7,
+        "bottom": 369.46
       },
       "centerNdc": 0
     },
@@ -839,8 +839,8 @@
       "id": "portrait",
       "zoom": 3.434,
       "bounds": {
-        "left": 37.76,
-        "right": 302.65,
+        "left": 42.89,
+        "right": 287.09,
         "top": 22.75,
         "bottom": 369.41
       },
@@ -859,8 +859,8 @@
       "id": "washed",
       "zoom": 3.429,
       "bounds": {
-        "left": 45.37,
-        "right": 292.57,
+        "left": 51.11,
+        "right": 288.23,
         "top": 22.72,
         "bottom": 369.44
       },
@@ -877,12 +877,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 3.429,
+      "zoom": 3.427,
       "bounds": {
-        "left": 27.49,
-        "right": 312.37,
-        "top": 22.72,
-        "bottom": 369.44
+        "left": 32.59,
+        "right": 309.42,
+        "top": 22.7,
+        "bottom": 369.46
       },
       "centerNdc": 0
     },
@@ -899,10 +899,10 @@
       "id": "camo",
       "zoom": 3.5,
       "bounds": {
-        "left": 29.63,
-        "right": 267.56,
+        "left": 52.11,
+        "right": 256.11,
         "top": 43.44,
-        "bottom": 375.68
+        "bottom": 368.5
       },
       "centerNdc": -0.1893
     },
@@ -919,10 +919,10 @@
       "id": "essential",
       "zoom": 3.5,
       "bounds": {
-        "left": 55.96,
-        "right": 306.23,
+        "left": 61.27,
+        "right": 297.3,
         "top": 43.44,
-        "bottom": 351
+        "bottom": 351.11
       },
       "centerNdc": 0
     },
@@ -939,10 +939,10 @@
       "id": "dollar",
       "zoom": 3.5,
       "bounds": {
-        "left": 63.89,
-        "right": 300.95,
+        "left": 68.24,
+        "right": 286.53,
         "top": 43.44,
-        "bottom": 345.27
+        "bottom": 345.29
       },
       "centerNdc": 0
     },
@@ -959,10 +959,10 @@
       "id": "underclass",
       "zoom": 3.5,
       "bounds": {
-        "left": 65.65,
-        "right": 301.39,
+        "left": 70.33,
+        "right": 285.32,
         "top": 43.44,
-        "bottom": 345.27
+        "bottom": 344.86
       },
       "centerNdc": 0
     },
@@ -979,10 +979,10 @@
       "id": "republic",
       "zoom": 3.5,
       "bounds": {
-        "left": 62.57,
-        "right": 301.83,
+        "left": 66.61,
+        "right": 299.82,
         "top": 43.44,
-        "bottom": 376.56
+        "bottom": 376.5
       },
       "centerNdc": 0
     },
@@ -999,10 +999,10 @@
       "id": "world",
       "zoom": 3.5,
       "bounds": {
-        "left": 66.09,
-        "right": 296.1,
+        "left": 88.32,
+        "right": 284.36,
         "top": 43.44,
-        "bottom": 362.02
+        "bottom": 354.53
       },
       "centerNdc": 0
     },
@@ -1019,10 +1019,10 @@
       "id": "flowers",
       "zoom": 3.5,
       "bounds": {
-        "left": 66.53,
-        "right": 298.74,
+        "left": 71.03,
+        "right": 284.75,
         "top": 43.44,
-        "bottom": 343.51
+        "bottom": 343.54
       },
       "centerNdc": 0
     },
@@ -1039,10 +1039,10 @@
       "id": "studio",
       "zoom": 3.5,
       "bounds": {
-        "left": 64.77,
-        "right": 302.71,
+        "left": 70.48,
+        "right": 294.92,
         "top": 43.44,
-        "bottom": 345.71
+        "bottom": 345.95
       },
       "centerNdc": 0
     },
@@ -1059,8 +1059,8 @@
       "id": "portrait",
       "zoom": 3.5,
       "bounds": {
-        "left": 67.86,
-        "right": 300.51,
+        "left": 72.36,
+        "right": 286.85,
         "top": 43.44,
         "bottom": 347.92
       },
@@ -1079,10 +1079,10 @@
       "id": "washed",
       "zoom": 3.5,
       "bounds": {
-        "left": 64.33,
-        "right": 301.83,
+        "left": 69.84,
+        "right": 297.66,
         "top": 43.44,
-        "bottom": 376.56
+        "bottom": 376.58
       },
       "centerNdc": 0
     },
@@ -1099,10 +1099,10 @@
       "id": "hoodie",
       "zoom": 3.5,
       "bounds": {
-        "left": 89.78,
-        "right": 347.55,
+        "left": 94.31,
+        "right": 344.97,
         "top": 43.44,
-        "bottom": 357.17
+        "bottom": 357.41
       },
       "centerNdc": 0.1893
     },
@@ -1117,12 +1117,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 3.39,
+      "zoom": 3.456,
       "bounds": {
-        "left": 50.33,
-        "right": 316.27,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 73.35,
+        "right": 305.8,
+        "top": 24.8,
+        "bottom": 395.2
       },
       "centerNdc": 0
     },
@@ -1137,12 +1137,12 @@
       ],
       "mode": "product",
       "id": "essential",
-      "zoom": 3.39,
+      "zoom": 3.389,
       "bounds": {
-        "left": 29.55,
-        "right": 331.73,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 36.01,
+        "right": 320.9,
+        "top": 24.32,
+        "bottom": 395.68
       },
       "centerNdc": 0
     },
@@ -1159,10 +1159,10 @@
       "id": "dollar",
       "zoom": 3.5,
       "bounds": {
-        "left": 38.86,
-        "right": 323.86,
-        "top": 28.57,
-        "bottom": 391.43
+        "left": 44.09,
+        "right": 306.52,
+        "top": 28.56,
+        "bottom": 391.44
       },
       "centerNdc": -0.0048
     },
@@ -1177,12 +1177,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 3.452,
+      "zoom": 3.456,
       "bounds": {
-        "left": 39.34,
-        "right": 328.67,
-        "top": 24.77,
-        "bottom": 395.23
+        "left": 44.91,
+        "right": 309.1,
+        "top": 24.8,
+        "bottom": 395.2
       },
       "centerNdc": 0.0024
     },
@@ -1199,10 +1199,10 @@
       "id": "republic",
       "zoom": 3.5,
       "bounds": {
-        "left": 50.79,
-        "right": 311.64,
-        "top": 28.41,
-        "bottom": 391.59
+        "left": 55.2,
+        "right": 309.45,
+        "top": 28.45,
+        "bottom": 391.55
       },
       "centerNdc": -0.0048
     },
@@ -1219,10 +1219,10 @@
       "id": "world",
       "zoom": 3.5,
       "bounds": {
-        "left": 53.07,
-        "right": 311.23,
-        "top": 31.22,
-        "bottom": 388.78
+        "left": 78.01,
+        "right": 298.05,
+        "top": 35.42,
+        "bottom": 384.58
       },
       "centerNdc": 0.0072
     },
@@ -1237,10 +1237,10 @@
       ],
       "mode": "product",
       "id": "flowers",
-      "zoom": 3.335,
+      "zoom": 3.334,
       "bounds": {
-        "left": 35.55,
-        "right": 323.53,
+        "left": 41.13,
+        "right": 306.17,
         "top": 23.93,
         "bottom": 396.07
       },
@@ -1257,12 +1257,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 3.39,
+      "zoom": 3.388,
       "bounds": {
-        "left": 37.69,
-        "right": 330,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 44.8,
+        "right": 320.33,
+        "top": 24.31,
+        "bottom": 395.69
       },
       "centerNdc": 0
     },
@@ -1279,8 +1279,8 @@
       "id": "portrait",
       "zoom": 3.395,
       "bounds": {
-        "left": 42.53,
-        "right": 326.22,
+        "left": 48.02,
+        "right": 309.56,
         "top": 24.36,
         "bottom": 395.64
       },
@@ -1299,8 +1299,8 @@
       "id": "washed",
       "zoom": 3.39,
       "bounds": {
-        "left": 50.68,
-        "right": 315.43,
+        "left": 56.83,
+        "right": 310.78,
         "top": 24.33,
         "bottom": 395.67
       },
@@ -1317,12 +1317,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 3.39,
+      "zoom": 3.388,
       "bounds": {
-        "left": 31.53,
-        "right": 336.63,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 36.99,
+        "right": 333.48,
+        "top": 24.31,
+        "bottom": 395.69
       },
       "centerNdc": 0
     },
@@ -1339,10 +1339,10 @@
       "id": "camo",
       "zoom": 2.136,
       "bounds": {
-        "left": 160.63,
-        "right": 421.32,
+        "left": 185.26,
+        "right": 408.77,
         "top": 27.52,
-        "bottom": 391.52
+        "bottom": 383.66
       },
       "centerNdc": -0.1156
     },
@@ -1359,10 +1359,10 @@
       "id": "essential",
       "zoom": 2.136,
       "bounds": {
-        "left": 189.48,
-        "right": 463.69,
+        "left": 195.3,
+        "right": 453.9,
         "top": 27.52,
-        "bottom": 364.48
+        "bottom": 364.6
       },
       "centerNdc": 0
     },
@@ -1379,10 +1379,10 @@
       "id": "dollar",
       "zoom": 2.136,
       "bounds": {
-        "left": 198.17,
-        "right": 457.9,
+        "left": 202.94,
+        "right": 442.1,
         "top": 27.52,
-        "bottom": 358.21
+        "bottom": 358.22
       },
       "centerNdc": 0
     },
@@ -1399,10 +1399,10 @@
       "id": "underclass",
       "zoom": 2.136,
       "bounds": {
-        "left": 200.1,
-        "right": 458.38,
+        "left": 205.23,
+        "right": 440.77,
         "top": 27.52,
-        "bottom": 358.21
+        "bottom": 357.75
       },
       "centerNdc": 0
     },
@@ -1419,10 +1419,10 @@
       "id": "republic",
       "zoom": 2.136,
       "bounds": {
-        "left": 196.72,
-        "right": 458.86,
+        "left": 201.15,
+        "right": 456.66,
         "top": 27.52,
-        "bottom": 392.48
+        "bottom": 392.42
       },
       "centerNdc": 0
     },
@@ -1439,10 +1439,10 @@
       "id": "world",
       "zoom": 2.136,
       "bounds": {
-        "left": 200.59,
-        "right": 452.59,
+        "left": 224.93,
+        "right": 439.72,
         "top": 27.52,
-        "bottom": 376.55
+        "bottom": 368.35
       },
       "centerNdc": 0
     },
@@ -1459,10 +1459,10 @@
       "id": "flowers",
       "zoom": 2.136,
       "bounds": {
-        "left": 201.07,
-        "right": 455.48,
+        "left": 205.99,
+        "right": 440.15,
         "top": 27.52,
-        "bottom": 356.28
+        "bottom": 356.31
       },
       "centerNdc": 0
     },
@@ -1479,10 +1479,10 @@
       "id": "studio",
       "zoom": 2.136,
       "bounds": {
-        "left": 199.14,
-        "right": 459.83,
+        "left": 205.39,
+        "right": 451.29,
         "top": 27.52,
-        "bottom": 358.69
+        "bottom": 358.95
       },
       "centerNdc": 0
     },
@@ -1499,10 +1499,10 @@
       "id": "portrait",
       "zoom": 2.136,
       "bounds": {
-        "left": 202.52,
-        "right": 457.41,
+        "left": 207.45,
+        "right": 442.45,
         "top": 27.52,
-        "bottom": 361.1
+        "bottom": 361.11
       },
       "centerNdc": 0
     },
@@ -1519,10 +1519,10 @@
       "id": "washed",
       "zoom": 2.136,
       "bounds": {
-        "left": 198.66,
-        "right": 458.86,
+        "left": 204.69,
+        "right": 454.3,
         "top": 27.52,
-        "bottom": 392.48
+        "bottom": 392.51
       },
       "centerNdc": 0
     },
@@ -1539,10 +1539,10 @@
       "id": "hoodie",
       "zoom": 2.136,
       "bounds": {
-        "left": 226.54,
-        "right": 508.95,
+        "left": 231.5,
+        "right": 506.13,
         "top": 27.52,
-        "bottom": 371.24
+        "bottom": 371.5
       },
       "centerNdc": 0.1156
     },
@@ -1557,12 +1557,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 1.889,
+      "zoom": 1.926,
       "bounds": {
-        "left": 196.03,
-        "right": 461.97,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 219.05,
+        "right": 451.5,
+        "top": 24.8,
+        "bottom": 395.2
       },
       "centerNdc": 0
     },
@@ -1577,12 +1577,12 @@
       ],
       "mode": "product",
       "id": "essential",
-      "zoom": 1.889,
+      "zoom": 1.888,
       "bounds": {
-        "left": 175.25,
-        "right": 477.43,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 181.71,
+        "right": 466.6,
+        "top": 24.32,
+        "bottom": 395.68
       },
       "centerNdc": 0
     },
@@ -1599,10 +1599,10 @@
       "id": "dollar",
       "zoom": 1.983,
       "bounds": {
-        "left": 182.15,
-        "right": 471.91,
-        "top": 25.54,
-        "bottom": 394.46
+        "left": 187.47,
+        "right": 454.27,
+        "top": 25.53,
+        "bottom": 394.47
       },
       "centerNdc": -0.0027
     },
@@ -1617,12 +1617,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 1.923,
+      "zoom": 1.926,
       "bounds": {
-        "left": 185.04,
-        "right": 474.37,
-        "top": 24.77,
-        "bottom": 395.23
+        "left": 190.61,
+        "right": 454.8,
+        "top": 24.8,
+        "bottom": 395.2
       },
       "centerNdc": 0.0013
     },
@@ -1639,8 +1639,8 @@
       "id": "republic",
       "zoom": 1.981,
       "bounds": {
-        "left": 194.38,
-        "right": 459.39,
+        "left": 198.83,
+        "right": 457.18,
         "top": 25.52,
         "bottom": 394.48
       },
@@ -1657,14 +1657,14 @@
       ],
       "mode": "product",
       "id": "world",
-      "zoom": 2.008,
+      "zoom": 2.051,
       "bounds": {
-        "left": 194.87,
-        "right": 460.76,
-        "top": 25.87,
-        "bottom": 394.13
+        "left": 218.28,
+        "right": 449.67,
+        "top": 26.41,
+        "bottom": 393.59
       },
-      "centerNdc": 0.0041
+      "centerNdc": 0.0042
     },
     {
       "screen": [
@@ -1679,8 +1679,8 @@
       "id": "flowers",
       "zoom": 1.858,
       "bounds": {
-        "left": 181.25,
-        "right": 469.23,
+        "left": 186.83,
+        "right": 451.87,
         "top": 23.93,
         "bottom": 396.07
       },
@@ -1697,12 +1697,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 1.889,
+      "zoom": 1.888,
       "bounds": {
-        "left": 183.39,
-        "right": 475.7,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 190.5,
+        "right": 466.03,
+        "top": 24.31,
+        "bottom": 395.69
       },
       "centerNdc": 0
     },
@@ -1719,8 +1719,8 @@
       "id": "portrait",
       "zoom": 1.891,
       "bounds": {
-        "left": 188.23,
-        "right": 471.92,
+        "left": 193.72,
+        "right": 455.26,
         "top": 24.36,
         "bottom": 395.64
       },
@@ -1739,8 +1739,8 @@
       "id": "washed",
       "zoom": 1.889,
       "bounds": {
-        "left": 196.38,
-        "right": 461.13,
+        "left": 202.53,
+        "right": 456.48,
         "top": 24.33,
         "bottom": 395.67
       },
@@ -1757,12 +1757,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 1.889,
+      "zoom": 1.888,
       "bounds": {
-        "left": 177.23,
-        "right": 482.33,
-        "top": 24.33,
-        "bottom": 395.67
+        "left": 182.69,
+        "right": 479.18,
+        "top": 24.31,
+        "bottom": 395.69
       },
       "centerNdc": 0
     },
@@ -1779,10 +1779,10 @@
       "id": "camo",
       "zoom": 2.323,
       "bounds": {
-        "left": 100.93,
-        "right": 296.91,
+        "left": 119.44,
+        "right": 287.47,
         "top": 20.69,
-        "bottom": 294.33
+        "bottom": 288.42
       },
       "centerNdc": -0.1256
     },
@@ -1799,10 +1799,10 @@
       "id": "essential",
       "zoom": 2.323,
       "bounds": {
-        "left": 122.61,
-        "right": 328.76,
+        "left": 126.99,
+        "right": 321.4,
         "top": 20.69,
-        "bottom": 274.01
+        "bottom": 274.1
       },
       "centerNdc": 0
     },
@@ -1819,10 +1819,10 @@
       "id": "dollar",
       "zoom": 2.323,
       "bounds": {
-        "left": 129.15,
-        "right": 324.4,
+        "left": 132.73,
+        "right": 312.52,
         "top": 20.69,
-        "bottom": 269.29
+        "bottom": 269.3
       },
       "centerNdc": 0
     },
@@ -1839,10 +1839,10 @@
       "id": "underclass",
       "zoom": 2.323,
       "bounds": {
-        "left": 130.6,
-        "right": 324.76,
+        "left": 134.45,
+        "right": 311.53,
         "top": 20.69,
-        "bottom": 269.29
+        "bottom": 268.95
       },
       "centerNdc": 0
     },
@@ -1859,10 +1859,10 @@
       "id": "republic",
       "zoom": 2.323,
       "bounds": {
-        "left": 128.06,
-        "right": 325.13,
+        "left": 131.39,
+        "right": 323.47,
         "top": 20.69,
-        "bottom": 295.06
+        "bottom": 295.01
       },
       "centerNdc": 0
     },
@@ -1879,10 +1879,10 @@
       "id": "world",
       "zoom": 2.323,
       "bounds": {
-        "left": 130.96,
-        "right": 320.41,
+        "left": 149.27,
+        "right": 310.74,
         "top": 20.69,
-        "bottom": 283.08
+        "bottom": 276.91
       },
       "centerNdc": 0
     },
@@ -1899,10 +1899,10 @@
       "id": "flowers",
       "zoom": 2.323,
       "bounds": {
-        "left": 131.33,
-        "right": 322.59,
+        "left": 135.02,
+        "right": 311.06,
         "top": 20.69,
-        "bottom": 267.84
+        "bottom": 267.87
       },
       "centerNdc": 0
     },
@@ -1919,10 +1919,10 @@
       "id": "studio",
       "zoom": 2.323,
       "bounds": {
-        "left": 129.87,
-        "right": 325.85,
+        "left": 134.58,
+        "right": 319.44,
         "top": 20.69,
-        "bottom": 269.65
+        "bottom": 269.85
       },
       "centerNdc": 0
     },
@@ -1939,8 +1939,8 @@
       "id": "portrait",
       "zoom": 2.323,
       "bounds": {
-        "left": 132.41,
-        "right": 324.04,
+        "left": 136.12,
+        "right": 312.79,
         "top": 20.69,
         "bottom": 271.47
       },
@@ -1959,10 +1959,10 @@
       "id": "washed",
       "zoom": 2.323,
       "bounds": {
-        "left": 129.51,
-        "right": 325.13,
+        "left": 134.05,
+        "right": 321.7,
         "top": 20.69,
-        "bottom": 295.06
+        "bottom": 295.08
       },
       "centerNdc": 0
     },
@@ -1979,10 +1979,10 @@
       "id": "hoodie",
       "zoom": 2.323,
       "bounds": {
-        "left": 150.47,
-        "right": 362.78,
+        "left": 154.2,
+        "right": 360.66,
         "top": 20.69,
-        "bottom": 279.09
+        "bottom": 279.29
       },
       "centerNdc": 0.1256
     },
@@ -1997,12 +1997,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 2.054,
+      "zoom": 2.094,
       "bounds": {
-        "left": 127.53,
-        "right": 327.47,
-        "top": 18.29,
-        "bottom": 297.45
+        "left": 144.85,
+        "right": 319.59,
+        "top": 18.65,
+        "bottom": 297.1
       },
       "centerNdc": 0
     },
@@ -2017,12 +2017,12 @@
       ],
       "mode": "product",
       "id": "essential",
-      "zoom": 2.054,
+      "zoom": 2.053,
       "bounds": {
-        "left": 111.91,
-        "right": 339.09,
-        "top": 18.29,
-        "bottom": 297.45
+        "left": 116.77,
+        "right": 330.94,
+        "top": 18.28,
+        "bottom": 297.46
       },
       "centerNdc": 0
     },
@@ -2039,8 +2039,8 @@
       "id": "dollar",
       "zoom": 2.155,
       "bounds": {
-        "left": 117.1,
-        "right": 334.93,
+        "left": 121.1,
+        "right": 321.68,
         "top": 19.2,
         "bottom": 296.55
       },
@@ -2057,12 +2057,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 2.091,
+      "zoom": 2.094,
       "bounds": {
-        "left": 119.27,
-        "right": 336.79,
-        "top": 18.62,
-        "bottom": 297.12
+        "left": 123.46,
+        "right": 322.07,
+        "top": 18.65,
+        "bottom": 297.1
       },
       "centerNdc": 0.0014
     },
@@ -2079,9 +2079,9 @@
       "id": "republic",
       "zoom": 2.154,
       "bounds": {
-        "left": 126.3,
-        "right": 325.52,
-        "top": 19.18,
+        "left": 129.64,
+        "right": 323.86,
+        "top": 19.19,
         "bottom": 296.56
       },
       "centerNdc": -0.003
@@ -2097,14 +2097,14 @@
       ],
       "mode": "product",
       "id": "world",
-      "zoom": 2.183,
+      "zoom": 2.229,
       "bounds": {
-        "left": 126.67,
-        "right": 326.55,
-        "top": 19.45,
-        "bottom": 296.3
+        "left": 144.26,
+        "right": 318.22,
+        "top": 19.86,
+        "bottom": 295.89
       },
-      "centerNdc": 0.0045
+      "centerNdc": 0.0046
     },
     {
       "screen": [
@@ -2119,10 +2119,10 @@
       "id": "flowers",
       "zoom": 2.02,
       "bounds": {
-        "left": 116.42,
-        "right": 332.92,
+        "left": 120.62,
+        "right": 319.87,
         "top": 17.99,
-        "bottom": 297.75
+        "bottom": 297.76
       },
       "centerNdc": -0.0097
     },
@@ -2137,12 +2137,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 2.054,
+      "zoom": 2.052,
       "bounds": {
-        "left": 118.03,
-        "right": 337.78,
-        "top": 18.29,
-        "bottom": 297.45
+        "left": 123.38,
+        "right": 330.51,
+        "top": 18.28,
+        "bottom": 297.47
       },
       "centerNdc": 0
     },
@@ -2159,8 +2159,8 @@
       "id": "portrait",
       "zoom": 2.056,
       "bounds": {
-        "left": 121.67,
-        "right": 334.95,
+        "left": 125.8,
+        "right": 322.42,
         "top": 18.31,
         "bottom": 297.43
       },
@@ -2177,12 +2177,12 @@
       ],
       "mode": "product",
       "id": "washed",
-      "zoom": 2.054,
+      "zoom": 2.053,
       "bounds": {
-        "left": 127.8,
-        "right": 326.83,
+        "left": 132.42,
+        "right": 323.34,
         "top": 18.29,
-        "bottom": 297.45
+        "bottom": 297.46
       },
       "centerNdc": 0
     },
@@ -2197,12 +2197,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 2.054,
+      "zoom": 2.052,
       "bounds": {
-        "left": 113.4,
-        "right": 342.77,
-        "top": 18.29,
-        "bottom": 297.45
+        "left": 117.51,
+        "right": 340.4,
+        "top": 18.28,
+        "bottom": 297.47
       },
       "centerNdc": 0
     },
@@ -2219,10 +2219,10 @@
       "id": "camo",
       "zoom": 2.546,
       "bounds": {
-        "left": 67.69,
-        "right": 231.56,
+        "left": 83.17,
+        "right": 223.66,
         "top": 17.3,
-        "bottom": 246.1
+        "bottom": 241.16
       },
       "centerNdc": -0.1377
     },
@@ -2239,10 +2239,10 @@
       "id": "essential",
       "zoom": 2.546,
       "bounds": {
-        "left": 85.83,
-        "right": 258.19,
+        "left": 89.48,
+        "right": 252.03,
         "top": 17.3,
-        "bottom": 229.1
+        "bottom": 229.18
       },
       "centerNdc": 0
     },
@@ -2259,10 +2259,10 @@
       "id": "dollar",
       "zoom": 2.546,
       "bounds": {
-        "left": 91.29,
-        "right": 254.54,
+        "left": 94.29,
+        "right": 244.61,
         "top": 17.3,
-        "bottom": 225.16
+        "bottom": 225.17
       },
       "centerNdc": 0
     },
@@ -2279,10 +2279,10 @@
       "id": "underclass",
       "zoom": 2.546,
       "bounds": {
-        "left": 92.5,
-        "right": 254.85,
+        "left": 95.72,
+        "right": 243.78,
         "top": 17.3,
-        "bottom": 225.16
+        "bottom": 224.87
       },
       "centerNdc": 0
     },
@@ -2299,10 +2299,10 @@
       "id": "republic",
       "zoom": 2.546,
       "bounds": {
-        "left": 90.38,
-        "right": 255.15,
+        "left": 93.16,
+        "right": 253.77,
         "top": 17.3,
-        "bottom": 246.7
+        "bottom": 246.66
       },
       "centerNdc": 0
     },
@@ -2319,10 +2319,10 @@
       "id": "world",
       "zoom": 2.546,
       "bounds": {
-        "left": 92.81,
-        "right": 251.21,
+        "left": 108.11,
+        "right": 243.12,
         "top": 17.3,
-        "bottom": 236.69
+        "bottom": 231.53
       },
       "centerNdc": 0
     },
@@ -2339,10 +2339,10 @@
       "id": "flowers",
       "zoom": 2.546,
       "bounds": {
-        "left": 93.11,
-        "right": 253.03,
+        "left": 96.2,
+        "right": 243.39,
         "top": 17.3,
-        "bottom": 223.94
+        "bottom": 223.97
       },
       "centerNdc": 0
     },
@@ -2359,10 +2359,10 @@
       "id": "studio",
       "zoom": 2.546,
       "bounds": {
-        "left": 91.9,
-        "right": 255.76,
+        "left": 95.83,
+        "right": 250.39,
         "top": 17.3,
-        "bottom": 225.46
+        "bottom": 225.63
       },
       "centerNdc": 0
     },
@@ -2379,8 +2379,8 @@
       "id": "portrait",
       "zoom": 2.546,
       "bounds": {
-        "left": 94.02,
-        "right": 254.24,
+        "left": 97.12,
+        "right": 244.83,
         "top": 17.3,
         "bottom": 226.98
       },
@@ -2399,10 +2399,10 @@
       "id": "washed",
       "zoom": 2.546,
       "bounds": {
-        "left": 91.59,
-        "right": 255.15,
+        "left": 95.39,
+        "right": 252.28,
         "top": 17.3,
-        "bottom": 246.7
+        "bottom": 246.72
       },
       "centerNdc": 0
     },
@@ -2419,10 +2419,10 @@
       "id": "hoodie",
       "zoom": 2.546,
       "bounds": {
-        "left": 109.12,
-        "right": 286.64,
+        "left": 112.24,
+        "right": 284.86,
         "top": 17.3,
-        "bottom": 233.35
+        "bottom": 233.52
       },
       "centerNdc": 0.1377
     },
@@ -2437,12 +2437,12 @@
       ],
       "mode": "product",
       "id": "camo",
-      "zoom": 2.251,
+      "zoom": 2.295,
       "bounds": {
-        "left": 89.94,
-        "right": 257.11,
-        "top": 15.29,
-        "bottom": 248.71
+        "left": 104.41,
+        "right": 250.53,
+        "top": 15.59,
+        "bottom": 248.41
       },
       "centerNdc": 0
     },
@@ -2457,10 +2457,10 @@
       ],
       "mode": "product",
       "id": "essential",
-      "zoom": 2.251,
+      "zoom": 2.25,
       "bounds": {
-        "left": 76.88,
-        "right": 266.82,
+        "left": 80.94,
+        "right": 260.02,
         "top": 15.29,
         "bottom": 248.71
       },
@@ -2479,8 +2479,8 @@
       "id": "dollar",
       "zoom": 2.363,
       "bounds": {
-        "left": 81.22,
-        "right": 263.35,
+        "left": 84.56,
+        "right": 252.27,
         "top": 16.05,
         "bottom": 247.95
       },
@@ -2497,12 +2497,12 @@
       ],
       "mode": "product",
       "id": "underclass",
-      "zoom": 2.292,
+      "zoom": 2.295,
       "bounds": {
-        "left": 83.03,
-        "right": 264.9,
-        "top": 15.57,
-        "bottom": 248.43
+        "left": 86.54,
+        "right": 252.6,
+        "top": 15.59,
+        "bottom": 248.41
       },
       "centerNdc": 0.0016
     },
@@ -2519,8 +2519,8 @@
       "id": "republic",
       "zoom": 2.361,
       "bounds": {
-        "left": 88.9,
-        "right": 255.48,
+        "left": 91.7,
+        "right": 254.1,
         "top": 16.04,
         "bottom": 247.96
       },
@@ -2537,14 +2537,14 @@
       ],
       "mode": "product",
       "id": "world",
-      "zoom": 2.394,
+      "zoom": 2.444,
       "bounds": {
-        "left": 89.22,
-        "right": 256.34,
-        "top": 16.26,
-        "bottom": 247.74
+        "left": 103.93,
+        "right": 249.37,
+        "top": 16.6,
+        "bottom": 247.4
       },
-      "centerNdc": 0.0049
+      "centerNdc": 0.005
     },
     {
       "screen": [
@@ -2559,8 +2559,8 @@
       "id": "flowers",
       "zoom": 2.214,
       "bounds": {
-        "left": 80.65,
-        "right": 261.67,
+        "left": 84.16,
+        "right": 250.75,
         "top": 15.04,
         "bottom": 248.96
       },
@@ -2577,12 +2577,12 @@
       ],
       "mode": "product",
       "id": "studio",
-      "zoom": 2.251,
+      "zoom": 2.25,
       "bounds": {
-        "left": 82,
-        "right": 265.73,
-        "top": 15.29,
-        "bottom": 248.71
+        "left": 86.46,
+        "right": 259.66,
+        "top": 15.28,
+        "bottom": 248.72
       },
       "centerNdc": 0
     },
@@ -2599,8 +2599,8 @@
       "id": "portrait",
       "zoom": 2.254,
       "bounds": {
-        "left": 85.04,
-        "right": 263.36,
+        "left": 88.49,
+        "right": 252.89,
         "top": 15.31,
         "bottom": 248.69
       },
@@ -2619,8 +2619,8 @@
       "id": "washed",
       "zoom": 2.251,
       "bounds": {
-        "left": 90.16,
-        "right": 256.58,
+        "left": 94.03,
+        "right": 253.65,
         "top": 15.29,
         "bottom": 248.71
       },
@@ -2637,12 +2637,12 @@
       ],
       "mode": "product",
       "id": "hoodie",
-      "zoom": 2.251,
+      "zoom": 2.25,
       "bounds": {
-        "left": 78.13,
-        "right": 269.91,
-        "top": 15.29,
-        "bottom": 248.71
+        "left": 81.56,
+        "right": 267.92,
+        "top": 15.28,
+        "bottom": 248.72
       },
       "centerNdc": 0
     }
@@ -2713,17 +2713,17 @@
         {
           "id": "essential",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -517.0239999999999,
             392,
@@ -2734,17 +2734,17 @@
         {
           "id": "dollar",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -399.0144,
             392,
@@ -2755,17 +2755,17 @@
         {
           "id": "underclass",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -251.4086400000001,
             392,
@@ -2776,17 +2776,17 @@
         {
           "id": "republic",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -86.04518400000006,
             392,
@@ -2797,19 +2797,19 @@
         {
           "id": "world",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            89.97288959999992,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            134.00351464657638,
             392,
             0,
             1
@@ -2818,19 +2818,19 @@
         {
           "id": "flowers",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            288.38373376000004,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            338.2740936065277,
             392,
             0,
             1
@@ -2839,17 +2839,17 @@
         {
           "id": "studio",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             474.630240256,
             392,
@@ -2860,17 +2860,17 @@
         {
           "id": "portrait",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             663.1781441536,
             392,
@@ -2881,17 +2881,17 @@
         {
           "id": "washed",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             853.1068864921599,
             392,
@@ -2902,17 +2902,17 @@
         {
           "id": "hoodie",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             1026.8881318952958,
             392,
@@ -2967,19 +2967,19 @@
         {
           "id": "camo",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -960.59136,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -1021.9362141541075,
             392,
             0,
             1
@@ -2988,17 +2988,17 @@
         {
           "id": "essential",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -812.9855999999999,
             392,
@@ -3009,17 +3009,17 @@
         {
           "id": "dollar",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -694.9759999999999,
             392,
@@ -3051,17 +3051,17 @@
         {
           "id": "republic",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             58.975999999999885,
             392,
@@ -3072,19 +3072,19 @@
         {
           "id": "world",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            176.98559999999998,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            279.0246986465763,
             392,
             0,
             1
@@ -3093,19 +3093,19 @@
         {
           "id": "flowers",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            340.5913599999999,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            483.29527760652763,
             392,
             0,
             1
@@ -3114,19 +3114,19 @@
         {
           "id": "studio",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            505.95481599999994,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            588.4438005545971,
             392,
             0,
             1
@@ -3135,19 +3135,19 @@
         {
           "id": "portrait",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            681.9728896000001,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            703.0905939715408,
             392,
             0,
             1
@@ -3156,17 +3156,17 @@
         {
           "id": "washed",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             864.3837337599998,
             392,
@@ -3177,17 +3177,17 @@
         {
           "id": "hoodie",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             1033.6542402559999,
             392,
@@ -3242,19 +3242,19 @@
         {
           "id": "camo",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -908.38373376,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -934.9235037541075,
             392,
             0,
             1
@@ -3263,17 +3263,17 @@
         {
           "id": "essential",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -725.9728895999999,
             392,
@@ -3284,19 +3284,19 @@
         {
           "id": "dollar",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -549.9548159999999,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -576.9677931162647,
             392,
             0,
             1
@@ -3305,19 +3305,19 @@
         {
           "id": "underclass",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -384.5913599999999,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -464.05328993576984,
             392,
             0,
             1
@@ -3326,19 +3326,19 @@
         {
           "id": "republic",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -236.98559999999998,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -352.04846149853324,
             392,
             0,
             1
@@ -3347,19 +3347,19 @@
         {
           "id": "world",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -118.97599999999989,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -131.9997628519568,
             392,
             0,
             1
@@ -3389,17 +3389,17 @@
         {
           "id": "studio",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             650.9760000000001,
             392,
@@ -3410,17 +3410,17 @@
         {
           "id": "portrait",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             768.9856,
             392,
@@ -3431,17 +3431,17 @@
         {
           "id": "washed",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             916.5913599999999,
             392,
@@ -3452,17 +3452,17 @@
         {
           "id": "hoodie",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             1064.9788159999998,
             392,
@@ -3517,19 +3517,19 @@
         {
           "id": "camo",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -895.864131895296,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -914.0575006462675,
             392,
             0,
             1
@@ -3538,17 +3538,17 @@
         {
           "id": "essential",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -705.1068864921599,
             392,
@@ -3559,17 +3559,17 @@
         {
           "id": "dollar",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -515.1781441536,
             392,
@@ -3580,17 +3580,17 @@
         {
           "id": "underclass",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -326.630240256,
             392,
@@ -3601,19 +3601,19 @@
         {
           "id": "republic",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -140.38373376000004,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -190.27409360652769,
             392,
             0,
             1
@@ -3622,19 +3622,19 @@
         {
           "id": "world",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            42.02711040000008,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            29.774605040048755,
             392,
             0,
             1
@@ -3643,17 +3643,17 @@
         {
           "id": "flowers",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             234.04518400000006,
             392,
@@ -3664,17 +3664,17 @@
         {
           "id": "studio",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             399.4086400000001,
             392,
@@ -3685,17 +3685,17 @@
         {
           "id": "portrait",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             547.0144,
             392,
@@ -3706,17 +3706,17 @@
         {
           "id": "washed",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             665.0239999999999,
             392,
@@ -3753,12 +3753,12 @@
       "width": 366.59999999999997,
       "height": 420,
       "projection": [
-        0.0022902649639434942,
+        0.0022900310937438756,
         0,
         0,
         0,
         0,
-        0.0019990741328135358,
+        0.001998869997539297,
         0,
         0,
         0,
@@ -3783,8 +3783,8 @@
         0,
         1,
         0,
-        0,
-        -102.267426,
+        894,
+        -102.2163396813965,
         -3000,
         1
       ],
@@ -3792,19 +3792,19 @@
         {
           "id": "camo",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -908.38373376,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -934.9235037541075,
             392,
             0,
             1
@@ -3813,17 +3813,17 @@
         {
           "id": "essential",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             -725.9728895999999,
             392,
@@ -3834,19 +3834,19 @@
         {
           "id": "dollar",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -549.9548159999999,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -576.9677931162647,
             392,
             0,
             1
@@ -3855,19 +3855,19 @@
         {
           "id": "underclass",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -384.5913599999999,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -464.05328993576984,
             392,
             0,
             1
@@ -3876,19 +3876,19 @@
         {
           "id": "republic",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -236.98559999999998,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -352.04846149853324,
             392,
             0,
             1
@@ -3897,19 +3897,19 @@
         {
           "id": "world",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
             0,
-            -118.97599999999989,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
+            0,
+            -131.9997628519568,
             392,
             0,
             1
@@ -3930,26 +3930,26 @@
             0,
             1.301708,
             0,
-            -7,
+            -901,
             545.499,
-            120,
+            1200,
             1
           ]
         },
         {
           "id": "studio",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             650.9760000000001,
             392,
@@ -3960,17 +3960,17 @@
         {
           "id": "portrait",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             768.9856,
             392,
@@ -3981,17 +3981,17 @@
         {
           "id": "washed",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             916.5913599999999,
             392,
@@ -4002,17 +4002,17 @@
         {
           "id": "hoodie",
           "matrix": [
-            2.220446049250313e-16,
+            0.10452846326765342,
             0,
-            -1,
-            0,
-            0,
-            1,
+            -0.9945218953682734,
             0,
             0,
             1,
             0,
-            2.220446049250313e-16,
+            0,
+            0.9945218953682734,
+            0,
+            0.10452846326765342,
             0,
             1064.9788159999998,
             392,

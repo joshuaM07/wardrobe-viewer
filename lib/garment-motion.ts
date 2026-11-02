@@ -1,59 +1,39 @@
 import { clamp, spring, stepSpring, type Spring } from './motion';
 
-/** Driven fabric modes: pinned shoulders, loose sleeves and a delayed lower hem. */
-export type ClothMotion = { bend: Spring; twist: Spring; left?: Spring; right?: Spring; hem?: Spring };
-export const clothMotion = (): ClothMotion => ({bend:spring(),twist:spring(),left:spring(),right:spring(),hem:spring()});
+/** Reduced cloth response; vertex poses are baked offline with a cloth solver. */
+export type ClothMotion = {
+  positive:Spring;negative:Spring;railPositive:Spring;railNegative:Spring;
+  turnVelocity?:number;railVelocity?:number;turnAcceleration:number;railAcceleration:number;
+};
+export const clothMotion=():ClothMotion=>({positive:spring(),negative:spring(),railPositive:spring(),railNegative:spring(),turnAcceleration:0,railAcceleration:0});
+export function clothValues(motion:ClothMotion){
+  const values=[motion.positive?.value??0,motion.negative?.value??0,motion.railPositive?.value??0,motion.railNegative?.value??0];
+  const total=values.reduce((a,b)=>a+b,0),scale=Math.min(1,1.25/Math.max(total,1e-6));
+  return values.map(v=>clamp(v)*scale);
+}
 export function stepCloth(motion:ClothMotion,turnVelocity:number,railVelocity:number,dt:number,type:string,reduced:boolean){
-  const weight=type==='hoodie'?.52:type==='crewneck'?.65:type==='long-sleeve'?.8:1;
-  motion.left??=spring();motion.right??=spring();motion.hem??=spring();
-  const modes:[Spring,number,number,number][]=[
-    [motion.bend,clamp(-railVelocity*.025,-24,24)*weight,65,12],
-    [motion.twist,clamp(-turnVelocity*.024,-.115,.115)*weight,48,10],
-    [motion.left,clamp(-turnVelocity*8-railVelocity*.01,-32,32)*weight,54,10],
-    [motion.right,clamp(turnVelocity*8-railVelocity*.01,-32,32)*weight,42,9],
-    [motion.hem,clamp(-turnVelocity*4-railVelocity*.008,-20,20)*weight,35,8],
-  ];
+  motion.positive??=spring();motion.negative??=spring();motion.railPositive??=spring();motion.railNegative??=spring();
+  // Material stiffness already lives in each baked surface. Keep its response
+  // visible rather than damping heavy garments twice.
+  const weight=type==='hoodie'?.85:type==='crewneck'?.9:type==='long-sleeve'?.95:1;
+  const blend=1-Math.exp(-dt/.07);
+  const turnA=dt>0&&motion.turnVelocity!==undefined?clamp((turnVelocity-motion.turnVelocity)/dt,-40,40):0;
+  const railA=dt>0&&motion.railVelocity!==undefined?clamp((railVelocity-motion.railVelocity)/dt,-4000,4000):0;
+  motion.turnAcceleration=(motion.turnAcceleration??0)+(turnA-(motion.turnAcceleration??0))*blend;
+  motion.railAcceleration=(motion.railAcceleration??0)+(railA-(motion.railAcceleration??0))*blend;
+  motion.turnVelocity=turnVelocity;motion.railVelocity=railVelocity;
+  const turn=clamp(turnVelocity*.27+motion.turnAcceleration*.008,-1,1)*weight;
+  const rail=clamp(railVelocity*.0008+motion.railAcceleration*.00003,-1,1)*weight;
+  const modes:[Spring,number][]=[[motion.positive,Math.max(0,turn)],[motion.negative,Math.max(0,-turn)],[motion.railPositive,Math.max(0,rail)],[motion.railNegative,Math.max(0,-rail)]];
   let moving=false;
-  for(const [mode,target,k,damping] of modes){
+  for(const [mode,target] of modes){
     if(reduced){mode.value=mode.velocity=0;continue;}
-    stepSpring(mode,target,dt,k,damping);
+    stepSpring(mode,target,dt,75,18);
+    if(mode.value<0||mode.value>1){mode.value=clamp(mode.value);mode.velocity=0;}
     if(Math.abs(mode.value-target)>.00001||Math.abs(mode.velocity)>.0001)moving=true;
   }
   return moving;
 }
-const smooth=(a:number,b:number,v:number)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
-/** Same smooth, rest-space deformation as the shader, including loose cuffs. */
-export function clothPoint(x:number,y:number,z:number,bendX:number,bendZ:number,twist:number,left=0,right=0,hem=0){
-  const w=smooth(130,730,-y),angle=twist*w,c=Math.cos(angle),s=Math.sin(angle);
-  const sleeve=smooth(120,260,Math.abs(x))*smooth(130,260,-y)*(x<0?left:right);
-  const lower=smooth(310,735,-y)*hem;
-  return [c*x+s*z+bendX*w,y+sleeve*.1+lower*.08*Math.cos(x*.012),
-    -s*x+c*z+bendZ*w+sleeve+lower*(Math.sin(x*.014+.6)+.25*Math.sin(x*.031-.7))] as const;
-}
-export const clothVertex = `
-uniform vec2 clothBend,clothSleeves;
-uniform float clothTwist,clothHem;
-vec2 clothWeight(float a,float b,float v){
-  float t=clamp((v-a)/(b-a),0.,1.);
-  return vec2(t*t*(3.-2.*t),6.*t*(1.-t)/(b-a));
-}
-void clothWarp(inout vec3 p,inout vec3 n){
-  vec2 body=clothWeight(130.,730.,-p.y),sx=clothWeight(120.,260.,abs(p.x)),sy=clothWeight(130.,260.,-p.y),hem=clothWeight(310.,735.,-p.y);
-  float w=body.x,dw=-body.y,a=clothTwist*w,c=cos(a),s=sin(a);
-  float arm=p.x<0.?clothSleeves.x:clothSleeves.y;
-  float cuff=arm*sx.x*sy.x,cuffX=arm*sx.y*sign(p.x)*sy.x,cuffY=-arm*sx.x*sy.y;
-  float wave=sin(p.x*.014+.6)+.25*sin(p.x*.031-.7);
-  float waveX=.014*cos(p.x*.014+.6)+.00775*cos(p.x*.031-.7);
-  float lower=clothHem*hem.x,lowerY=-clothHem*hem.y;
-  float cy=cos(p.x*.012),cyX=-.012*sin(p.x*.012);
-  vec3 jx=vec3(c,cuffX*.1+lower*.08*cyX,-s+cuffX+lower*waveX);
-  vec3 jy=vec3((-s*p.x+c*p.z)*clothTwist*dw+clothBend.x*dw,
-    1.+cuffY*.1+lowerY*.08*cy,(-c*p.x-s*p.z)*clothTwist*dw+clothBend.y*dw+cuffY+lowerY*wave);
-  vec3 jz=vec3(s,0.,c);
-  n=normalize(n.x*cross(jy,jz)+n.y*cross(jz,jx)+n.z*cross(jx,jy));
-  p=vec3(c*p.x+s*p.z+clothBend.x*w,p.y+cuff*.1+lower*.08*cy,
-    -s*p.x+c*p.z+clothBend.y*w+cuff+lower*wave);
-}`;
 
 export type Envelope = { left:number;right:number };
 export const garmentMass = (type:string) => type==='hoodie'?2.1:type==='crewneck'?1.65:type==='long-sleeve'?1.25:1;

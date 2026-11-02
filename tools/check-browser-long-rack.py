@@ -50,6 +50,7 @@ with sync_playwright() as p:
  assert page.get_by_role('slider',name='Rack position',exact=True).get_attribute('max')=='99'
  checks.append('Restore 100 real 3D garments with 90 distinct designs and only 11 shared mesh assets')
  for n in [99,0,49,98,25,99]:position(n)
+ page.wait_for_function('()=>JSON.parse(document.querySelector("canvas.rack-canvas").dataset.performance||"{}").cameraX>29000',timeout=30000)
  assert stats()['cameraX']>29000
  snapshot('desktop-last')
  checks.append('Scrollbar reaches both ends and the middle without compressing garment slots; artwork residency stays bounded')

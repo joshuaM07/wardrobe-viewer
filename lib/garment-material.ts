@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { clothVertex } from './garment-motion';
 
 export type FabricUniforms = {
   backMap: { value: THREE.Texture }; fabricMap: { value: THREE.Texture };
@@ -9,7 +8,6 @@ export type FabricUniforms = {
   customized: { value: number }; keepOriginal: { value: number };
   frontEnabled: { value: number }; backEnabled: { value: number };
   fabricColor: { value: THREE.Color }; woodColor: { value: THREE.Color };
-  clothBend: { value: THREE.Vector2 }; clothTwist: { value: number }; clothSleeves:{value:THREE.Vector2}; clothHem:{value:number};
 };
 export type FabricMaterial = THREE.MeshBasicMaterial & { fabricUniforms: FabricUniforms };
 
@@ -21,18 +19,22 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
     frontPlacement: {value: new THREE.Vector4(0,-300,240,240)}, backPlacement: {value: new THREE.Vector4(0,-300,240,240)},
     customized: {value: 0}, keepOriginal: {value: 1}, frontEnabled: {value: 0}, backEnabled: {value: 0},
     fabricColor: {value: new THREE.Color(fabricColor)}, woodColor: {value: new THREE.Color(0x563a2f)},
-    clothBend: {value:new THREE.Vector2()},clothTwist:{value:0},clothSleeves:{value:new THREE.Vector2()},clothHem:{value:0},
   };
   material.fabricUniforms=uniforms;material.forceSinglePass=true;
   material.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,uniforms);
-    shader.vertexShader=`${clothVertex}\nattribute float garmentSurface;
-      varying float vSurface; varying vec3 vFabricNormal; varying vec2 vFabricPoint;\n${shader.vertexShader}`
+    shader.vertexShader=`attribute float garmentSurface;
+      varying float vSurface;varying vec3 vFabricNormal;varying vec2 vFabricPoint;\n${shader.vertexShader}`
       .replace('#include <begin_vertex>',`#include <begin_vertex>
-        vSurface=garmentSurface;
-        vFabricPoint=position.xy;
+        vSurface=garmentSurface;vFabricPoint=vec2(uv.x*(garmentSurface>.5&&garmentSurface<1.5?640.:1280.)-320.,-uv.y*810.);`)
+      .replace('#include <morphtarget_vertex>',`#include <morphtarget_vertex>
         vec3 clothNormal=normal;
-        if(garmentSurface<2.5)clothWarp(transformed,clothNormal);
+        #ifdef USE_MORPHNORMALS
+          clothNormal*=morphTargetBaseInfluence;
+          for(int i=0;i<MORPHTARGETS_COUNT;i++){
+            if(morphTargetInfluences[i]!=0.)clothNormal+=getMorph(gl_VertexID,i,1).xyz*morphTargetInfluences[i];
+          }
+        #endif
         vFabricNormal=normalize(mat3(modelMatrix)*clothNormal);`);
     shader.fragmentShader=`uniform sampler2D backMap, fabricMap, fabricBackMap, printMask, frontArtwork, backArtwork;
       uniform vec3 fabricColor, woodColor;
@@ -64,6 +66,9 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
             if(vSurface>.5&&vSurface<1.5&&backEnabled>.5)ink=placedArtwork(backArtwork,backPlacement,1.);
             garmentColor.rgb=mix(garmentColor.rgb,ink.rgb*clamp(shade,.45,1.1),ink.a);
           }
+          // Sewn returns use unprinted fabric. Sampling a contour photograph
+          // here paints alternating wall/cloth stripes onto a narrow side edge.
+          if(vSurface>1.5&&vSurface<2.5)garmentColor.rgb=fabricColor*.85;
           // Open cuffs and hems expose the inside of the fabric, not another
           // copy of the exterior artwork printed on the back of a card.
           if(!gl_FrontFacing)garmentColor.rgb=fabricColor*.72;
@@ -75,6 +80,6 @@ export function garmentMaterial(frontMap: THREE.Texture, backMap: THREE.Texture,
         diffuseColor*=garmentColor;
         #endif`);
   };
-  material.customProgramCacheKey=()=> 'wardrobe-draped-panels-v11';
+  material.customProgramCacheKey=()=> 'wardrobe-physical-bakes-v13';
   return material;
 }

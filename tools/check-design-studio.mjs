@@ -17,6 +17,7 @@ function moduleURL(file){
   const url='data:text/javascript;base64,'+Buffer.from(resolved).toString('base64');cache.set(file,url);return url;
 }
 const {WardrobeRenderer}=await import(moduleURL(path.join(root,'lib/wardrobe-three.ts')));
+const {clothMotion}=await import(moduleURL(path.join(root,'lib/garment-motion.ts')));
 const {garmentMaterial}=await import(moduleURL(path.join(root,'lib/garment-material.ts')));
 const {prepareArtwork,sanitizeSavedWardrobe,blankDesign,defaultDesign,arrangeRack,fitArtwork,fitDesign,printArea,CLOTHING_TYPES}=await import(moduleURL(path.join(root,'lib/garment-design.ts')));
 const source=JSON.parse(fs.readFileSync(path.join(root,'lib/garments.json'))).find(g=>g.id==='flowers');
@@ -102,7 +103,7 @@ for(const {type} of CLOTHING_TYPES)for(const side of ['front','back'])for(const 
 const both=fitDesign({...blankDesign(),front:artwork(A),back:artwork(B)},'hoodie');
 assert.equal(both.front.dataUrl,A);assert.equal(both.back.dataUrl,B);
 function replacementRig(){
- const r=rig();Object.assign(r.item,{prepared:true,inDetail:true,focus:{value:1,velocity:0},x:{value:1500,velocity:2},y:{value:280,velocity:0},scale:{value:1.2,velocity:0},sway:{value:.01,velocity:.001},cloth:{bend:{value:2,velocity:1},twist:{value:.01,velocity:.01}}});
+ const r=rig();Object.assign(r.item,{prepared:true,inDetail:true,focus:{value:1,velocity:0},x:{value:1500,velocity:2},y:{value:280,velocity:0},scale:{value:1.2,velocity:0},sway:{value:.01,velocity:.001},cloth:{...clothMotion(),positive:{value:.4,velocity:.1},turnVelocity:2,turnAcceleration:3}});
  r.engine.state=()=>({selected:0,mode:'product'});r.item.body.geometry.computeBoundingBox();r.engine.camera=new THREE.PerspectiveCamera();r.engine.renderer.compileAsync=async()=>{};
  r.engine.loadItem=async garment=>{
   const front=new THREE.Texture(),back=new THREE.Texture(),body=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),garmentMaterial(front,back,'#eee'));
@@ -119,7 +120,7 @@ assert.equal(replacement.item.released,false);assert.equal(replacement.engine.sc
 replacement.pending.get(A)();await switching;
 const swapped=replacement.engine.items[0];assert.notEqual(swapped,replacement.item);
 assert.equal(swapped.garment.id,fixture.id);assert.equal(swapped.garment.type,'hoodie');
-assert.equal(swapped.x.value,1500);assert.equal(swapped.x.velocity,2);assert.equal(swapped.cloth.twist.value,.01);
+assert.equal(swapped.x.value,1500);assert.equal(swapped.x.velocity,2);assert.equal(swapped.cloth.positive.value,.4);assert.equal(swapped.cloth.turnVelocity,2);assert.equal(swapped.cloth.turnAcceleration,3);
 assert.equal(swapped.body.material.fabricUniforms.frontEnabled.value,1);assert.equal(swapped.body.material.fabricUniforms.fabricColor.value.getHexString(),'263e62');
 assert(replacement.calls.some(url=>url.includes('/models/hoodie-fabric.jpg')));assert(replacement.item.released);assert.equal(replacement.engine.scene.children.length,1);
 const resized=replacementRig(),originalLoader=resized.engine.loadItem;

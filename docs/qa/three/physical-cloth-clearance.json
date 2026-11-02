@@ -1,0 +1,26 @@
+{
+  "scope": "Production native morph geometry, actual vertex bounds for every potential contact; CPU geometry checks, no hardware FPS claim.",
+  "checkedFrames": 4704,
+  "checkedPairs": 6162240,
+  "exactVertexChecks": 0,
+  "intersections": 0,
+  "collections": [
+    10,
+    11,
+    20,
+    100
+  ],
+  "rates": [
+    30,
+    60,
+    120
+  ],
+  "nativeMorphs": 4,
+  "maxWeight": 0.7268854249489788,
+  "maxSum": 1.2500000000000002,
+  "interruptedTransitions": true,
+  "reversals": true,
+  "reducedMotion": true,
+  "settlesToSleep": true,
+  "massWeightedMomentum": true
+}
